@@ -6,9 +6,8 @@
   --header-bg: #f7f7f7;
   --header-border: #e5e5e5;
 }
-
 /* SPRING */
-.spring {
+html.spring {
   --bg: #fffaf0;
   --text: #2e8b57;
   --primary: #b55378;
@@ -17,7 +16,7 @@
 }
 
 /* SUMMER */
-.summer {
+html.summer {
   --bg: #fffdf5;
   --text: #0066cc;
   --primary: #0099ff;
@@ -26,7 +25,7 @@
 }
 
 /* AUTUMN */
-.autumn {
+html.autumn {
   --bg: #fff0e1;
   --text: #8b4513;
   --primary: #8b4513;
@@ -35,7 +34,7 @@
 }
 
 /* WINTER */
-.winter {
+html.winter {
   --bg: #e6ecf2;
   --text: #1e3a5f;
   --primary: #3b5b92;
@@ -168,7 +167,6 @@ a:hover {
   display: flex;
   gap: 16px;
   font-size: 16px;
-  color: #b55378;
   cursor: pointer;
 }
 
@@ -203,7 +201,7 @@ a:hover {
   width: 95%;
   margin: 0 auto;
   margin-bottom: 10px;
-  background-color: var(--header-bg);
+  background-color: var(--header-border);
   padding: 40px 80px;
 
   border-radius: 16px 16px 0 0;

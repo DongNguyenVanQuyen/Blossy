@@ -44,7 +44,8 @@
           </div>
         </div>
 
-        <hr />
+        <!-- vẽ -->
+        <hr /> 
 
         <div class="footer-bottom">
           <p>

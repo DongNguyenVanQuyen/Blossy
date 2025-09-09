@@ -32,11 +32,10 @@ function updateTime() {
   timeEl.textContent = `${icon} ${now.toLocaleString("vi-VN", options)}`;
 }
 
-// Gọi lần đầu để hiển thị ngay
-updateTime();
-
-// Cập nhật mỗi giây
-setInterval(updateTime, 1000);
+window.addEventListener("DOMContentLoaded", function () {
+  updateTime();
+  setInterval(updateTime, 1000);
+});
 
 const SEASON_ASSETS = {
   spring: { logo: "../Seasons/Logo/Xuan.png" },
@@ -90,7 +89,9 @@ function getSeasonFromQuery() {
   const autoDetected = detectSeasonByMonth(); // lay tu thang
 
   // uu tien
-  setSeason(fromQuery || autoDetected);
+  window.addEventListener("DOMContentLoaded", () => {
+    setSeason(fromQuery || autoDetected);
+  });
   //setSeason("spring");
   //setSeason("summer");
   //setSeason("autumn");
