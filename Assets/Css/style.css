@@ -1,3 +1,17 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* ===== THEME BY SEASON ===== */
 :root {
   --bg: #ffffff;
@@ -119,7 +133,7 @@ a:hover {
   color: var(--text);
   cursor: pointer;
 }
-#Logo img {
+.logoImg {
   width: 40px;
   height: 40px;
   object-fit: cover; /* hoặc "cover" để phóng to sát viền */
@@ -180,7 +194,6 @@ a:hover {
 /* Main */
 
 #Main {
-  height: 100vh;
   background-color: var(--bg);
   display: block;
   margin-top: 126.6px;
@@ -189,6 +202,7 @@ a:hover {
 #Main #Time {
   right: 10px;
   color: var(--primary);
+  z-index: 100;
 }
 
 /* Footer */
@@ -226,11 +240,6 @@ a:hover {
   align-items: center;
   gap: 6px;
   margin-bottom: 12px;
-}
-
-.footer-logo img {
-  width: 30px;
-  height: 30px;
 }
 
 .footer-brand p {
@@ -292,4 +301,206 @@ hr {
   border-radius: 8px;
   border: 1px solid #ccc;
   margin-left: 10px;
+}
+
+/* HERO SECTION (DÙNG CHO MỌI MÙA) */
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 5%;
+  background-color: var(--bg);
+  flex-wrap: wrap;
+
+  /* chiều cao header  */
+  height: calc(100vh - 126.6px);
+}
+
+.hero-content {
+  margin-bottom: 300px;
+  width: 600px;
+}
+.hero-section button {
+  height: 60px;
+  background-color: var(--primary); /* màu chủ đạo */
+  color: #fff;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.hero-section button:hover {
+  background-color: #9d4465; /* màu đậm hơn khi hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image {
+  width: 500px;
+  height: 550px;
+  margin-bottom: 50px;
+}
+
+.hero-image img {
+  width: 220px;
+  height: 350px;
+  margin: 12px;
+  border-radius: 12px;
+}
+.hero-image > *:first-child {
+  left: 0;
+  top: 0;
+}
+.hero-image > *:last-child {
+  right: 0;
+  bottom: 50px;
+}
+
+.hero-decor {
+  left: 0;
+  bottom: 0;
+  width: 500px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== SECTION HOA & KHUYẾN MÃI ===== */
+.flower-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.section-title {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.section-title span {
+  color: #d63384;
+}
+
+.flower-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.flower-item {
+  width: 150px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.flower-item:hover {
+  transform: scale(0.95);
+  outline: none;
+}
+
+.flower-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  background-color: #fce4ec;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.flower-item h3 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.flower-item p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Promo section lồng trong flower section */
+.promo-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.promo-card {
+  display: flex;
+  background-color: var(--header-bg);
+  border-radius: 20px;
+  overflow: hidden;
+  width: 550px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.promo-content {
+  padding: 30px;
+  flex: 1;
+  text-align: left;
+}
+
+.discount-label {
+  display: inline-block;
+  background-color: var(--header-border);
+  color: var(--text);
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.promo-content h3 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.promo-content p {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.btn-promo {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--header-bg);
+  color: var(--text);
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn-promo:hover {
+  background-color: var(--header-border);
+}
+
+.promo-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-image img {
+  width: 100%;
+  height: 300px;
 }

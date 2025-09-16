@@ -37,11 +37,48 @@ window.addEventListener("DOMContentLoaded", function () {
   setInterval(updateTime, 1000);
 });
 
-const SEASON_ASSETS = {
-  spring: { logo: "../Seasons/Logo/Xuan.png" },
-  summer: { logo: "../Seasons/Logo/Ha.png" },
-  autumn: { logo: "../Seasons/Logo/Thu.png" },
-  winter: { logo: "../Seasons/Logo/Dong.png" },
+const SEASON_ASSETS_LOGO = {
+  spring: { logo: BASE_URL + "Seasons/Logo/Xuan.png" },
+  summer: { logo: BASE_URL + "Seasons/Logo/Ha.png" },
+  autumn: { logo: BASE_URL + "Seasons/Logo/Thu.png" },
+  winter: { logo: BASE_URL + "Seasons/Logo/Dong.png" },
+};
+
+const SEASON_ASSETS_BANNER_LEFT = {
+  spring: { banner: BASE_URL + "Seasons/Banner_Left/Spring.png" },
+  summer: { banner: BASE_URL + "Seasons/Banner_Left/Summer.png" },
+  autumn: { banner: BASE_URL + "Seasons/Banner_Left/Autumn.png" },
+  winter: { banner: BASE_URL + "Seasons/Banner_Left/Winter.png" },
+};
+
+const SEASON_ASSETS_BANNER_RIGHT_1 = {
+  spring: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Spring_1.jpeg",
+  },
+  summer: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Summer_1.jpg",
+  },
+  autumn: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Autumn_1.jpeg",
+  },
+  winter: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Winter_1.jpeg",
+  },
+};
+
+const SEASON_ASSETS_BANNER_RIGHT_2 = {
+  spring: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Spring_2.jpeg",
+  },
+  summer: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Summer_2.jpeg",
+  },
+  autumn: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Autumn_2.jpg",
+  },
+  winter: {
+    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Winter_2.jpeg",
+  },
 };
 
 /*  Xuân: 2-4, Hạ: 5-7, Thu: 8-10, Đông: 11-1 */
@@ -66,11 +103,32 @@ function setSeason(season) {
   // Đổi logo
   const logoImg = document.querySelector("#Logo img");
   const logoImgFooter = document.querySelector(".footer-logo img");
-  if (logoImg && logoImgFooter && SEASON_ASSETS[season]?.logo) {
-    logoImg.src = SEASON_ASSETS[season].logo;
-    logoImgFooter.src = SEASON_ASSETS[season].logo;
+  const banner_Left = document.querySelector("img.hero-decor");
+  const banner_right = document.querySelectorAll(".hero-image img");
+  const banner_right_1 = banner_right[0];
+  const banner_right_2 = banner_right[1];
+
+  if (
+    logoImg &&
+    logoImgFooter &&
+    SEASON_ASSETS_LOGO[season]?.logo &&
+    SEASON_ASSETS_BANNER_LEFT[season]?.banner &&
+    SEASON_ASSETS_BANNER_RIGHT_1[season]?.banner &&
+    SEASON_ASSETS_BANNER_RIGHT_2[season]?.banner
+  ) {
+    logoImg.src = SEASON_ASSETS_LOGO[season].logo;
+    logoImgFooter.src = SEASON_ASSETS_LOGO[season].logo;
     logoImg.alt = season;
     logoImgFooter.alt = season;
+
+    banner_Left.src = SEASON_ASSETS_BANNER_LEFT[season].banner;
+    banner_Left.alt = season;
+
+    banner_right_1.src = SEASON_ASSETS_BANNER_RIGHT_1[season].banner;
+    banner_right_1.alt = season;
+
+    banner_right_2.src = SEASON_ASSETS_BANNER_RIGHT_2[season].banner;
+    banner_right_2.alt = season;
   }
 }
 
@@ -82,7 +140,7 @@ function getSeasonFromQuery() {
 }
 
 /** Khởi tạo mùa:
- *  - Ưu tiên: query (?season=...) > localStorage > tự động theo tháng
+ *  - Ưu tiên: query (?season=/Web_Hoa.) > tự động theo tháng
  */
 (function initSeason() {
   const fromQuery = getSeasonFromQuery(); // lay tu URL

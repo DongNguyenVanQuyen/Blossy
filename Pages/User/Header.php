@@ -1,5 +1,3 @@
-
-
 <!-- header.php -->
 <div id="offer">
   <h2>Đăng Nhập để nhận được 10% giảm giá cho đơn hàng đầu tiên.</h2>
@@ -10,11 +8,11 @@
   <div id="Logo">
     <ul>
       <li>B</li>
-      <img src="../Seasons/Logo/Xuan.png" alt="" />
+      <img class="logoImg" src="<?= BASE_URL ?>Seasons/Logo/Xuan.png" alt="Mùa Xuân">
       <li>S</li>
       <li>S</li>
       <li>Y</li>
-    </ul>
+    </ul> 
   </div>
 
   <nav class="menu">

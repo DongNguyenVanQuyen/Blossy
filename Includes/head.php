@@ -9,6 +9,6 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
   <!-- CSS -->
-  <link rel="stylesheet" href="../Assets/Css/reset.css" />
-  <link rel="stylesheet" href="../Assets/Css/style.css?v=<?= time(); ?>" />
+  <link rel="stylesheet" href="/Web_Hoa/Assets/css/reset.css">
+  <link rel="stylesheet" href="/Web_Hoa/Assets/Css/style.css?v=<?= time(); ?>" />
 </head>

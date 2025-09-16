@@ -1,10 +1,10 @@
- <footer id="Footer">
+ <footer id="Footer" class="pos_rel">
       <div id="footer-wrapper">
         <div class="footer-container">
           <div class="footer-brand">
             <div class="footer-logo">
-              <span>B</span>
-              <img src="../Seasons/Logo/Xuan.png" alt="logo" />
+              <span>BL</span>
+              <img class="logoImg" src="../Seasons/Logo/Xuan.png" alt="logo" />
               <span>SSY</span>
             </div>
             <p>
