@@ -2,5 +2,6 @@
  <script>
   const BASE_URL = "<?= BASE_URL ?>";
 </script>
-<script src="/Web_Hoa/Assets/Js/Script.js?v=<?= time(); ?>"></script>
+
+<script src="<?= BASE_URL ?>/Assets/Js/Script.js?v=<?= time(); ?>"></script>
 

@@ -1,19 +1,19 @@
 <?php
-// Bắt đầu session (bắt buộc nếu có login, giỏ hàng)
 session_start();
-
-// Thiết lập múi giờ mặc định
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-// Tự động lấy URL gốc của project
+// Lấy giao thức
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+
+// Lấy host (VD: localhost hoặc blossy.com)
 $host = $_SERVER['HTTP_HOST'];
-$project = "/Web_Hoa"; // tên folder gốc của bạn
 
-define("BASE_URL", $protocol . $host . $project . "/");
+// Lấy tên folder gốc của project (VD: /Web_Hoa)
+$uri_parts = explode('/', trim($_SERVER['SCRIPT_NAME'], '/'));
+$project_name = $uri_parts[0]; // Lấy "Web_Hoa"
 
-// Sau này bạn sẽ thêm kết nối DB tại đây
-// define('BASE_URL', 'http://localhost/WebBanHoa/');
+// Gộp lại thành BASE_URL
+define("BASE_URL", $protocol . $host . '/' . $project_name . '/');
+
+
 ?>
-
-

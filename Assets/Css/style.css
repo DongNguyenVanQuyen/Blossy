@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background: var(--bg);
 }
 
 .wrapper {
@@ -56,12 +57,6 @@ html.winter {
   --header-border: #a7b6cc;
 }
 
-html,
-body {
-  background: var(--bg);
-  color: var(--text);
-}
-
 .pos-rel {
   position: relative;
 }
@@ -70,6 +65,9 @@ body {
 }
 .pos-fx {
   position: fixed;
+}
+.mr-top {
+  margin: 30px 0 0 0;
 }
 
 a:hover {
@@ -320,6 +318,10 @@ hr {
   margin-bottom: 300px;
   width: 600px;
 }
+.hero-content h2 {
+  color: var(--text);
+}
+
 .hero-section button {
   height: 60px;
   background-color: var(--primary); /* màu chủ đạo */
@@ -385,7 +387,7 @@ hr {
 }
 
 .section-title span {
-  color: #d63384;
+  color: var(--text);
 }
 
 .flower-list {
@@ -503,4 +505,397 @@ hr {
 .promo-image img {
   width: 100%;
   height: 300px;
+}
+
+/* Featured Section */
+.featured-section {
+  padding: 40px 20px;
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.products-header h2 {
+  font-size: 28px;
+}
+
+.products-header .highlight {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.products-header .view-all {
+  background-color: var(--primary);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.products-header button:hover {
+  background-color: var(--header-border);
+  color: var(--text);
+}
+
+.product-list {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  width: 100%;
+  justify-content: center;
+}
+
+.product-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  flex: 1 1 200px;
+  max-width: 220px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  color: var(--text);
+}
+.product-card:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.product-card .discount {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.product-card img {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.product-card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.product-card .price {
+  font-size: 14px;
+}
+
+.product-card .original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 6px;
+}
+
+/* Holiday Offers */
+#holiday {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+#holiday .side-image {
+  width: 130px;
+  height: 300px;
+  border-radius: 20px;
+  background-color: var(--header-bg);
+}
+.holiday-offer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--header-bg);
+  border: 2px dashed var(--header-border);
+  padding: 40px 20px;
+  position: relative;
+  border-radius: 12px;
+  margin: 0 20px;
+  width: 500px;
+}
+
+.holiday-offer .offer-content {
+  text-align: center;
+  margin: 0 40px;
+}
+.holiday-offer button:hover {
+  background-color: var(--header-border);
+  color: var(--text);
+}
+
+.holiday-offer h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.holiday-offer .countdown {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.holiday-offer .countdown div {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.holiday-offer .shop-now {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.holiday-offer .offer-img {
+  width: 100px;
+}
+
+.holiday-offer .left-top {
+  left: 0;
+  top: 0;
+}
+.holiday-offer .right-bottom {
+  right: 0;
+  bottom: 0;
+}
+
+/* 4 */
+.section4 {
+  padding: 60px 0;
+  background-color: var(--bg);
+}
+
+/* 1. New Arrival */
+.new-arrival {
+  padding-bottom: 40px;
+}
+
+.new-arrival .section-title {
+  font-size: 24px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.new-arrival .highlight {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.btn-view {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.arrival-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.arrival-item {
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 240px;
+  flex: 1;
+  position: relative;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.arrival-item:hover {
+  transform: translateY(-4px);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.arrival-item img {
+  width: 200px;
+  border-radius: 8px;
+}
+
+.arrival-item .tag-off {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--primary);
+  color: white;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+.arrival-item .info {
+  padding-top: 12px;
+}
+
+.arrival-item .info h4 {
+  margin: 6px 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.arrival-item .info p {
+  color: var(--primary);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.arrival-item .info del {
+  color: gray;
+  font-weight: normal;
+  margin-left: 4px;
+}
+.arrival-item .info button {
+  cursor: pointer;
+}
+
+/* 2. Weekly Deals */
+#Weekly {
+  display: flex;
+  justify-content: center;
+}
+.weekly-deals {
+  display: flex;
+  width: 90%;
+  flex-wrap: wrap;
+  background-image: url("../Image/Main/Section_4/Weekly-Deals.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: var(--header-bg);
+  border-radius: 16px;
+  padding: 40px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 50px 0;
+}
+
+.weekly-deals .deal-text {
+  flex: 1;
+  min-width: 260px;
+}
+
+.deal-text button:hover {
+  transform: translateY(-4px);
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+}
+.weekly-deals h3 {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.weekly-deals h2 {
+  font-size: 28px;
+  margin-bottom: 14px;
+}
+
+.weekly-deals .highlight {
+  color: var(--primary);
+}
+
+.weekly-deals p {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.weekly-deals .btn-shop {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.weekly-deals .deal-img {
+  flex: 1;
+  text-align: center;
+  min-width: 260px;
+}
+
+.weekly-deals img {
+  max-width: 250px;
+  border-radius: 16px;
+}
+
+/* 3. Newsletter */
+.newsletter {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.newsletter h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.newsletter .highlight {
+  color: var(--primary);
+}
+
+.newsletter p {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+#subscribe-form {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+#subscribe-form input {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  min-width: 250px;
+  outline: none;
+}
+
+#subscribe-form button {
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+#subscribe-form button:hover {
+  background-color: var(--header-border);
+  color: var(--text);
+}
+.newsletter small {
+  font-size: 12px;
+  color: gray;
 }
