@@ -14,6 +14,6 @@ $project_name = $uri_parts[0]; // Lấy "Web_Hoa"
 
 // Gộp lại thành BASE_URL
 define("BASE_URL", $protocol . $host . '/' . $project_name . '/');
-
+define("APP_PATH", dirname(__DIR__, 1) . "/"); 
 
 ?>

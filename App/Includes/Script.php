@@ -3,5 +3,5 @@
   const BASE_URL = "<?= BASE_URL ?>";
 </script>
 
-<script src="<?= BASE_URL ?>/Assets/Js/Script.js?v=<?= time(); ?>"></script>
+<script src="<?= BASE_URL ?>Public/Assets/Js/Script.js?v=<?= time(); ?>"></script>
 

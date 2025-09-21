@@ -1,3 +1,13 @@
+  <!-- 3. Join Flowry -->
+  <div class="newsletter">
+    <h2>Tham gia cùng <span class="highlight">Blossy</span> để cập nhật mọi điều mới nhất</h2>
+    <p>Đăng ký nhận bản tin và nhận ngay 10% giảm giá cho đơn hàng đầu tiên.</p>
+    <form id="subscribe-form">
+      <input type="email" placeholder="Địa chỉ email của bạn" required>
+      <button type="submit">Đăng ký ngay</button>
+    </form>
+    <small>Chúng tôi tôn trọng quyền riêng tư và không bao giờ chia sẻ email của bạn với bên thứ ba.</small>
+  </div>
  <footer id="Footer" class="pos_rel">
       <div id="footer-wrapper">
         <div class="footer-container">
