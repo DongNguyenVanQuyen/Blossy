@@ -4,7 +4,7 @@
 <?php include_once __DIR__ . '/../../Includes/head.php'; ?>
 
 <!-- Header -->
-<?php include_once '../Layouts/Header.php'; ?>
+<?php include_once __DIR__ . '/../Layouts/Header.php'; ?>
 
 <section class="about-section">
   <div class="about-wrapper">
@@ -53,7 +53,7 @@
 </section>
 
 <!-- Footer -->
-<?php include_once '../Layouts/Footer.php'; ?>
+<?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
 
 <!-- Script -->
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>

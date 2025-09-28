@@ -1,9 +1,8 @@
 <?php
-  include_once __DIR__ . '/../../Includes/config.php';
-
-  // Head
-  include_once __DIR__ . '/../../Includes/head.php';
-  include_once '../Layouts/Header.php';
+// Head
+include_once __DIR__ . '/../../Includes/config.php';
+include_once __DIR__ . '/../../Includes/head.php';
+include_once __DIR__ . '/../Layouts/Header.php'; 
 ?>
 
 <body>
@@ -114,7 +113,7 @@
   </main>
 </body>
 
-<?php include_once '../Layouts/Footer.php'; ?>
+<?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
 
 <!-- Script -->
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>

@@ -1,6 +1,6 @@
 <?php include_once __DIR__ . '/../../Includes/config.php'; ?>
 <?php include_once __DIR__ . '/../../Includes/head.php'; ?>
-<?php include_once '../Layouts/Header.php'; ?>
+<?php include_once  __DIR__ . '/../Layouts/Header.php'; ?>
 
 <section class="contact-section">
   <header class="shop-header">
@@ -11,7 +11,7 @@
   <div class="contact-wrapper">
     <!-- Ảnh liên hệ -->
     <div class="contact-image">
-      <img src="<?= BASE_URL ?>App/Assets/Image/contact-girl.jpg" alt="Liên hệ">
+      <img src="<?= BASE_URL ?>Public/Assets/Image/contact-girl.jpg" alt="Liên hệ">
     </div>
 
     <!-- Form liên hệ -->
@@ -54,22 +54,22 @@
   <!-- Thông tin liên hệ -->
   <div class="contact-info">
     <div class="info-box">
-      <img src="<?= BASE_URL ?>App/Assets/Icon/email.png" alt="email icon">
+      <img src="<?= BASE_URL ?>Public/Assets/Icon/email.png" alt="email icon">
       <h4>Email</h4>
       <p>Support@flowry.com</p>
     </div>
     <div class="info-box">
-      <img src="<?= BASE_URL ?>App/Assets/Icon/phone.png" alt="phone icon">
+      <img src="<?= BASE_URL ?>Public/Assets/Icon/phone.png" alt="phone icon">
       <h4>Điện thoại</h4>
       <p>+01 0387 29475</p>
     </div>
     <div class="info-box">
-      <img src="<?= BASE_URL ?>App/Assets/Icon/location.png" alt="location icon">
+      <img src="<?= BASE_URL ?>Public/Assets/Icon/location.png" alt="location icon">
       <h4>Địa chỉ</h4>
       <p>123 Bloom Street, Dokki, NY</p>
     </div>
   </div>
 </section>
 
-<?php include_once '../Layouts/Header.php'; ?>
+<?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>

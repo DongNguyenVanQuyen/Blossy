@@ -38,46 +38,52 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 const SEASON_ASSETS_LOGO = {
-  spring: { logo: BASE_URL + "Seasons/Logo/Xuan.png" },
-  summer: { logo: BASE_URL + "Seasons/Logo/Ha.png" },
-  autumn: { logo: BASE_URL + "Seasons/Logo/Thu.png" },
-  winter: { logo: BASE_URL + "Seasons/Logo/Dong.png" },
+  spring: { logo: BASE_URL + "Public/Seasons/Logo/Xuan.png" },
+  summer: { logo: BASE_URL + "Public/Seasons/Logo/Ha.png" },
+  autumn: { logo: BASE_URL + "Public/Seasons/Logo/Thu.png" },
+  winter: { logo: BASE_URL + "Public/Seasons/Logo/Dong.png" },
 };
 
 const SEASON_ASSETS_BANNER_LEFT = {
-  spring: { banner: BASE_URL + "Seasons/Banner_Left/Spring.png" },
-  summer: { banner: BASE_URL + "Seasons/Banner_Left/Summer.png" },
-  autumn: { banner: BASE_URL + "Seasons/Banner_Left/Autumn.png" },
-  winter: { banner: BASE_URL + "Seasons/Banner_Left/Winter.png" },
+  spring: { banner: BASE_URL + "Public/Seasons/Banner_Left/Spring.png" },
+  summer: { banner: BASE_URL + "Public/Seasons/Banner_Left/Summer.png" },
+  autumn: { banner: BASE_URL + "Public/Seasons/Banner_Left/Autumn.png" },
+  winter: { banner: BASE_URL + "Public/Seasons/Banner_Left/Winter.png" },
 };
 
 const SEASON_ASSETS_BANNER_RIGHT_1 = {
   spring: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Spring_1.jpeg",
+    banner:
+      BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Spring_1.jpeg",
   },
   summer: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Summer_1.jpg",
+    banner: BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Summer_1.jpg",
   },
   autumn: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Autumn_1.jpeg",
+    banner:
+      BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Autumn_1.jpeg",
   },
   winter: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Winter_1.jpeg",
+    banner:
+      BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Winter_1.jpeg",
   },
 };
 
 const SEASON_ASSETS_BANNER_RIGHT_2 = {
   spring: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Spring_2.jpeg",
+    banner:
+      BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Spring_2.jpeg",
   },
   summer: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Summer_2.jpeg",
+    banner:
+      BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Summer_2.jpeg",
   },
   autumn: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Autumn_2.jpg",
+    banner: BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Autumn_2.jpg",
   },
   winter: {
-    banner: BASE_URL + "Assets/Image/Main/Section_1/Banner_Winter_2.jpeg",
+    banner:
+      BASE_URL + "Public/Assets/Image/Main/Section_1/Banner_Winter_2.jpeg",
   },
 };
 
