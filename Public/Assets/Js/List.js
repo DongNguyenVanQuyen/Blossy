@@ -2,28 +2,28 @@
 // FILTER SIDEBAR + TAG SYSTEM (AJAX)
 // ===============================
 document.addEventListener("DOMContentLoaded", function () {
-  const shopResults = document.getElementById("product-list"); // nơi hiển thị danh sách sản phẩm
-  const filterForm = document.getElementById("filter-form"); // form lọc
-  const tagContainer = document.querySelector(".tags-list"); // nơi hiển thị các tag filter
-  const clearAllBtn = tagContainer?.querySelector(".clear-all"); // nút Clear All
+  // Chỉ thay nội dung trong .product-grid
+  const productGrid = document.querySelector("#product-list .product-grid");
+  const filterForm = document.getElementById("filter-form");
+  const tagContainer = document.querySelector(".tags-list"); // khớp với List.php
+  const clearAllBtn = tagContainer?.querySelector(".clear-all");
 
-  // ======== Hàm tạo tag hiển thị ========
+  // ======== Tạo 1 tag ========
   function createTag(group, value, title, label) {
+    if (!tagContainer) return;
     const tag = document.createElement("span");
     tag.className = "tag";
     tag.dataset.type = group;
     tag.dataset.value = value;
     tag.innerHTML = `${title}: ${label} <a href="#" class="remove-tag">×</a>`;
-    if (clearAllBtn) {
-      tagContainer.insertBefore(tag, clearAllBtn);
-    } else {
-      tagContainer.appendChild(tag);
-    }
+    if (clearAllBtn) tagContainer.insertBefore(tag, clearAllBtn);
+    else tagContainer.appendChild(tag);
   }
 
-  // ======== Hàm cập nhật danh sách tag ========
+  // ======== Cập nhật toàn bộ tag ========
   function updateTags() {
     if (!tagContainer) return;
+    // xoá hết tag cũ
     tagContainer.querySelectorAll(".tag").forEach((t) => t.remove());
 
     // Loại hoa
@@ -44,16 +44,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Giá
     const priceSelect = document.querySelector("select[name='price_range']");
-    const val = priceSelect?.value;
-    if (val) {
+    if (priceSelect && priceSelect.value) {
       const text = priceSelect.options[priceSelect.selectedIndex].text;
-      createTag("price", val, "Price", text);
+      createTag("price", priceSelect.value, "Price", text);
     }
   }
 
-  // ======== Gửi AJAX để lọc sản phẩm ========
+  // ======== Gửi AJAX để lấy danh sách sản phẩm (chỉ HTML thẻ card) ========
   function sendAjaxFilter() {
-    if (!filterForm || !shopResults) return;
+    if (!filterForm || !productGrid) return;
     const formData = new FormData(filterForm);
 
     fetch(BASE_URL + "index.php?controller=products&action=filter", {
@@ -62,64 +61,55 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((res) => {
         if (!res.ok) throw new Error("Network error");
-        return res.text(); // ✅ Nhận HTML (không phải JSON)
+        return res.text(); // Server trả về HTML (các _ProductCard)
       })
       .then((html) => {
-        shopResults.innerHTML = html;
+        productGrid.innerHTML = html; // ✅ chỉ thay phần grid
       })
       .catch((err) => console.error("Lỗi AJAX:", err));
   }
 
-  // ======== Xử lý sự kiện tick / chọn giá ========
-  document
-    .querySelectorAll("#filter-form input[type='checkbox']")
-    .forEach((cb) => {
-      cb.addEventListener("change", () => {
-        updateTags();
-        sendAjaxFilter();
-      });
-    });
-
-  document
-    .querySelector("#filter-form select[name='price_range']")
-    ?.addEventListener("change", () => {
+  // ======== Sự kiện thay đổi filter ========
+  filterForm?.querySelectorAll("input, select").forEach((el) => {
+    el.addEventListener("change", () => {
       updateTags();
       sendAjaxFilter();
     });
-
-  // ======== Click ❌ trên tag ========
-  tagContainer?.addEventListener("click", (e) => {
-    if (e.target.classList.contains("remove-tag")) {
-      e.preventDefault();
-      const tag = e.target.closest(".tag");
-      const type = tag.dataset.type;
-      const val = tag.dataset.value;
-
-      // Bỏ tick checkbox tương ứng
-      if (type === "category" || type === "color") {
-        document
-          .querySelectorAll(`input[name='${type}[]'][value='${val}']`)
-          .forEach((cb) => (cb.checked = false));
-      } else if (type === "price") {
-        document.querySelector("select[name='price_range']").value = "";
-      }
-
-      tag.remove();
-      sendAjaxFilter();
-    }
   });
 
-  // ======== Click "Xóa tất cả" ========
+  // ======== Click xoá từng tag ========
+  tagContainer?.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("remove-tag")) return;
+    e.preventDefault();
+    const tag = e.target.closest(".tag");
+    const type = tag.dataset.type;
+    const val = tag.dataset.value;
+
+    if (type === "category" || type === "color") {
+      document
+        .querySelectorAll(`input[name='${type}[]'][value='${val}']`)
+        .forEach((cb) => (cb.checked = false));
+    } else if (type === "price") {
+      const sel = document.querySelector("select[name='price_range']");
+      if (sel) sel.value = "";
+    }
+
+    tag.remove();
+    sendAjaxFilter();
+  });
+
+  // ======== Click "Clear All" ========
   clearAllBtn?.addEventListener("click", (e) => {
     e.preventDefault();
     document
       .querySelectorAll("#filter-form input[type='checkbox']")
       .forEach((cb) => (cb.checked = false));
-    document.querySelector("select[name='price_range']").value = "";
-    tagContainer.querySelectorAll(".tag").forEach((tag) => tag.remove());
+    const sel = document.querySelector("select[name='price_range']");
+    if (sel) sel.value = "";
+    tagContainer.querySelectorAll(".tag").forEach((t) => t.remove());
     sendAjaxFilter();
   });
 
-  // ======== Lần đầu load: hiển thị tag đúng với dữ liệu đã chọn ========
+  // ======== Lần đầu load ========
   updateTags();
 });

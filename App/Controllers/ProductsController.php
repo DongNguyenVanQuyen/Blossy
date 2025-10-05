@@ -46,7 +46,7 @@ class ProductsController extends BaseController
         ]);
     }
 
-    // ✅ Hàm xử lý filter trả về HTML cho AJAX
+    // Trả về CHỈ danh sách thẻ sản phẩm (không bọc .product-grid)
     public function filter()
     {
         $categories = $_POST['category'] ?? [];
@@ -63,7 +63,7 @@ class ProductsController extends BaseController
         }
         $html = ob_get_clean();
 
-        echo $html; // ✅ Trả HTML về cho JS
+        echo $html;
     }
 
     public function detail()
