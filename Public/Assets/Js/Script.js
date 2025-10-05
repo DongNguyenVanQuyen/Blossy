@@ -114,24 +114,27 @@ function setSeason(season) {
   const banner_right_1 = banner_right[0];
   const banner_right_2 = banner_right[1];
 
-  if (
-    logoImg &&
-    SEASON_ASSETS_LOGO[season]?.logo &&
-    SEASON_ASSETS_BANNER_LEFT[season]?.banner &&
-    SEASON_ASSETS_BANNER_RIGHT_1[season]?.banner &&
-    SEASON_ASSETS_BANNER_RIGHT_2[season]?.banner
-  ) {
+  if (logoImg && SEASON_ASSETS_LOGO[season]?.logo) {
     logoImg.src = SEASON_ASSETS_LOGO[season].logo;
-    logoImgFooter.src = SEASON_ASSETS_LOGO[season].logo;
     logoImg.alt = season;
-    logoImgFooter.alt = season;
+  }
 
+  if (logoImgFooter && SEASON_ASSETS_LOGO[season]?.logo) {
+    logoImgFooter.src = SEASON_ASSETS_LOGO[season].logo;
+    logoImgFooter.alt = season;
+  }
+
+  if (banner_Left && SEASON_ASSETS_BANNER_LEFT[season]?.banner) {
     banner_Left.src = SEASON_ASSETS_BANNER_LEFT[season].banner;
     banner_Left.alt = season;
+  }
 
+  if (banner_right_1 && SEASON_ASSETS_BANNER_RIGHT_1[season]?.banner) {
     banner_right_1.src = SEASON_ASSETS_BANNER_RIGHT_1[season].banner;
     banner_right_1.alt = season;
+  }
 
+  if (banner_right_2 && SEASON_ASSETS_BANNER_RIGHT_2[season]?.banner) {
     banner_right_2.src = SEASON_ASSETS_BANNER_RIGHT_2[season].banner;
     banner_right_2.alt = season;
   }
@@ -160,10 +163,37 @@ function getSeasonFromQuery() {
   //setSeason("autumn");
   //setSeason("winter");
 })();
-document.querySelectorAll(".favorite").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const icon = this.querySelector("i");
-    icon.classList.toggle("fa-regular");
-    icon.classList.toggle("fa-solid");
+
+document.addEventListener("DOMContentLoaded", function () {
+  const UserBtn = document.querySelectorAll(".UserBtn");
+  UserBtn.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      if (!isLoggedIn) {
+        window.location.href = BASE_URL + "App/Views/User/Login.php";
+        return;
+      }
+    });
+  });
+  const favBtns = document.querySelectorAll(".favorite");
+
+  favBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const icon = this.querySelector("i");
+      icon.classList.toggle("fa-regular");
+      icon.classList.toggle("fa-solid");
+      icon.classList.toggle("liked");
+    });
+  });
+
+  document.querySelectorAll(".my-account__tab").forEach((tab) => {
+    tab.addEventListener("click", function () {
+      // Xóa active ở tất cả các tab
+      document
+        .querySelectorAll(".my-account__tab")
+        .forEach((t) => t.classList.remove("my-account__tab--active"));
+
+      // Thêm active cho tab được click
+      this.classList.add("my-account__tab--active");
+    });
   });
 });

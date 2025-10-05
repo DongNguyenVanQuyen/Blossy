@@ -14,7 +14,7 @@
           <div class="footer-brand">
             <div class="footer-logo">
               <span>BL</span>
-              <img class="logoImg" src="../Seasons/Logo/Xuan.png" alt="logo" />
+              <img class="logoImg" src="" alt="logo" />
               <span>SSY</span>
             </div>
             <p>

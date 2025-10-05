@@ -1,44 +1,31 @@
-// Product - details
-document.addEventListener("DOMContentLoaded", () => {
-  // ===== THAY ẢNH CHÍNH KHI CLICK ẢNH PHỤ =====
-  const gallery = document.querySelector(
-    ".product-detail-container .product-gallery"
-  );
-  if (gallery) {
-    const mainImage = gallery.querySelector(".main-image");
-    const thumbnails = gallery.querySelectorAll(".thumbnail-list img");
+document.addEventListener("DOMContentLoaded", function () {
+  // ====== ĐỔI ẢNH CHÍNH KHI CLICK THUMBNAIL ======
+  const mainImage = document.querySelector(".main-image");
+  const thumbnails = document.querySelectorAll(".thumbnail-list img");
 
-    thumbnails.forEach((thumb) => {
-      thumb.addEventListener("click", () => {
-        thumbnails.forEach((img) => img.classList.remove("active"));
-        thumb.classList.add("active");
-        mainImage.src = thumb.src;
-      });
+  thumbnails.forEach((thumb) => {
+    thumb.addEventListener("click", function () {
+      mainImage.src = this.src;
     });
-  }
-});
+  });
 
-// ===== XỬ LÝ TĂNG GIẢM SỐ LƯỢNG =====
-document.addEventListener("DOMContentLoaded", () => {
-  // ===== XỬ LÝ TĂNG GIẢM SỐ LƯỢNG =====
-  const qty = document.querySelector(".product-info .actions .quantity");
+  // ====== TĂNG / GIẢM SỐ LƯỢNG ======
+  const quantityInput = document.getElementById("input_quantity");
 
-  if (qty) {
-    console.log(" co qty");
-    const btnMinus = qty.querySelector("button:first-child");
-    const btnPlus = qty.querySelector("button:last-child");
-    const input = qty.querySelector("#input_quantity");
+  // Tìm 2 nút tăng/giảm thông qua vị trí trong DOM
+  const quantityContainer = document.querySelector(".quantity");
+  const decreaseBtn = quantityContainer.querySelectorAll("button")[0];
+  const increaseBtn = quantityContainer.querySelectorAll("button")[1];
 
-    btnMinus.addEventListener("click", () => {
-      let current = parseInt(input.value);
-      if (current > 1) input.value = current - 1;
-    });
+  decreaseBtn.addEventListener("click", function () {
+    let value = parseInt(quantityInput.value);
+    if (value > 1) {
+      quantityInput.value = value - 1;
+    }
+  });
 
-    btnPlus.addEventListener("click", () => {
-      let current = parseInt(input.value);
-      input.value = current + 1;
-    });
-  } else {
-    console.log("ko co qty");
-  }
+  increaseBtn.addEventListener("click", function () {
+    let value = parseInt(quantityInput.value);
+    quantityInput.value = value + 1;
+  });
 });

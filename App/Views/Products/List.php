@@ -1,119 +1,142 @@
-<?php
-// Head
-include_once __DIR__ . '/../../Includes/config.php';
-include_once __DIR__ . '/../../Includes/head.php';
-include_once __DIR__ . '/../Layouts/Header.php'; 
-?>
-
+<?php include_once __DIR__ . '/../../Includes/config.php'; ?>
+<?php include_once __DIR__ . '/../../Includes/head.php'; ?>
+<?php include_once __DIR__ . '/../Layouts/Header.php'; ?>
 <body>
-  <header class="shop-header">
-    <h1>Cửa Hàng</h1>
-    <p><a href="#">Trang chủ</a> / Cửa hàng</p>
-  </header>
+      <header class="shop-header">
+        <h1>Cửa Hàng</h1>
+        <p><a href="#">Trang chủ</a> / Cửa hàng</p>
+      </header>
 
-  <main class="shop-container">
-    <aside class="filters">
-      <h2>TÌM KIẾM</h2>
+      <main class="shop-container">
+            <form id="filter-form" method="GET" action="<?= BASE_URL ?>index.php">
+              <input type="hidden" name="controller" value="products">
+              <input type="hidden" name="action" value="index">
 
-      <div class="filter-group">
-        <h4>Loại hoa</h4>
-        <label><input type="checkbox" checked> Hoa hồng</label>
-        <label><input type="checkbox"> Hoa lan</label>
-        <label><input type="checkbox"> Hoa ly</label>
-        <label><input type="checkbox"> Cúc</label>
-        <label><input type="checkbox"> Tulip</label>
-        <label><input type="checkbox"> Hướng dương</label>
-      </div>
+              <!-- ===== BỘ LỌC BÊN TRÁI ===== -->
+              <aside class="filters">
+                <h2>TÌM KIẾM</h2>
 
-      <div class="filter-group">
-        <h4>Màu sắc</h4>
-        <label><input type="checkbox"> Hồng</label>
-        <label><input type="checkbox"> Đỏ</label>
-        <label><input type="checkbox"> Vàng</label>
-        <label><input type="checkbox"> Trắng</label>
-        <label><input type="checkbox" checked> Nhiều màu</label>
-      </div>
+                <!-- Loại hoa -->
+                <div class="filter-group">
+                  <h4>Loại hoa</h4>
+                  <label>
+                    <input type="checkbox" name="category[]" value="all"
+                      <?= (empty($selectedCategories) || in_array("all", $selectedCategories)) ? 'checked' : '' ?>>
+                    Tất cả
+                  </label>
+                  <?php foreach ($categories as $cat): ?>
+                    <label>
+                      <input type="checkbox" name="category[]" value="<?= $cat['id'] ?>"
+                        <?= in_array($cat['id'], $selectedCategories ?? []) ? 'checked' : '' ?>>
+                      <?= htmlspecialchars($cat['name']) ?>
+                    </label>
+                  <?php endforeach; ?>
+                </div>
 
-      <div class="filter-group">
-        <h4>Giá</h4>
-        <input type="range" min="20" max="100" value="100" />
-        <p>20.000đ – 100.000đ</p>
-      </div>
+                <!-- Màu sắc -->
+                <div class="filter-group">
+                  <h4>Màu sắc</h4>
+                  <?php $colorsList = ['Hồng'=>'hong','Đỏ'=>'do','Vàng'=>'vang','Trắng'=>'trang','Nhiều màu'=>'nhieu'];
+                  foreach ($colorsList as $label=>$val): ?>
+                    <label>
+                      <input type="checkbox" name="color[]" value="<?= $val ?>"
+                        <?= in_array($val, $selectedColors ?? []) ? 'checked' : '' ?>>
+                      <?= $label ?>
+                    </label>
+                  <?php endforeach; ?>
+                </div>
 
-      <div class="filter-group">
-        <h4>Dịp tặng</h4>
-        <label><input type="checkbox"> Đám cưới</label>
-        <label><input type="checkbox"> Sinh nhật</label>
-        <label><input type="checkbox" checked> Tình yêu</label>
-        <label><input type="checkbox"> Tốt nghiệp</label>
-        <label><input type="checkbox"> Động viên</label>
-      </div>
+                <!-- Giá -->
+                <div class="filter-group">
+                  <h4>Giá</h4>
+                  <select name="price_range">
+                    <option value="">Tất cả</option>
+                    <option value="0-500000" <?= $priceRange=='0-500000'?'selected':'' ?>>Dưới 500.000đ</option>
+                    <option value="500000-1000000" <?= $priceRange=='500000-1000000'?'selected':'' ?>>500k - 1 triệu</option>
+                    <option value="1000000-99999999" <?= $priceRange=='1000000-99999999'?'selected':'' ?>>Trên 1 triệu</option>
+                  </select>
+                </div>
+                <div class="filter-actions">
+                  <button type="submit" class="filter-btn">Lọc sản phẩm</button>
+                </div>
+              </aside>
+            </form>
 
-      <div class="filter-group">
-        <h4>Người nhận</h4>
-        <label><input type="checkbox"> Nam</label>
-        <label><input type="checkbox"> Nữ</label>
-        <label><input type="checkbox"> Trẻ em</label>
-        <label><input type="checkbox"> Quà tặng doanh nghiệp</label>
-      </div>
+        <!-- ===== DANH SÁCH SẢN PHẨM ===== -->
+        <section class="shop-products" id="product-list">
 
-      <div class="filter-group">
-        <h4>Tình trạng</h4>
-        <label><input type="checkbox" checked> Còn hàng</label>
-        <label><input type="checkbox"> Hết hàng</label>
-      </div>
-    </aside>
+          <!-- ===== THANH ACTIVE FILTER ===== -->
+          <?php
+            $hasFilter = !empty($selectedCategories) || !empty($selectedColors) || !empty($priceRange);
+            if ($hasFilter):
+          ?>
+          <div class="active-filters-bar">
+            <span class="active-label">Active Filter:</span>
+            <div class="tags-list">
 
-    <section class="shop-products">
-      <div class="filter-tags">
-        <span>Loại hoa: Hoa hồng ❌</span>
-        <span>Màu: Nhiều màu ❌</span>
-        <span>Dịp: Tình yêu ❌</span>
-        <span>Tình trạng: Còn hàng ❌</span>
-        <a href="#">Xóa tất cả</a>
-      </div>
+              <!-- Loại hoa -->
+              <?php foreach ($categories as $cat):
+                if (in_array($cat['id'], $selectedCategories ?? [])): ?>
+                  <span class="tag" data-type="category" data-value="<?= $cat['id'] ?>">
+                    Flower: <?= htmlspecialchars($cat['name']) ?> <a href="#" class="remove-tag">×</a>
+                  </span>
+              <?php endif; endforeach; ?>
 
-      <div class="product-grid">
-        <!-- Sản phẩm -->
-        <div class="product-card">
-          <span class="tag">Giảm 25%</span>
-          <img src="images/flower1.png" alt="Khoảnh khắc ngọt ngào">
-          <h4>Khoảnh khắc ngọt ngào</h4>
-          <p>48.000đ <del>65.000đ</del></p>
-          <div class="rating">⭐ 4.8</div>
-          <button class="favorite">
-            <i class="fa-regular fa-heart"></i>
-          </button>
-        </div>
+              <!-- Màu sắc -->
+              <?php foreach ($colorsList as $label=>$val):
+                if (in_array($val, $selectedColors ?? [])): ?>
+                  <span class="tag" data-type="color" data-value="<?= $val ?>">
+                    Color: <?= $label ?> <a href="#" class="remove-tag">×</a>
+                  </span>
+              <?php endif; endforeach; ?>
 
-        <div class="product-card">
-          <span class="tag">Giảm 17%</span>
-          <img src="images/flower2.png" alt="Tình yêu bất tận">
-          <h4>Tình yêu bất tận</h4>
-          <p>50.000đ <del>60.000đ</del></p>
-          <div class="rating">⭐ 4.8</div>
-          <button class="favorite">
-            <i class="fa-regular fa-heart"></i>
-          </button>
-        </div>
+              <!-- Giá -->
+              <?php if (!empty($priceRange)): ?>
+                <?php
+                  $priceLabels = [
+                    '0-500000' => 'Price: Dưới 500k',
+                    '500000-1000000' => 'Price: 500k - 1 triệu',
+                    '1000000-99999999' => 'Price: Trên 1 triệu'
+                  ];
+                ?>
+                <span class="tag" data-type="price" data-value="<?= $priceRange ?>">
+                  <?= $priceLabels[$priceRange] ?? '' ?> <a href="#" class="remove-tag">×</a>
+                </span>
+              <?php endif; ?>
 
-        <!-- Thêm bao nhiêu tùy ý -->
-      </div>
+              <!-- Clear All -->
+              <a href="<?= BASE_URL ?>index.php?controller=products&action=index" class="clear-all">Clear All</a>
+            </div>
+          </div>
+          <?php endif; ?>
 
-      <div class="pagination">
-        <a href="#">&#60;</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">...</a>
-        <a href="#">10</a>
-        <a href="#">&#62;</a>
-      </div>
-    </section>
-  </main>
+          <!-- ===== GRID SẢN PHẨM ===== -->
+          <div class="product-grid">
+            <?php foreach ($products as $product): ?>
+              <?php include __DIR__ . '/_ProductCard.php'; ?>
+            <?php endforeach; ?>
+          </div>
+
+          <!-- ===== PHÂN TRANG ===== -->
+          <div class="pagination">
+            <?php if ($currentPage > 1): ?>
+              <a href="<?= BASE_URL ?>index.php?controller=products&action=index&page=<?= $currentPage - 1 ?>">&lt;</a>
+            <?php endif; ?>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+              <?php if ($i == $currentPage): ?>
+                <a href="#" class="active"><?= $i ?></a>
+              <?php else: ?>
+                <a href="<?= BASE_URL ?>index.php?controller=products&action=index&page=<?= $i ?>"><?= $i ?></a>
+              <?php endif; ?>
+            <?php endfor; ?>
+            <?php if ($currentPage < $totalPages): ?>
+              <a href="<?= BASE_URL ?>index.php?controller=products&action=index&page=<?= $currentPage + 1 ?>">&gt;</a>
+            <?php endif; ?>
+          </div>
+        </section>
+      </main>
 </body>
 
 <?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
-
-<!-- Script -->
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>
+<script src="<?= BASE_URL ?>Public/Assets/Js/List.js?v=<?= time(); ?>" type="text/javascript"></script>

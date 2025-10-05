@@ -1,15 +1,21 @@
 <!-- header.php -->
-<div id="offer">
-  <h2>Đăng Nhập để nhận được 10% giảm giá cho đơn hàng đầu tiên.</h2>
-  <a href="<?= BASE_URL ?>App/Views/User/login.php">Đăng Nhập Ngay</a>
-</div>
+  <div id="offer">
+    <h2>Đăng Nhập để nhận được 10% giảm giá cho đơn hàng đầu tiên.</h2>
+    <?php if (!isset($_SESSION['user'])): ?>
+      <a href="<?= BASE_URL ?>App/Views/User/login.php">Đăng Nhập Ngay</a>
+    <?php endif; ?>
+  </div>
 
 <div id="Header">
+    <?php
+      $isLoggedIn = isset($_SESSION['user']);
+    ?>
+
     <div id="Logo">
       <a href="<?= BASE_URL ?>Public/index.php">    
         <ul>
           <li>B</li>
-          <img class="logoImg" src="<?= BASE_URL ?>App/Seasons/Logo/Xuan.png" alt="Mùa Xuân">
+          <img class="logoImg" src="" alt="Mùa Xuân">
           <li>S</li>
           <li>S</li>
           <li>Y</li>
