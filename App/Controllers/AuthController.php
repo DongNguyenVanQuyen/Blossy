@@ -120,5 +120,10 @@ class AuthController extends BaseController
         }
     }
 }
+    public function addNewCard(){
+        global $title;
+        $title = "Thêm Phương Thức Thanh Toán | Blossy";
+        $this->loadView('Payment.Payment');
+    }
 
 }

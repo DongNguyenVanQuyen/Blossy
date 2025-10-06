@@ -17,7 +17,7 @@ class ProductsController extends BaseController
         $categoriesModel = new CategoryModel();
         $categories = $categoriesModel->getAllActive();
 
-        $limit = 15;
+        $limit = 18;
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
@@ -47,24 +47,63 @@ class ProductsController extends BaseController
     }
 
     // Trả về CHỈ danh sách thẻ sản phẩm (không bọc .product-grid)
-    public function filter()
-    {
-        $categories = $_POST['category'] ?? [];
-        $colors = $_POST['color'] ?? [];
-        $priceRange = $_POST['price_range'] ?? '';
-        $limit = 24;
-        $offset = 0;
+ public function filter()
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => 'Invalid request']); exit;
+    }
 
-        $products = $this->productModel->getFiltered($categories, $colors, $priceRange, $limit, $offset);
+    // Tắt hiển thị warning ra body (log vào error_log)
+    ini_set('display_errors', '0');
+
+    try {
+        $page  = max(1, (int)($_POST['page'] ?? 1));
+        $limit = 15;
+        $offset = ($page - 1) * $limit;
+
+        $selectedCategories = $_POST['category'] ?? ['all']; // name="category[]"
+        $selectedColors     = $_POST['color'] ?? [];         // name="color[]"
+        $priceRange         = $_POST['price_range'] ?? '';
+
+        $products      = $this->productModel->getFiltered($selectedCategories, $selectedColors, $priceRange, $limit, $offset);
+        $totalProducts = $this->productModel->countFiltered($selectedCategories, $selectedColors, $priceRange);
+        $totalPages    = max(1, (int)ceil($totalProducts / $limit));
+
+        // Render partials THÀNH CHUỖI (không include layout, header, footer)
+        ob_start();
+        $productsVar = $products;           // tránh đè tên
+        $products = $productsVar;
+        include __DIR__ . '/../Views/Products/_ProductList.php';
+        $productsHtml = ob_get_clean();
 
         ob_start();
-        foreach ($products as $product) {
-            include __DIR__ . '/../Views/Products/_ProductCard.php';
-        }
-        $html = ob_get_clean();
+        $pageVar = $page; $totalPagesVar = $totalPages;
+        $page = $pageVar; $totalPages = $totalPagesVar;
+        include __DIR__ . '/../Views/Products/_Pagination.php';
+        $paginationHtml = ob_get_clean();
 
-        echo $html;
+        // Xóa MỌI buffer đã có (phòng tránh BOM/echo trước đó)
+        while (ob_get_level() > 0) { ob_end_clean(); }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'productsHtml'   => $productsHtml,
+            'paginationHtml' => $paginationHtml,
+            'totalProducts'  => $totalProducts,
+            'currentPage'    => $page,
+        ], JSON_UNESCAPED_UNICODE);
+    } catch (Throwable $e) {
+        while (ob_get_level() > 0) { ob_end_clean(); }
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code(500);
+        echo json_encode(['error' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
     }
+    exit;
+}
+
+
+
 
     public function detail()
     {

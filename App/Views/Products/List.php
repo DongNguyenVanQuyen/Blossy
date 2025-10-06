@@ -3,6 +3,7 @@
 <?php include_once __DIR__ . '/../Layouts/Header.php'; ?>
 
 <body>
+
   <header class="shop-header">
     <h1>Cửa Hàng</h1>
     <p><a href="<?= BASE_URL ?>">Trang chủ</a> / Cửa hàng</p>
@@ -11,10 +12,9 @@
   <main class="shop-container">
 
     <!-- ====== FILTER SIDEBAR ====== -->
-    <form id="filter-form" method="GET">
-      <input type="hidden" name="controller" value="products">
-      <input type="hidden" name="action" value="index">
-
+    <form id="filter-form">
+      <!-- Sử dụng AJAX để xử lý lọc và phân trang -->
+      
       <aside class="filters">
         <h2>TÌM KIẾM</h2>
 
@@ -109,36 +109,26 @@
       <!-- Danh sách sản phẩm -->
       <section class="shop-products" id="product-list">
         <div class="product-grid">
-          <?php if (!empty($products) && is_array($products)): ?>
-            <?php foreach ($products as $product): ?>
-              <?php include __DIR__ . '/_ProductCard.php'; ?>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <p>Không tìm thấy sản phẩm phù hợp.</p>
-          <?php endif; ?>
-        </div>
+        <?php if (!empty($products)): ?>
+        <?php foreach ($products as $product): ?>
+          <?php include __DIR__ . '/_ProductCard.php'; ?>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <div class="no-products">Không tìm thấy sản phẩm nào</div>
+      <?php endif; ?>
 
-        <!-- Phân trang -->
-        <div class="pagination">
-          <?php if ($currentPage > 1): ?>
-            <a href="<?= BASE_URL ?>index.php?controller=products&action=index&page=<?= $currentPage - 1 ?>">&lt;</a>
-          <?php endif; ?>
-          <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="<?= BASE_URL ?>index.php?controller=products&action=index&page=<?= $i ?>" class="<?= $i == $currentPage ? 'active' : '' ?>">
-              <?= $i ?>
-            </a>
-          <?php endfor; ?>
-          <?php if ($currentPage < $totalPages): ?>
-            <a href="<?= BASE_URL ?>index.php?controller=products&action=index&page=<?= $currentPage + 1 ?>">&gt;</a>
-          <?php endif; ?>
         </div>
+           <!-- Phân trang -->
+          <?php include_once __DIR__ . '/_Pagination.php'; ?>
+
+
+       
       </section>
     </div>
   </main>
-
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>
 
 <?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>
-<script>const BASE_URL = "<?= BASE_URL ?>";</script>
 <script src="<?= BASE_URL ?>Public/Assets/Js/List.js?v=<?= time(); ?>"></script>

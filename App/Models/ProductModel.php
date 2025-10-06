@@ -53,29 +53,13 @@ class ProductModel extends BaseModel
                   AND p.is_active = 1
                 GROUP BY p.id
                 ORDER BY p.created_at DESC
-                LIMIT 6";
+                LIMIT 5";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$categoryId, $productId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /** Phân trang (chỉ ảnh chính) */
-    public function getPaginated($limit, $offset)
-    {
-        $sql = "SELECT p.*, pi.url
-                FROM products p
-                LEFT JOIN product_images pi 
-                    ON pi.product_id = p.id AND pi.is_primary = 1
-                WHERE p.is_active = 1
-                GROUP BY p.id
-                ORDER BY p.created_at DESC
-                LIMIT :limit OFFSET :offset";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+
 
     /** Đếm tổng số sản phẩm */
     public function countAll()
@@ -86,8 +70,7 @@ class ProductModel extends BaseModel
         return $this->queryOne($sql)['total'];
     }
 
-    /** Lọc sản phẩm (có fix ảnh trùng & LIMIT/OFFSET) */
-    public function getFiltered(array $categories, array $colors, string $priceRange, int $limit, int $offset)
+   public function getFiltered(array $categories, array $colors, string $priceRange, int $limit, int $offset)
     {
         $sql = "SELECT p.*, i.stock, img.url
                 FROM products p
@@ -122,20 +105,22 @@ class ProductModel extends BaseModel
         // Gom nhóm để không trùng sản phẩm
         $sql .= " GROUP BY p.id
                   ORDER BY p.created_at DESC
-                  LIMIT :limit OFFSET :offset";
+                  LIMIT ? OFFSET ?";
 
         $stmt = $this->conn->prepare($sql);
 
-        // Bind các tham số lọc
-        foreach ($params as $index => $param) {
-            $stmt->bindValue($index + 1, $param);
+        // Bind tham số lọc
+        $index = 1;
+        foreach ($params as $param) {
+            $stmt->bindValue($index++, $param);
         }
 
-        // Bind LIMIT & OFFSET
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        // Bind limit và offset đúng kiểu INT
+        $stmt->bindValue($index++, (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue($index++, (int)$offset, PDO::PARAM_INT);
 
         $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -147,21 +132,18 @@ class ProductModel extends BaseModel
                 WHERE p.is_active = 1";
         $params = [];
 
-        // Lọc loại hoa
         if (!empty($categories) && !in_array('all', $categories)) {
             $placeholders = implode(',', array_fill(0, count($categories), '?'));
             $sql .= " AND p.category_id IN ($placeholders)";
             $params = array_merge($params, $categories);
         }
 
-        // Lọc màu sắc
         if (!empty($colors)) {
             $placeholders = implode(',', array_fill(0, count($colors), '?'));
             $sql .= " AND p.color IN ($placeholders)";
             $params = array_merge($params, $colors);
         }
 
-        // Lọc giá
         if (!empty($priceRange)) {
             [$min, $max] = explode('-', $priceRange);
             $sql .= " AND p.price BETWEEN ? AND ?";
@@ -171,6 +153,24 @@ class ProductModel extends BaseModel
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+    }
+
+    /** Phân trang mặc định */
+    public function getPaginated($limit, $offset)
+    {
+        $sql = "SELECT p.*, pi.url
+                FROM products p
+                LEFT JOIN product_images pi 
+                    ON pi.product_id = p.id AND pi.is_primary = 1
+                WHERE p.is_active = 1
+                GROUP BY p.id
+                ORDER BY p.created_at DESC
+                LIMIT :limit OFFSET :offset";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -149,7 +149,9 @@
       </div>
 
       <!-- Nút thêm phương thức mới -->
-      <button class="my-account__submit">Thêm Phương Thức Thanh Toán</button>
+       <a href="<?= BASE_URL ?>index.php?controller=auth&action=addNewCard">
+        <button class="my-account__submit">Thêm Phương Thức Mới</button>
+       </a>
     </div>
 
     <!-- Panel 5: Password Manager -->
