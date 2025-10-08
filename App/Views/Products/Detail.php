@@ -47,22 +47,39 @@ include_once __DIR__ . '/../../Includes/head.php';
       <h4>Mô tả:</h4>
       <p class="description">
         <?= nl2br(htmlspecialchars($product['description'])) ?>
-      </p>
+      </p>  
 
       <label for="card-message"><strong>Lời nhắn trên thiệp</strong></label>
       <textarea id="card-message" placeholder="Nhập lời nhắn của bạn..."></textarea>
 
       <div class="actions">
         <div class="quantity">
-          <button>-</button>
-          <input id="input_quantity" type="number" value="1" min="1">
-          <button>+</button>
+          <button class="btn-decrease">-</button>
+          <input id="input_quantity" type="number" 
+                value="1" min="1" 
+                max="<?= $product['stock'] ?? 1 ?>" 
+                data-stock="<?= $product['stock'] ?? 0 ?>">
+          <button class="btn-increase">+</button>
         </div>
+                
+        <button class="btn add UserBtn add-to-cart" 
+                data-id="<?= $product['id'] ?>"
+                <?= ($product['stock'] ?? 0) <= 0 ? 'disabled' : '' ?>>
+          Thêm vào giỏ
+        </button>
+
+        <button class="btn buy UserBtn checkout-now" 
+                data-id="<?= $product['id'] ?>"
+                <?= ($product['stock'] ?? 0) <= 0 ? 'disabled' : '' ?>>
+          Mua ngay
+        </button>
+
         
-        <button class="btn add UserBtn">Thêm vào giỏ</button>
-        <button class="btn buy UserBtn">Mua ngay</button>
-        <button class="btn fav favorite UserBtn"><i class="fa-regular fa-heart"></i></button>
+        <button class="favorite-btn" data-product-id="<?= $product['id'] ?>">
+          <i class="fa fa-heart <?= $product['is_favorite'] ? 'active' : '' ?>"></i>
+        </button>
       </div>
+
     </div>
   </section>
 
@@ -98,6 +115,8 @@ include_once __DIR__ . '/../../Includes/head.php';
 
 <!-- Footer & Script -->
 <?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
-<script src="<?= BASE_URL ?>Public/Assets/Js/product-details.js"></script>
+<script src="<?= BASE_URL ?>Public/Assets/Js/product-details.js?v=<?= time() ?>"></script>
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>
 </body>
+
+<script src="<?= BASE_URL ?>Public/Assets/Js/LoadPayment.js?v=<?= time() ?>"></script>

@@ -6,10 +6,12 @@ class ProductModel extends BaseModel
     /** Lấy tất cả sản phẩm (có ảnh chính duy nhất) */
     public function getAll()
     {
-        $sql = "SELECT p.*, img.url
+        $sql = "SELECT p.*, img.url, c.name AS category_name, i.stock
                 FROM products p
                 LEFT JOIN product_images img 
                     ON p.id = img.product_id AND img.is_primary = 1
+                LEFT JOIN inventory i ON p.id = i.product_id
+                LEFT JOIN categories c ON p.category_id = c.id
                 WHERE p.is_active = 1
                 GROUP BY p.id
                 ORDER BY p.created_at DESC";
@@ -17,11 +19,14 @@ class ProductModel extends BaseModel
     }
 
     /** Lấy chi tiết sản phẩm theo ID (kèm toàn bộ ảnh) */
-    public function getById($id)
+     public function getById($id)
     {
-        $sql = "SELECT p.*, i.stock, i.low_stock_threshold
+        $sql = "SELECT p.*, i.stock, i.low_stock_threshold, c.name AS category_name, img.url
                 FROM products p
                 LEFT JOIN inventory i ON p.id = i.product_id
+                LEFT JOIN categories c ON p.category_id = c.id
+                LEFT JOIN product_images img 
+                    ON p.id = img.product_id AND img.is_primary = 1
                 WHERE p.id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$id]);
@@ -29,11 +34,11 @@ class ProductModel extends BaseModel
 
         if (!$product) return null;
 
-        // Lấy tất cả ảnh liên quan
+        // Lấy toàn bộ ảnh liên quan
         $imgSql = "SELECT url, is_primary 
-                   FROM product_images 
-                   WHERE product_id = ? 
-                   ORDER BY sort_order ASC";
+                FROM product_images 
+                WHERE product_id = ? 
+                ORDER BY sort_order ASC";
         $imgStmt = $this->conn->prepare($imgSql);
         $imgStmt->execute([$id]);
         $product['images'] = $imgStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,13 +46,16 @@ class ProductModel extends BaseModel
         return $product;
     }
 
+
     /** Lấy sản phẩm liên quan cùng category */
     public function getRelatedProducts($productId, $categoryId)
     {
-        $sql = "SELECT p.*, pi.url
+        $sql = "SELECT p.*, pi.url, c.name AS category_name, i.stock
                 FROM products p
                 LEFT JOIN product_images pi 
                     ON p.id = pi.product_id AND pi.is_primary = 1
+                LEFT JOIN inventory i ON p.id = i.product_id
+                LEFT JOIN categories c ON p.category_id = c.id
                 WHERE p.category_id = ? 
                   AND p.id != ? 
                   AND p.is_active = 1
@@ -59,8 +67,6 @@ class ProductModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-
     /** Đếm tổng số sản phẩm */
     public function countAll()
     {
@@ -70,31 +76,33 @@ class ProductModel extends BaseModel
         return $this->queryOne($sql)['total'];
     }
 
-   public function getFiltered(array $categories, array $colors, string $priceRange, int $limit, int $offset)
+    /** Lọc sản phẩm (thêm category và tồn kho) */
+    public function getFiltered(array $categories, array $colors, string $priceRange, int $limit, int $offset, string $keyword = '')
     {
-        $sql = "SELECT p.*, i.stock, img.url
+        $sql = "SELECT p.*, i.stock, img.url, c.name AS category_name
                 FROM products p
                 LEFT JOIN inventory i ON p.id = i.product_id
                 LEFT JOIN product_images img 
                     ON p.id = img.product_id AND img.is_primary = 1
+                LEFT JOIN categories c ON p.category_id = c.id
                 WHERE p.is_active = 1";
         $params = [];
 
-        // Lọc loại hoa
+        // --- Lọc loại hoa ---
         if (!in_array('all', $categories) && !empty($categories)) {
             $placeholders = implode(',', array_fill(0, count($categories), '?'));
             $sql .= " AND p.category_id IN ($placeholders)";
             $params = array_merge($params, $categories);
         }
 
-        // Lọc màu sắc
+        // --- Lọc màu sắc ---
         if (!empty($colors)) {
             $placeholders = implode(',', array_fill(0, count($colors), '?'));
             $sql .= " AND p.color IN ($placeholders)";
             $params = array_merge($params, $colors);
         }
 
-        // Lọc giá
+        // --- Lọc giá ---
         if (!empty($priceRange)) {
             [$min, $max] = explode('-', $priceRange);
             $sql .= " AND p.price BETWEEN ? AND ?";
@@ -102,20 +110,26 @@ class ProductModel extends BaseModel
             $params[] = (int)$max;
         }
 
-        // Gom nhóm để không trùng sản phẩm
+        // --- Lọc theo từ khóa ---
+        if (!empty($keyword)) {
+            $sql .= " AND (p.name COLLATE utf8mb4_unicode_ci LIKE ? 
+                        OR p.description COLLATE utf8mb4_unicode_ci LIKE ?)";
+            $params[] = "%{$keyword}%";
+            $params[] = "%{$keyword}%";
+        }
+
+        // --- Gom nhóm, sắp xếp, phân trang ---
         $sql .= " GROUP BY p.id
                   ORDER BY p.created_at DESC
                   LIMIT ? OFFSET ?";
 
         $stmt = $this->conn->prepare($sql);
 
-        // Bind tham số lọc
         $index = 1;
         foreach ($params as $param) {
             $stmt->bindValue($index++, $param);
         }
 
-        // Bind limit và offset đúng kiểu INT
         $stmt->bindValue($index++, (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue($index++, (int)$offset, PDO::PARAM_INT);
 
@@ -125,10 +139,12 @@ class ProductModel extends BaseModel
     }
 
     /** Đếm tổng số sản phẩm khi lọc */
-    public function countFiltered($categories, $colors, $priceRange)
+    public function countFiltered($categories, $colors, $priceRange, string $keyword = '')
     {
         $sql = "SELECT COUNT(DISTINCT p.id) as total
                 FROM products p
+                LEFT JOIN categories c ON p.category_id = c.id
+                LEFT JOIN inventory i ON p.id = i.product_id
                 WHERE p.is_active = 1";
         $params = [];
 
@@ -151,18 +167,27 @@ class ProductModel extends BaseModel
             $params[] = (int)$max;
         }
 
+        if (!empty($keyword)) {
+            $sql .= " AND (p.name COLLATE utf8mb4_unicode_ci LIKE ? 
+                        OR p.description COLLATE utf8mb4_unicode_ci LIKE ?)";
+            $params[] = "%{$keyword}%";
+            $params[] = "%{$keyword}%";
+        }
+
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
     }
 
-    /** Phân trang mặc định */
+    /** Phân trang mặc định (thêm category và tồn kho) */
     public function getPaginated($limit, $offset)
     {
-        $sql = "SELECT p.*, pi.url
+        $sql = "SELECT p.*, pi.url, c.name AS category_name, i.stock
                 FROM products p
                 LEFT JOIN product_images pi 
                     ON pi.product_id = p.id AND pi.is_primary = 1
+                LEFT JOIN categories c ON p.category_id = c.id
+                LEFT JOIN inventory i ON p.id = i.product_id
                 WHERE p.is_active = 1
                 GROUP BY p.id
                 ORDER BY p.created_at DESC
@@ -173,4 +198,11 @@ class ProductModel extends BaseModel
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function reduceStock($productId, $quantity)
+    {
+        $stmt = $this->conn->prepare("UPDATE inventory SET stock = GREATEST(stock - ?, 0) WHERE product_id = ?");
+        $stmt->execute([$quantity, $productId]);
+    }
+
+
 }

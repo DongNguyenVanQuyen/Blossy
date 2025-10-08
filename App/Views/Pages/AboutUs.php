@@ -7,6 +7,10 @@
 <?php include_once __DIR__ . '/../Layouts/Header.php'; ?>
 
 <section class="about-section">
+    <header class="shop-header">
+      <h1>Giới Thiệu</h1>
+      <p><a href="#">Trang chủ</a> / Giới Thiệu</p>
+    </header>
   <div class="about-wrapper">
     <!-- Hình tròn -->
     <div class="about-image">

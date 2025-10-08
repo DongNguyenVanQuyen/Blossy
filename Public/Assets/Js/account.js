@@ -1,3 +1,6 @@
+// ===============================
+// Xử lý chuyển tab
+// ===============================
 document.querySelectorAll(".my-account__tab").forEach((tab) => {
   tab.addEventListener("click", function () {
     document
@@ -12,3 +15,24 @@ document.querySelectorAll(".my-account__tab").forEach((tab) => {
     document.getElementById(target).classList.add("active");
   });
 });
+
+// ===============================
+// HÀM SỬA ĐỊA CHỈ — đặt ngoài forEach
+// ===============================
+function editAddress(id, address) {
+  const inputId = document.getElementById("addressId");
+  const textarea = document.getElementById("addressInput");
+  const btn = document.getElementById("saveBtn");
+
+  if (!inputId || !textarea || !btn) {
+    alert("⚠️ Không tìm thấy form địa chỉ để chỉnh sửa!");
+    return;
+  }
+
+  inputId.value = id;
+  textarea.value = address;
+  btn.textContent = "Cập Nhật Địa Chỉ";
+
+  // Cuộn xuống phần form khi bấm sửa
+  document.getElementById("address").scrollIntoView({ behavior: "smooth" });
+}

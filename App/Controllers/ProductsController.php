@@ -17,17 +17,37 @@ class ProductsController extends BaseController
         $categoriesModel = new CategoryModel();
         $categories = $categoriesModel->getAllActive();
 
-        $limit = 18;
+        $limit = 15;
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
         $selectedCategories = isset($_GET['category']) ? (array)$_GET['category'] : ['all'];
         $selectedColors = isset($_GET['color']) ? (array)$_GET['color'] : [];
         $priceRange = isset($_GET['price_range']) ? $_GET['price_range'] : '';
+        $keyword = trim($_GET['keyword'] ?? '');
 
-        if (!empty($selectedCategories) || !empty($selectedColors) || !empty($priceRange)) {
-            $products = $this->productModel->getFiltered($selectedCategories, $selectedColors, $priceRange, $limit, $offset);
-            $totalProducts = $this->productModel->countFiltered($selectedCategories, $selectedColors, $priceRange);
+        $isFiltering = (
+            (!empty($selectedCategories) && !in_array('all', $selectedCategories)) ||
+            !empty($selectedColors) ||
+            !empty($priceRange) ||
+            !empty($keyword)
+        );
+
+        if ($isFiltering) {
+            $products = $this->productModel->getFiltered(
+                $selectedCategories,
+                $selectedColors,
+                $priceRange,
+                $limit,
+                $offset,
+                $keyword
+            );
+            $totalProducts = $this->productModel->countFiltered(
+                $selectedCategories,
+                $selectedColors,
+                $priceRange,
+                $keyword
+            );
         } else {
             $products = $this->productModel->getPaginated($limit, $offset);
             $totalProducts = $this->productModel->countAll();
@@ -43,6 +63,7 @@ class ProductsController extends BaseController
             'priceRange' => $priceRange,
             'currentPage' => $page,
             'totalPages' => $totalPages
+
         ]);
     }
 
@@ -65,9 +86,11 @@ class ProductsController extends BaseController
         $selectedCategories = $_POST['category'] ?? ['all']; // name="category[]"
         $selectedColors     = $_POST['color'] ?? [];         // name="color[]"
         $priceRange         = $_POST['price_range'] ?? '';
+        $keyword = trim($_GET['keyword'] ?? $_POST['keyword'] ?? '');
 
-        $products      = $this->productModel->getFiltered($selectedCategories, $selectedColors, $priceRange, $limit, $offset);
-        $totalProducts = $this->productModel->countFiltered($selectedCategories, $selectedColors, $priceRange);
+
+        $products      = $this->productModel->getFiltered($selectedCategories, $selectedColors, $priceRange, $limit, $offset, $keyword);
+        $totalProducts = $this->productModel->countFiltered($selectedCategories, $selectedColors, $priceRange, $keyword);
         $totalPages    = max(1, (int)ceil($totalProducts / $limit));
 
         // Render partials THÀNH CHUỖI (không include layout, header, footer)
@@ -105,24 +128,43 @@ class ProductsController extends BaseController
 
 
 
-    public function detail()
-    {
-        global $title;
-        $title = "Chi Tiết Sản Phẩm | Blossy";
+   public function detail()
+{
+    global $title;
+    $title = "Chi Tiết Sản Phẩm | Blossy";
 
-        $id = $_GET['id'] ?? 0;
-        $product = $this->productModel->getById($id);
+    $id = $_GET['id'] ?? 0;
+    $product = $this->productModel->getById($id);
 
-        if (!$product) {
-            echo "Sản phẩm không tồn tại!";
-            return;
-        }
-
-        $relatedProducts = $this->productModel->getRelatedProducts($product['id'], $product['category_id']);
-
-        $this->loadView('Products.Detail', [
-            'product' => $product,
-            'relatedProducts' => $relatedProducts
-        ]);
+    if (!$product) {
+        echo "Sản phẩm không tồn tại!";
+        return;
     }
+
+    // =============================
+    // 🔹 Kiểm tra yêu thích (wishlist)
+    // =============================
+    session_start();
+    $userId = $_SESSION['user']['user_id'] ?? null;
+
+    require_once __DIR__ . '/../Models/FavoritesModel.php';
+    $favoritesModel = new FavoritesModel();
+
+    // Gán cờ để giữ màu tim trong view
+    $product['is_favorite'] = $userId
+        ? $favoritesModel->isFavorite($userId, $product['id'])
+        : false;
+
+    // =============================
+    // 🔹 Sản phẩm liên quan
+    // =============================
+    $relatedProducts = $this->productModel->getRelatedProducts($product['id'], $product['category_id']);
+
+    // Gửi dữ liệu sang View
+    $this->loadView('Products.Detail', [
+        'product' => $product,
+        'relatedProducts' => $relatedProducts
+    ]);
+}
+
 }

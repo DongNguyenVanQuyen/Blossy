@@ -39,7 +39,7 @@
         <div class="filter-group">
           <h4>Màu sắc</h4>
           <?php 
-            $colorsList = ['Hồng'=>'hong','Đỏ'=>'do','Vàng'=>'vang','Trắng'=>'trang','Nhiều màu'=>'nhieu'];
+            $colorsList = ['Hồng'=>'hong','Đỏ'=>'do','Vàng'=>'vang','Trắng'=>'trang','Xanh'=>'xanh','Cam'=>'cam','Tím'=>'tim','Nhiều màu'=>'nhieu'];
             foreach ($colorsList as $label=>$val): ?>
             <label>
               <input type="checkbox" name="color[]" value="<?= $val ?>"
@@ -131,4 +131,3 @@
 
 <?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>
-<script src="<?= BASE_URL ?>Public/Assets/Js/List.js?v=<?= time(); ?>"></script>

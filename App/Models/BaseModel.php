@@ -34,4 +34,11 @@ class BaseModel {
     public function prepare($sql): PDOStatement {
         return $this->conn->prepare($sql);
     }
+        public function getUserById($id)
+    {
+        $sql = "SELECT id, first_name, last_name, email, phone, address, gender FROM users WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

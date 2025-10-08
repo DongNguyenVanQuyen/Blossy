@@ -165,23 +165,28 @@ function getSeasonFromQuery() {
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
-  const UserBtn = document.querySelectorAll(".UserBtn");
-  UserBtn.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      if (!isLoggedIn) {
-        window.location.href = BASE_URL + "App/Views/User/Login.php";
-        return;
-      }
-    });
-  });
   const favBtns = document.querySelectorAll(".favorite");
 
   favBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Kiểm tra đăng nhập
+      if (typeof isLoggedIn === "undefined" || !isLoggedIn) {
+        window.location.href = BASE_URL + "App/Views/User/Login.php";
+        return;
+      }
+
+      // Toggle trái tim
       const icon = this.querySelector("i");
+      if (!icon) return;
+
       icon.classList.toggle("fa-regular");
       icon.classList.toggle("fa-solid");
       icon.classList.toggle("liked");
+
+      // (Tuỳ chọn) Gửi AJAX để thêm/xoá sản phẩm yêu thích
+      // toggleFavorite(this.dataset.productId);
     });
   });
 

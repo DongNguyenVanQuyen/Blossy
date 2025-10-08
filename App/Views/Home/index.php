@@ -23,7 +23,7 @@
     </div>
 
     <!-- Banner trái -->
-    <img class="hero-decor pos-ab" src="<?= BASE_URL ?>Seasons/Banner_Left/Spring.png    " alt="Season Decoration" />
+    <img class="hero-decor pos-ab" src="<?= BASE_URL ?>Public/Seasons/Banner_Left/Spring.png" alt="Season Decoration" />
   </section>
 
 
@@ -140,7 +140,7 @@
     <div class="product-list">
           <div class="arrival-item">
             <span class="tag-off">20% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New2.png" alt="Morning Dew">
+            <img src="" alt="Morning Dew">
             <div class="info">
               <h4>Morning Dew</h4>
               <p>$49.00 <del>$55.00</del></p>
@@ -151,7 +151,7 @@
 
           <div class="arrival-item">
             <span class="tag-off">20% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New2.png" alt="Morning Dew">
+            <img src="" alt="Morning Dew">
             <div class="info">
               <h4>Morning Dew</h4>
               <p>$49.00 <del>$55.00</del></p>
@@ -162,7 +162,7 @@
 
           <div class="arrival-item">
             <span class="tag-off">20% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New2.png" alt="Morning Dew">
+            <img src="" alt="Morning Dew">
             <div class="info">
               <h4>Morning Dew</h4>
               <p>$49.00 <del>$55.00</del></p>
@@ -173,7 +173,7 @@
 
               <div class="arrival-item">
             <span class="tag-off">20% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New2.png" alt="Morning Dew">
+            <img src="" alt="Morning Dew">
             <div class="info">
               <h4>Morning Dew</h4>
               <p>$49.00 <del>$55.00</del></p>
@@ -210,14 +210,14 @@
     <!-- 1. New Arrival -->
       <div class="new-arrival">
         <div class="section-title">
-          <span class="highlight">New Arrival</span> <strong>Products:</strong>
+          <strong>Sản Phẩm </strong><span class="highlight">Mới:</span> 
         </div>
         <!-- 1. New Arrival -->
         <div class="arrival-list">
         <!-- Item 1 -->
           <div class="arrival-item">
             <span class="tag-off">30% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New1.png" alt="Lovely Day">
+            <img src="" alt="Lovely Day">
             <div class="info">
               <h4>Lovely Day</h4>
               <p>$56.00 <del>$64.00</del></p>
@@ -229,7 +229,7 @@
           <!-- Item 2 -->
           <div class="arrival-item">
             <span class="tag-off">20% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New2.png" alt="Morning Dew">
+            <img src="" alt="Morning Dew">
             <div class="info">
               <h4>Morning Dew</h4>
               <p>$49.00 <del>$55.00</del></p>
@@ -241,7 +241,7 @@
           <!-- Item 3 -->
           <div class="arrival-item">
             <span class="tag-off">15% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New3.png" alt="Pink Delight">
+            <img src="" alt="Pink Delight">
             <div class="info">
               <h4>Pink Delight</h4>
               <p>$34.00 <del>$40.00</del></p>
@@ -253,7 +253,7 @@
           <!-- Item 4 -->
           <div class="arrival-item">
             <span class="tag-off">25% off</span>
-            <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_4/New4.png" alt="Sunshine Bliss">
+            <img src="" alt="Sunshine Bliss">
             <div class="info">
               <h4>Sunshine Bliss</h4>
               <p>$45.00 <del>$60.00</del></p>
