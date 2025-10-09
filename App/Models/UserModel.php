@@ -152,4 +152,25 @@ class UserModel extends BaseModel
 
 
 
+    // Order History
+    public function getUserOrders($userId): array
+    {
+        if (empty($userId) || !is_numeric($userId)) {
+            return [];
+        }
+
+        $sql = "SELECT 
+                    id,
+                    CONCAT('OD', LPAD(id, 5, '0')) AS code,
+                    DATE_FORMAT(created_at, '%d/%m/%Y') AS created_date,
+                    status,
+                    grand_total,
+                    payment_method
+                FROM orders
+                WHERE user_id = ?
+                ORDER BY created_at DESC";
+        $stmt = $this->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

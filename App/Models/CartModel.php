@@ -98,10 +98,22 @@ class CartModel extends BaseModel
     /**
      * Xóa toàn bộ sản phẩm trong giỏ hàng
      */
-    public function clearCart($cartId)
+    public function clearCart($userId)
     {
-        $sql = "DELETE FROM cart_items WHERE cart_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([$cartId]);
+        // Lấy cart_id theo user_id
+        $cartStmt = $this->conn->prepare("SELECT id FROM carts WHERE user_id = ?");
+        $cartStmt->execute([$userId]);
+        $cart = $cartStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($cart) {
+            $cartId = $cart['id'];
+
+            // Xóa toàn bộ sản phẩm trong giỏ hàng
+            $delete = $this->conn->prepare("DELETE FROM cart_items WHERE cart_id = ?");
+            $delete->execute([$cartId]);
+
+            // Cập nhật thời gian trống
+            $this->conn->prepare("UPDATE carts SET updated_at = NOW() WHERE id = ?")->execute([$cartId]);
+        }
     }
 }

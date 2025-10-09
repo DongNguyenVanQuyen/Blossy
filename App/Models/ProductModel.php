@@ -61,7 +61,7 @@ class ProductModel extends BaseModel
                   AND p.is_active = 1
                 GROUP BY p.id
                 ORDER BY p.created_at DESC
-                LIMIT 5";
+                LIMIT 4";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$categoryId, $productId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

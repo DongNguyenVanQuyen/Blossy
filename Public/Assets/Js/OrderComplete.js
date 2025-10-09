@@ -6,7 +6,4 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("index.php?controller=order&action=clearSession", { method: "POST" });
 
   // Tự động quay về Shop sau 15s
-  setTimeout(() => {
-    window.location.href = "index.php?controller=products&action=index";
-  }, 15000);
 });

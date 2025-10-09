@@ -17,7 +17,7 @@ class ProductsController extends BaseController
         $categoriesModel = new CategoryModel();
         $categories = $categoriesModel->getAllActive();
 
-        $limit = 15;
+        $limit = 18;
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
@@ -80,7 +80,7 @@ class ProductsController extends BaseController
 
     try {
         $page  = max(1, (int)($_POST['page'] ?? 1));
-        $limit = 15;
+        $limit = 18;
         $offset = ($page - 1) * $limit;
 
         $selectedCategories = $_POST['category'] ?? ['all']; // name="category[]"

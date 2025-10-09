@@ -79,30 +79,50 @@ include_once __DIR__ . '/../Layouts/Header.php';
       </div>
 
       <!-- 🔹 ÁP DỤNG MÃ VOUCHER -->
-      <div class="voucher-section">
-        <h4>Áp dụng mã giảm giá</h4>
-        <div class="voucher-form">
-          <form method="get" action="index.php">
-            <input type="hidden" name="controller" value="checkout">
-            <input type="hidden" name="action" value="index">
-            <input type="text" name="voucher" placeholder="Nhập mã voucher..."
-                  value="<?= htmlspecialchars($_GET['voucher'] ?? '') ?>">
-            <button type="submit">Áp dụng</button>
-          </form>
-        </div>
+     <div class="voucher-section">
+      <h4>Áp dụng mã giảm giá</h4>
 
-        <?php if (isset($voucher) && $voucher): ?>
-          <p class="voucher-success">✅ Mã <?= htmlspecialchars($voucher['code']) ?> đã được áp dụng!</p>
-        <?php elseif (!empty($_GET['voucher'])): ?>
-          <p class="voucher-error">❌ Mã không hợp lệ hoặc không còn hiệu lực.</p>
-        <?php endif; ?>
-      </div>
+    <div class="voucher-form">
+      <input type="text"
+            id="voucher-input"
+            placeholder="Nhập mã voucher..."
+            class="voucher-input">
+      <button type="button"
+              class="voucher-apply-btn"
+              id="apply-voucher">Áp dụng</button>
+    <input type="hidden" name="voucher_code" id="voucher_code" value="">
+    <input type="hidden" name="voucher_discount" id="voucher_discount" value="0">
+
+    </div>
+
+
+    <p id="voucher-message"></p>
+
+
+      <?php if (isset($voucher) && $voucher): ?>
+        <p class="voucher-success">
+          ✅ Mã <strong><?= htmlspecialchars($voucher['code']) ?></strong> 
+          đã được áp dụng 
+          <?php if ($voucher['type'] === 'percent'): ?>
+            (Giảm <?= $voucher['value'] ?>%)
+          <?php else: ?>
+            (Giảm <?= number_format($voucher['value'], 0, ',', '.') ?>đ)
+          <?php endif; ?>
+        </p>
+      <?php elseif (!empty($_GET['voucher'])): ?>
+        <p class="voucher-error">❌ Mã không hợp lệ hoặc không còn hiệu lực.</p>
+      <?php endif; ?>
+    </div>
+
+
 
       <!-- 🔹 TÓM TẮT TIỀN -->
-      <div class="summary-item">Sản phẩm <span><?= $totals['count'] ?></span></div>
-      <div class="summary-item">Tạm tính <span><?= $totals['subtotal'] ?></span></div>
-      <div class="summary-item">Giảm giá <span>-<?= $totals['discount'] ?></span></div>
-      <div class="summary-item total">Tổng cộng <span><?= $totals['total'] ?></span></div>
+    <div class="summary-item summary-count">Sản phẩm <span><?= $totals['count'] ?></span></div>
+    <div class="summary-item summary-subtotal">Tạm tính <span><?= $totals['subtotal'] ?></span></div>
+    <div class="summary-item summary-discount">Giảm giá <span>-<?= $totals['discount'] ?></span></div>
+    <div class="summary-item summary-shipping">Vận chuyển <span>30.000đ</span></div>
+    <div class="summary-item summary-total total">Tổng cộng <span><?= $totals['total'] ?></span></div>
+
 
       <!-- 🔹 PHƯƠNG THỨC THANH TOÁN -->
       <div class="payment-method-section">

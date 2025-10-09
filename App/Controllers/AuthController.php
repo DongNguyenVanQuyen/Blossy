@@ -20,11 +20,13 @@ class AuthController extends BaseController
 
         $userModel = new UserModel();
         $addresses = $userModel->getAddresses($userId); 
-
+        $orders = $userModel->getUserOrders($userId); 
         $this->loadView('User.Account', [
             'user' => $user,
-            'addresses' => $addresses
+            'addresses' => $addresses,
+            'orders' => $orders 
         ]);
+
     }
 
     public function login()

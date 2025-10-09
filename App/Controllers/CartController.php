@@ -187,4 +187,20 @@ class CartController extends BaseController
 
         echo json_encode(['success' => true]);
     }
+    public function clearCart($userId)
+{
+    // Lấy cart_id theo user
+    $stmt = $this->conn->prepare("SELECT id FROM carts WHERE user_id = ?");
+    $stmt->execute([$userId]);
+    $cart = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($cart) {
+        $cartId = $cart['id'];
+
+        // Xóa tất cả sản phẩm trong cart_items
+        $stmt = $this->conn->prepare("DELETE FROM cart_items WHERE cart_id = ?");
+        $stmt->execute([$cartId]);
+    }
+}
+
 }

@@ -85,25 +85,41 @@ include_once __DIR__ . '/../Layouts/Header.php';
             <th>Mã Đơn</th>
             <th>Ngày</th>
             <th>Trạng Thái</th>
+            <th>Phương Thức</th>
             <th>Tổng</th>
             <th>Hành Động</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>#ORD1234</td>
-            <td>15/09/2025</td>
-            <td class="my-account__status my-account__status--completed">Hoàn Thành</td>
-            <td>2.450.000đ</td>
-            <td><button class="my-account__view-btn">Xem</button></td>
-          </tr>
-          <tr>
-            <td>#ORD1235</td>
-            <td>21/09/2025</td>
-            <td class="my-account__status my-account__status--pending">Đang Chờ</td>
-            <td>1.780.000đ</td>
-            <td><button class="my-account__view-btn">Xem</button></td>
-          </tr>
+          <?php if (!empty($orders)): ?>
+            <?php foreach ($orders as $order): ?>
+              <?php
+                // Gán màu trạng thái
+                $statusClass = match ($order['status']) {
+                  'cho_xac_nhan' => 'my-account__status--pending',
+                  'dang_giao' => 'my-account__status--shipping',
+                  'hoan_thanh' => 'my-account__status--completed',
+                  'da_huy' => 'my-account__status--cancelled',
+                  default => 'my-account__status--pending'
+                };
+              ?>
+              <tr>
+                <td>#<?= htmlspecialchars($order['code']) ?></td>
+                <td><?= htmlspecialchars($order['created_date']) ?></td>
+                <td class="my-account__status <?= $statusClass ?>">
+                  <?= ucfirst(str_replace('_', ' ', $order['status'])) ?>
+                </td>
+                <td><?= strtoupper($order['payment_method'] ?? 'COD') ?></td>
+                <td><?= number_format($order['grand_total'], 0, ',', '.') ?>đ</td>
+                <td>
+                  <a href="index.php?controller=order&action=detail&id=<?= $order['id'] ?>" 
+                    class="my-account__view-btn">Xem</a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr><td colspan="6" style="text-align:center;">Bạn chưa có đơn hàng nào.</td></tr>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>

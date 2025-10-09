@@ -22,9 +22,20 @@ $items = $items ?? [];
   <div class="order-completed__summary">
     <div><strong>Mã Đơn Hàng:</strong> <span>#<?= htmlspecialchars($order['code'] ?? 'N/A') ?></span></div>
     <div><strong>Phương Thức Thanh Toán:</strong> <span><?= htmlspecialchars($order['payment'] ?? 'COD') ?></span></div>
-    <div><strong>Ngày Giao Dự Kiến:</strong> <span><?= htmlspecialchars($order['delivery_date'] ?? date('d/m/Y', strtotime('+3 days'))) ?></span></div>
+    <div><strong>Trạng Thái Thanh Toán:</strong> <span><?= $order['payment_status'] === 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán' ?></span></div>
+    <div><strong>Ngày Giao Dự Kiến:</strong> <span><?= date('d/m/Y', strtotime($order['delivery_date'] ?? '+3 days')) ?></span></div>
     <div><strong>Tổng Cộng:</strong> <span><?= htmlspecialchars($order['total'] ?? '0đ') ?></span></div>
-    <div><strong>Trạng Thái Đơn Hàng:</strong> <span><?= htmlspecialchars($order['status'] ?? 'Chờ xác nhận') ?></span></div>
+    <div><strong>Trạng Thái Đơn Hàng:</strong> 
+      <span>
+        <?= match($order['status'] ?? '') {
+            'cho_xac_nhan' => '🕒 Chờ xác nhận',
+            'dang_giao'    => '🚚 Đang giao hàng',
+            'hoan_thanh'   => '✅ Hoàn thành',
+            'da_huy'       => '❌ Đã hủy',
+            default        => 'Không xác định'
+        }; ?>
+      </span>
+    </div>
   </div>
 
   <!-- 🔹 CHI TIẾT SẢN PHẨM -->
@@ -43,9 +54,20 @@ $items = $items ?? [];
                 <span>Số lượng: <?= htmlspecialchars($item['quantity'] ?? 1) ?></span>
               </div>
             </div>
-            <div class="order-completed__product-price">
-              <?= number_format($item['price'] ?? 0, 0, ',', '.') ?>đ
-            </div>
+           <div class="order-completed__product-price">
+            <?php 
+              $price = $item['price'] ?? $item['unit_price'] ?? 0;
+              $discount = $item['discount'] ?? 0;
+              $priceAfter = $item['price_after'] ?? ($price - $discount);
+            ?>
+            <?php if (!empty($discount) && $discount > 0): ?>
+              <span class="old-price"><?= number_format($price, 0, ',', '.') ?>đ</span>
+              <span class="new-price"><?= number_format($priceAfter, 0, ',', '.') ?>đ</span>
+            <?php else: ?>
+              <span><?= number_format($price, 0, ',', '.') ?>đ</span>
+            <?php endif; ?>
+          </div>
+
           </div>
         <?php endforeach; ?>
       </div>

@@ -11,8 +11,10 @@ ob_start();
 require_once 'App/Includes/config.php';
 
 // ============================================================
-// 🔹 Xử lý nhanh cho AJAX (Cart / Payment / v.v.)
+// 🔹 Xử lý nhanh cho AJAX (Cart / Payment / Voucher / v.v.)
 // ============================================================
+
+// --- CartController (add / update / remove / clear)
 if (
     isset($_GET['controller']) && $_GET['controller'] === 'cart' &&
     isset($_GET['action']) && in_array($_GET['action'], ['add', 'update', 'remove', 'clear'])
@@ -23,6 +25,18 @@ if (
     exit;
 }
 
+// --- VoucherController (apply)
+if (
+    isset($_GET['controller']) && $_GET['controller'] === 'voucher' &&
+    in_array($_GET['action'], ['apply'])
+) {
+    require_once __DIR__ . "/App/Controllers/VoucherController.php";
+    $controller = new VoucherController();
+    $controller->{$_GET['action']}();
+    exit;
+}
+
+// --- PaymentController (getMethods / add)
 if (
     isset($_GET['controller']) && $_GET['controller'] === 'payment' &&
     in_array($_GET['action'], ['getMethods', 'add'])
@@ -41,7 +55,7 @@ $action     = isset($_GET['action']) ? strtolower($_GET['action']) : 'index';
 
 // ============================================================
 // ⚠️ Không xóa session last_order ngay sau khi đặt hàng
-//    Chỉ xóa khi người dùng rời trang OrderCompleted (và không F5 trang này)
+//    Chỉ xóa khi người dùng rời trang OrderCompleted
 // ============================================================
 if (
     isset($_SESSION['last_order']) &&
@@ -63,8 +77,14 @@ if (file_exists($controllerPath)) {
     if (class_exists($controllerName)) {
         $controllerObject = new $controllerName();
 
+        // ✅ Kiểm tra xem action có tồn tại
         if (method_exists($controllerObject, $actionName)) {
-            $controllerObject->$actionName();
+            // 🧩 Tự động truyền tham số nếu có trong URL
+            if (isset($_GET['id']) && !empty($_GET['id'])) {
+                $controllerObject->$actionName($_GET['id']); // Gọi action có id
+            } else {
+                $controllerObject->$actionName(); // Gọi action bình thường
+            }
         } else {
             echo "<h3>❌ Không tìm thấy action <b>$actionName</b> trong controller <b>$controllerName</b>.</h3>";
         }
