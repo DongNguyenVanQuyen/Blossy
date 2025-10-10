@@ -88,6 +88,10 @@ html.winter {
 .toast.error {
   background: #e74c3c; /* đỏ cảnh báo */
 }
+.toast.warning {
+  background-color: #ffc107;
+  color: #222;
+}
 
 .pos-rel {
   position: relative;
@@ -113,15 +117,14 @@ a:hover {
   border: none;
   cursor: pointer;
 }
-
 .favorite-btn i {
   font-size: 24px;
   color: #aaa;
   transition: color 0.2s ease;
 }
-
+.favorite-btn .active,
 .favorite-btn i.active {
-  color: red;
+  color: red !important;
 }
 /* 🧱 Khi button bị disable thì tắt hover hoàn toàn */
 button:disabled,

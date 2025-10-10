@@ -48,6 +48,7 @@ include_once __DIR__ . '/../../Includes/head.php';
       <p class="description">
         <?= nl2br(htmlspecialchars($product['description'])) ?>
       </p>  
+      <p class="quantity">Số lượng: <?= $product['stock'] ?? 0 ?></p>
 
       <label for="card-message"><strong>Lời nhắn trên thiệp</strong></label>
       <textarea id="card-message" placeholder="Nhập lời nhắn của bạn..."></textarea>
@@ -75,9 +76,10 @@ include_once __DIR__ . '/../../Includes/head.php';
         </button>
 
         
-        <button class="favorite-btn" data-product-id="<?= $product['id'] ?>">
-          <i class="fa fa-heart <?= $product['is_favorite'] ? 'active' : '' ?>"></i>
+        <button type="button" class="favorite-btn" data-product-id="<?= $product['id'] ?>">
+          <i class="fa fa-heart <?= !empty($product['is_favorite']) ? 'active' : '' ?>"></i>
         </button>
+
       </div>
 
     </div>

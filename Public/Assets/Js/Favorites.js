@@ -2,6 +2,7 @@
 document.querySelectorAll(".wishlist__remove").forEach((btn) => {
   btn.addEventListener("click", function () {
     const id = this.dataset.productId;
+
     fetch(`index.php?controller=favorites&action=toggle`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -10,10 +11,20 @@ document.querySelectorAll(".wishlist__remove").forEach((btn) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success && !data.favorited) {
+          // Xóa hàng khỏi danh sách
           this.closest(".wishlist__row").remove();
+          showToast(
+            data.message || "🗑️ Đã xóa khỏi danh sách yêu thích!",
+            "warning"
+          );
+        } else {
+          showToast(data.message || "Không thể xóa khỏi yêu thích!", "error");
         }
       })
-      .catch((err) => console.error("Lỗi xóa yêu thích:", err));
+      .catch((err) => {
+        console.error("Lỗi xóa yêu thích:", err);
+        showToast("Lỗi mạng, thử lại sau!", "error");
+      });
   });
 });
 
@@ -41,9 +52,9 @@ document.querySelectorAll(".wishlist__add-btn").forEach((btn) => {
       const data = await res.json();
 
       if (data.success) {
-        showToast("Đã thêm vào giỏ hàng!", "success");
+        showToast(" Đã thêm vào giỏ hàng!", "success");
       } else {
-        showToast(data.message || "Không thể thêm vào giỏ hàng", "error");
+        showToast(data.message || "Không thể thêm vào giỏ hàng!", "error");
       }
     } catch (err) {
       console.error("Lỗi thêm vào giỏ:", err);
@@ -57,14 +68,33 @@ document.querySelectorAll(".wishlist__add-btn").forEach((btn) => {
 
 // ====== Toast thông báo ======
 function showToast(message, type = "success") {
+  // Xóa toast cũ (tránh bị chồng)
+  const oldToast = document.querySelector(".toast");
+  if (oldToast) oldToast.remove();
+
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
-  toast.textContent = message;
+
+  // Icon tự động theo loại
+  const icon =
+    type === "success"
+      ? "✅"
+      : type === "error"
+      ? "❌"
+      : type === "warning"
+      ? "⚠️"
+      : "ℹ️";
+
+  toast.innerHTML = `
+    <span class="toast__icon">${icon}</span>
+    <span class="toast__msg">${message}</span>
+  `;
+
   document.body.appendChild(toast);
 
-  setTimeout(() => toast.classList.add("show"), 100);
+  setTimeout(() => toast.classList.add("show"), 50);
   setTimeout(() => {
     toast.classList.remove("show");
     setTimeout(() => toast.remove(), 300);
-  }, 2000);
+  }, 2500);
 }

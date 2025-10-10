@@ -22,20 +22,24 @@ $items = $items ?? [];
   <div class="order-completed__summary">
     <div><strong>Mã Đơn Hàng:</strong> <span>#<?= htmlspecialchars($order['code'] ?? 'N/A') ?></span></div>
     <div><strong>Phương Thức Thanh Toán:</strong> <span><?= htmlspecialchars($order['payment'] ?? 'COD') ?></span></div>
-    <div><strong>Trạng Thái Thanh Toán:</strong> <span><?= $order['payment_status'] === 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán' ?></span></div>
+    <div><strong>Trạng Thái Thanh Toán:</strong> <span><?= htmlspecialchars($order['payment_status'] === 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán') ?></span></div>
     <div><strong>Ngày Giao Dự Kiến:</strong> <span><?= date('d/m/Y', strtotime($order['delivery_date'] ?? '+3 days')) ?></span></div>
     <div><strong>Tổng Cộng:</strong> <span><?= htmlspecialchars($order['total'] ?? '0đ') ?></span></div>
-    <div><strong>Trạng Thái Đơn Hàng:</strong> 
+    <div><strong>Trạng Thái Đơn Hàng:</strong>
       <span>
-        <?= match($order['status'] ?? '') {
-            'cho_xac_nhan' => '🕒 Chờ xác nhận',
-            'dang_giao'    => '🚚 Đang giao hàng',
-            'hoan_thanh'   => '✅ Hoàn thành',
-            'da_huy'       => '❌ Đã hủy',
-            default        => 'Không xác định'
-        }; ?>
+        <?php
+          $status = strtolower($order['status'] ?? 'cho_xac_nhan');
+          echo match($status) {
+              'cho_xac_nhan' => '🕒 Chờ xác nhận',
+              'dang_giao'    => '🚚 Đang giao hàng',
+              'hoan_thanh'   => '✅ Hoàn thành',
+              'da_huy'       => '❌ Đã hủy',
+              default        => 'Không xác định'
+          };
+        ?>
       </span>
     </div>
+
   </div>
 
   <!-- 🔹 CHI TIẾT SẢN PHẨM -->

@@ -78,11 +78,20 @@ class AuthController extends BaseController
                     'address'    => $user['address'],
                     'gender'     => $user['gender']
                 ];
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => 'Đăng nhập thành công!'
+                ];
+
                 header("Location: " . BASE_URL . "index.php");
                 exit();
             } else {
-                $error = "❌ Email hoặc mật khẩu không đúng!";
-                $this->loadView('User.Login', ['error' => $error]);
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Email hoặc mật khẩu không đúng!'
+                ];
+                header("Location: index.php?controller=auth&action=login");
+                exit;
             }
         }
     }
@@ -123,13 +132,85 @@ class AuthController extends BaseController
             'gender'        => $gender
         ]);
 
+        
         if ($success) {
-            echo "<script>alert('✅ Đăng ký thành công!'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=login';</script>";
+            $_SESSION['toast'] = [
+                'type' => 'success',
+                'message' => '✅ Đăng ký thành công! Vui lòng đăng nhập.'
+            ];
+            header("Location: index.php?controller=auth&action=login");
+            exit;
         } else {
-            $this->loadView('User.Register', ['error' => '❌ Có lỗi xảy ra!']);
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '❌ Có lỗi xảy ra khi đăng ký!'
+            ];
+            header("Location: index.php?controller=auth&action=register");
+            exit;
         }
     }
 }
+public function handleUpdateInfo()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])) {
+        $userId     = $_SESSION['user']['user_id'];
+        $first_name = trim($_POST['first_name'] ?? '');
+        $last_name  = trim($_POST['last_name'] ?? '');
+        $phone      = trim($_POST['phone'] ?? '');
+        $gender     = trim($_POST['gender'] ?? '');
+
+        // ✅ Kiểm tra dữ liệu nhập
+        if (empty($first_name) || empty($last_name) || empty($phone)) {
+            $_SESSION['toast'] = [
+                'type' => 'warning',
+                'message' => '⚠️ Vui lòng nhập đầy đủ thông tin!'
+            ];
+            header("Location: index.php?controller=auth&action=Info");
+            exit;
+        }
+
+        // ✅ Cập nhật thông tin vào database
+        $userModel = new UserModel();
+        $updated = $userModel->updateUserInfo($userId, [
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'phone'      => $phone,
+            'gender'     => $gender
+        ]);
+
+        if ($updated) {
+            // ✅ Cập nhật lại session
+            $_SESSION['user']['first_name'] = $first_name;
+            $_SESSION['user']['last_name']  = $last_name;
+            $_SESSION['user']['phone']      = $phone;
+            $_SESSION['user']['gender']     = $gender;
+            $_SESSION['user']['name']       = $first_name . ' ' . $last_name;
+
+            $_SESSION['toast'] = [
+                'type' => 'success',
+                'message' => '✅ Cập nhật thông tin thành công!'
+            ];
+        } else {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '❌ Có lỗi xảy ra khi cập nhật!'
+            ];
+        }
+
+        header("Location: index.php?controller=auth&action=Info");
+        exit;
+    } else {
+        // Nếu chưa đăng nhập
+        $_SESSION['toast'] = [
+            'type' => 'error',
+            'message' => '⚠️ Bạn cần đăng nhập để thực hiện thao tác này!'
+        ];
+        header("Location: index.php?controller=auth&action=login");
+        exit;
+    }
+}
+
+
     public function addNewCard()
     {
         global $title;
@@ -143,7 +224,7 @@ class AuthController extends BaseController
         $this->loadView('Payment.Payment');
     }
 
-    public function handleAddNewCard()
+        public function handleAddNewCard()
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['user'])) {
             $card_holder = trim($_POST['card_holder']);
@@ -153,21 +234,84 @@ class AuthController extends BaseController
             $card_brand  = trim($_POST['card_brand']);
             $userId      = $_SESSION['user']['user_id'];
 
+            // ⚠️ Kiểm tra dữ liệu thiếu
             if (empty($card_holder) || empty($card_number) || empty($expiry_date) || empty($cvv)) {
-                $this->loadView('Payment.Payment', ['error' => '❌ Vui lòng nhập đầy đủ thông tin thẻ!']);
-                return;
+                $_SESSION['toast'] = [
+                    'type' => 'warning',
+                    'message' => '⚠️ Vui lòng nhập đầy đủ thông tin thẻ!'
+                ];
+                header("Location: index.php?controller=auth&action=addNewCard");
+                exit;
             }
 
             $userModel = new UserModel();
-            $success = $userModel->addUserCard($userId, $card_holder, $card_number, $expiry_date, $card_brand, $card_number);
+            $success = $userModel->addUserCard(
+                $userId,
+                $card_holder,
+                $card_number,     // sẽ tự cắt 4 số cuối trong model
+                $expiry_date,
+                $card_brand,
+                $card_number      // full_card_number
+            );
 
             if ($success) {
-                echo "<script>alert('✅ Thêm thẻ thành công!'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=Info';</script>";
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => '✅ Thêm thẻ mới thành công!'
+                ];
             } else {
-                $this->loadView('Payment.Payment', ['error' => '❌ Lưu thẻ thất bại, vui lòng thử lại!']);
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Lưu thẻ thất bại, vui lòng thử lại!'
+                ];
             }
+
+            header("Location: index.php?controller=auth&action=Info");
+            exit;
+        } else {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '⚠️ Bạn cần đăng nhập để thêm thẻ!'
+            ];
+            header("Location: index.php?controller=auth&action=login");
+            exit;
         }
     }
+    public function deleteCard()
+    {
+        if (isset($_GET['id']) && isset($_SESSION['user'])) {
+            $userId = $_SESSION['user']['user_id'];
+            $cardId = (int)$_GET['id'];
+
+            $userModel = new UserModel();
+            $deleted = $userModel->deleteUserCard($cardId, $userId);
+
+            if ($deleted) {
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => '✅ Xóa thẻ thành công!'
+                ];
+            } else {
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Xóa thẻ thất bại, vui lòng thử lại!'
+                ];
+            }
+
+            header("Location: index.php?controller=auth&action=Info");
+            exit;
+        } else {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '⚠️ Bạn cần đăng nhập để thực hiện thao tác này!'
+            ];
+            header("Location: index.php?controller=auth&action=login");
+            exit;
+        }
+    }
+
+
+
 
     // Hiển thị danh sách địa chỉ
     public function Address()
@@ -202,27 +346,65 @@ class AuthController extends BaseController
     // Thêm hoặc sửa địa chỉ
     public function HandleSaveAddress()
     {
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            if (!isset($_SESSION['user'])) exit();
-
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['user'])) {
             $userId = $_SESSION['user']['user_id'];
-            $address = trim($_POST['address']);
+            $address = trim($_POST['address'] ?? '');
             $id = $_POST['id'] ?? '';
+
+            if (empty($address)) {
+                $_SESSION['toast'] = [
+                    'type' => 'warning',
+                    'message' => '⚠️ Vui lòng nhập địa chỉ!'
+                ];
+                header("Location: index.php?controller=auth&action=Info");
+                exit;
+            }
 
             $userModel = new UserModel();
 
-            if ($id) {
-                $userModel->updateAddress($id, $userId, $address);
-                $msg = '✅ Cập nhật địa chỉ thành công!';
+            // Nếu có id => sửa, không có => thêm mới
+            if (!empty($id)) {
+                $updated = $userModel->updateAddress($id, $userId, $address);
+
+                if ($updated) {
+                    $_SESSION['toast'] = [
+                        'type' => 'success',
+                        'message' => '✅ Cập nhật địa chỉ thành công!'
+                    ];
+                } else {
+                    $_SESSION['toast'] = [
+                        'type' => 'error',
+                        'message' => '❌ Cập nhật địa chỉ thất bại!'
+                    ];
+                }
             } else {
-                $userModel->addAddress($userId, $address);
-                $msg = '✅ Thêm địa chỉ mới thành công!';
+                $added = $userModel->addAddress($userId, $address);
+
+                if ($added) {
+                    $_SESSION['toast'] = [
+                        'type' => 'success',
+                        'message' => '✅ Thêm địa chỉ mới thành công!'
+                    ];
+                } else {
+                    $_SESSION['toast'] = [
+                        'type' => 'error',
+                        'message' => '❌ Không thể thêm địa chỉ, vui lòng thử lại!'
+                    ];
+                }
             }
 
-            echo "<script>alert('$msg'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=Info';</script>";
+            header("Location: index.php?controller=auth&action=Info");
+            exit;
+        } else {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '⚠️ Bạn cần đăng nhập để quản lý địa chỉ!'
+            ];
+            header("Location: index.php?controller=auth&action=login");
             exit;
         }
     }
+
 
     // Xóa địa chỉ
     public function HandleDeleteAddress()
@@ -232,51 +414,100 @@ class AuthController extends BaseController
             $id = (int)$_GET['id'];
 
             $userModel = new UserModel();
-            $userModel->deleteAddress($id, $userId);
+            $deleted = $userModel->deleteAddress($id, $userId);
 
-            echo "<script>alert('🗑️ Xóa địa chỉ thành công!'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=Info';</script>";
+            if ($deleted) {
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => '🗑️ Xóa địa chỉ thành công!'
+                ];
+            } else {
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Không thể xóa địa chỉ!'
+                ];
+            }
+
+            header("Location: index.php?controller=auth&action=Info");
+            exit;
+        } else {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '⚠️ Không xác định được địa chỉ cần xóa!'
+            ];
+            header("Location: index.php?controller=auth&action=Info");
             exit;
         }
     }
 
 
-    public function HandleChangePassword(){
-        if (isset($_POST['current_password'], $_POST['new_password'], $_POST['confirm_password']) && isset($_SESSION['user'])) {
+    // Đổi mật khẩu
+    public function HandleChangePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])) {
             $userId = $_SESSION['user']['user_id'];
-            $currentPassword = trim($_POST['current_password']);
-            $newPassword     = trim($_POST['new_password']);
-            $confirmPassword = trim($_POST['confirm_password']);
+            $currentPassword = trim($_POST['current_password'] ?? '');
+            $newPassword     = trim($_POST['new_password'] ?? '');
+            $confirmPassword = trim($_POST['confirm_password'] ?? '');
 
+            // ⚠️ Kiểm tra nhập thiếu
+            if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+                $_SESSION['toast'] = [
+                    'type' => 'warning',
+                    'message' => '⚠️ Vui lòng nhập đầy đủ các trường mật khẩu!'
+                ];
+                header("Location: index.php?controller=auth&action=Info");
+                exit;
+            }
+
+            // ⚠️ Kiểm tra mật khẩu mới khớp xác nhận không
             if ($newPassword !== $confirmPassword) {
-                $this->loadView('User.Account', [
-                    'user' => $_SESSION['user'],
-                    'error' => '❌ Mật khẩu mới không khớp!'
-                ]);
-                return;
+                $_SESSION['toast'] = [
+                    'type' => 'warning',
+                    'message' => '⚠️ Mật khẩu mới và xác nhận không khớp!'
+                ];
+                header("Location: index.php?controller=auth&action=Info");
+                exit;
             }
 
             $userModel = new UserModel();
             $user = $userModel->getUserById($userId);
 
-            // Kiểm tra mật khẩu hiện tại
-            if ($user && $currentPassword === $user['password']) {
-                // Cập nhật mật khẩu mới
-                $success = $userModel->changePassword($userId, $newPassword);
-                if ($success) {
-                    echo "<script>alert('✅ Đổi mật khẩu thành công!'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=Info';</script>";
-                    exit;
-                } else {
-                    $this->loadView('User.Account', [
-                        'user' => $_SESSION['user'],
-                        'error' => '❌ Có lỗi xảy ra khi đổi mật khẩu!'
-                    ]);
-                }
-            } else {
-                $this->loadView('User.Account', [
-                    'user' => $_SESSION['user'],
-                    'error' => '❌ Mật khẩu hiện tại không đúng!'
-                ]);
+            // 🧩 Kiểm tra mật khẩu hiện tại
+            if (!$user || $user['password'] !== $currentPassword) {
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Mật khẩu hiện tại không đúng!'
+                ];
+                header("Location: index.php?controller=auth&action=Info");
+                exit;
             }
+
+            // 🔐 Cập nhật mật khẩu mới (hash nếu cần)
+            $success = $userModel->changePassword($userId, $newPassword);
+
+            if ($success) {
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => '✅ Đổi mật khẩu thành công!'
+                ];
+            } else {
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Có lỗi xảy ra khi đổi mật khẩu!'
+                ];
+            }
+
+            header("Location: index.php?controller=auth&action=Info");
+            exit;
+        } else {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '⚠️ Bạn cần đăng nhập để đổi mật khẩu!'
+            ];
+            header("Location: index.php?controller=auth&action=login");
+            exit;
         }
     }
+
 }

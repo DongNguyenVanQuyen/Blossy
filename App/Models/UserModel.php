@@ -50,23 +50,25 @@ class UserModel extends BaseModel
     // =========================
     // CẬP NHẬT THÔNG TIN NGƯỜI DÙNG
     // =========================
-    public function updateUser($data, $userId): bool
+    public function updateUserInfo($userId, $data)
     {
-        $sql = "
-            UPDATE users 
-            SET first_name = ?, last_name = ?, phone = ?, address = ?, gender = ?
-            WHERE id = ?
-        ";
-        $stmt = $this->prepare($sql);
+        $sql = "UPDATE users 
+                SET first_name = :first_name,
+                    last_name = :last_name,
+                    phone = :phone,
+                    gender = :gender
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
-            $data['first_name'],
-            $data['last_name'],
-            $data['phone'],
-            $data['address'],
-            $data['gender'],
-            $userId
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'phone'      => $data['phone'],
+            'gender'     => $data['gender'],
+            'id'         => $userId
         ]);
     }
+
 
     // =========================
     // QUẢN LÝ ĐỊA CHỈ (BẢNG addresses)
@@ -144,10 +146,14 @@ class UserModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function deleteUserCard($id, $userId): bool
+    public function deleteUserCard($cardId, $userId)
     {
-        $stmt = $this->prepare("DELETE FROM user_cards WHERE id = ? AND user_id = ?");
-        return $stmt->execute([$id, $userId]);
+        $sql = "DELETE FROM user_cards WHERE id = :id AND user_id = :user_id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            'id' => $cardId,
+            'user_id' => $userId
+        ]);
     }
 
 

@@ -8,41 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
       mainImage.src = this.src;
     });
   });
-
-  // ====== THÊM SẢN PHẨM VÀO YÊU THÍCH ======
-  const favoriteBtn = document.querySelector(".favorite-btn");
-  console.log("favoriteBtn:", favoriteBtn);
-  if (favoriteBtn) {
-    favoriteBtn.addEventListener("click", function () {
-      const productId = this.dataset.productId;
-      const icon = this.querySelector("i");
-
-      fetch(`index.php?controller=favorites&action=toggle`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `product_id=${productId}`,
-      })
-        .then((res) => res.text())
-        .then((text) => {
-          console.log("=== RAW RESPONSE START ===");
-          console.log(text);
-          console.log("=== RAW RESPONSE END ===");
-
-          try {
-            const data = JSON.parse(text);
-            if (data.success) {
-              icon.classList.toggle("active", data.favorited);
-            } else {
-              alert(data.message || "Lỗi không xác định");
-            }
-          } catch (e) {
-            console.error("JSON parse error:", e);
-            alert("Phản hồi không phải JSON hợp lệ! Xem console để biết thêm.");
-          }
-        })
-        .catch((err) => console.error("Lỗi yêu thích:", err));
-    });
-  }
 });
 
 // kiểm tra hàng và thiết lặp mua
@@ -100,11 +65,15 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.success) {
             icon.classList.toggle("active", data.favorited);
+            showToast(data.message, "success");
           } else {
-            alert(data.message || "Lỗi không xác định");
+            showToast(data.message || "Lỗi không xác định", "error");
           }
         })
-        .catch((err) => console.error("Lỗi yêu thích:", err));
+        .catch((err) => {
+          console.error("Lỗi yêu thích:", err);
+          showToast("❌ Kết nối thất bại!", "error");
+        });
     });
   }
 });
@@ -131,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
           method: "POST",
           body: new URLSearchParams({
             product_id: id,
-            quantity: quantity, // ✅ gửi đúng số lượng
+            quantity: quantity,
           }),
         });
 

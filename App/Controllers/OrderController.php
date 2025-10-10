@@ -35,7 +35,14 @@ class OrderController extends BaseController
         $order['payment'] = strtoupper($order['payment_method'] ?? 'COD');
 
         // ✅ Ngày giao dự kiến (3 ngày sau)
-        $order['delivery_date'] = date('d/m/Y', strtotime('+3 days'));
+        if (!empty($order['delivery_date'])) {
+            // Đã có trong SQL
+            $order['delivery_date'] = date('d/m/Y', strtotime($order['delivery_date']));
+        } else {
+            // Nếu chưa có, dùng ngày tạo đơn hoặc hiện tại
+            $baseDate = !empty($order['created_at']) ? $order['created_at'] : 'now';
+            $order['delivery_date'] = date('d/m/Y', strtotime($baseDate . ' +3 days'));
+        }
 
         $orderItems = $orderModel->getOrderItems($id);
 
@@ -65,6 +72,7 @@ class OrderController extends BaseController
         $cartModel = new CartModel();
         $productModel = new ProductModel();
         $orderModel = new OrderModel();
+        
 
         // ✅ Ưu tiên session Mua Ngay
         if (!empty($_SESSION['buy_now'])) {
@@ -147,6 +155,8 @@ class OrderController extends BaseController
         $paymentMethod = $_POST['payment_method'] ?? 'cod';
         $paymentStatus = ($paymentMethod !== 'cod') ? 'Đã thanh toán' : 'Chưa thanh toán';
 
+        $deliveryDate = date('Y-m-d', strtotime('+3 days'));
+
         // ✅ Tạo đơn hàng mới
         $orderId = $orderModel->createOrder([
             'user_id' => $userId,
@@ -160,7 +170,7 @@ class OrderController extends BaseController
             'grand_total' => $total,
             'voucher_code' => $voucherCode,
             'note' => 'Giao hàng tận nơi',
-            'delivery_date' => date('Y-m-d', strtotime('+3 days'))
+            'delivery_date' => $deliveryDate
         ]);
 
 
@@ -185,13 +195,14 @@ class OrderController extends BaseController
             'order' => [
                 'code' => 'OD' . str_pad($orderId, 5, '0', STR_PAD_LEFT),
                 'payment' => strtoupper($_POST['payment_method'] ?? 'COD'),
+                'payment_status' => $paymentStatus,
                 'subtotal' => number_format($subtotal, 0, ',', '.') . 'đ',
                 'discount' => number_format($discount, 0, ',', '.') . 'đ',
                 'shipping' => number_format($shipping, 0, ',', '.') . 'đ',
                 'total' => number_format($total, 0, ',', '.') . 'đ',
                 'voucher' => $voucherCode,
-                'status' => 'Chờ xác nhận',
-                'delivery_date' => date('d/m/Y', strtotime('+3 days'))
+                'status' => 'cho_xac_nhan',
+                'delivery_date' => $deliveryDate
             ],
             'items' => $cartItems
         ];

@@ -27,4 +27,14 @@
   </div>
 </div>
 
+<script src="<?= BASE_URL ?>Public/Assets/Js/Toast.js?v=<?= time() ?>"></script>
+<script src="<?= BASE_URL ?>Public/Assets/Js/Login.js?v=<?= time() ?>"></script>
+
+<?php if (!empty($_SESSION['toast'])): ?>
+<script>
+showToast("<?= addslashes($_SESSION['toast']['message']) ?>","<?= $_SESSION['toast']['type'] ?>");
+</script>
+<?php unset($_SESSION['toast']); endif; ?>
+
+
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>

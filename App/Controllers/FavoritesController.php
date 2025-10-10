@@ -58,10 +58,11 @@ class FavoritesController extends BaseController
 
     if ($isFavorite) {
         $this->favoritesModel->removeFavorite($userId, $productId);
-        echo json_encode(['success' => true, 'favorited' => false]);
+        echo json_encode(['success' => true, 'favorited' => false, 'message' => '🗑️ Đã xóa khỏi danh sách yêu thích!']);
+        
     } else {
         $this->favoritesModel->addFavorite($userId, $productId);
-        echo json_encode(['success' => true, 'favorited' => true]);
+        echo json_encode(['success' => true, 'favorited' => true,'message' => '❤️ Đã thêm vào danh sách yêu thích!']);
     }
 
     exit;
