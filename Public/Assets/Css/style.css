@@ -763,7 +763,7 @@ hr {
   padding: 60px 0;
   background-color: var(--bg);
 }
-
+.section4
 /* 1. New Arrival */
 .new-arrival {
   padding-bottom: 40px;
@@ -815,6 +815,7 @@ hr {
 
 .arrival-item img {
   width: 200px;
+  height: 250px;
   border-radius: 8px;
 }
 
@@ -831,12 +832,14 @@ hr {
 
 .arrival-item .info {
   padding-top: 12px;
+  text-align: center;
 }
 
 .arrival-item .info h4 {
   margin: 6px 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
+  text-align: center;
 }
 
 .arrival-item .info p {
@@ -850,8 +853,20 @@ hr {
   font-weight: normal;
   margin-left: 4px;
 }
-.arrival-item .info button {
+.arrival-item .info small {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 3em; /* chiều cao 2 dòng ước lượng */
+  line-height: 1.5em;
+}
+
+.arrival-item .info a {
   cursor: pointer;
+  margin-top: 5px;
 }
 
 /* 2. Weekly Deals */
@@ -1472,7 +1487,7 @@ hr {
   margin-top: 20px;
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   place-items: center;
 }
 

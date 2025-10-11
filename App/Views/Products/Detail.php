@@ -33,9 +33,8 @@ include_once __DIR__ . '/../../Includes/head.php';
         </span>
       </h2>
 
-      <div class="rating">
-        ⭐ <strong><?= $product['rating'] ?? '4.8' ?></strong>
-      </div>
+      <div class="rating">⭐ <?= $product['rating'] ?? '5' ?></div>
+
 
       <p class="price">
         <?= number_format($product['price'], 0, ',', '.') ?>đ

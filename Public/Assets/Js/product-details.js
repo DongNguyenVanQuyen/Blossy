@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // ====== THÊM VÀO GIỎ HÀNG ======
 document.addEventListener("DOMContentLoaded", function () {
   const addButtons = document.querySelectorAll(".add-to-cart");
-  const quantityInput = document.getElementById("input_quantity"); // ✅ thêm dòng này
+  const quantityInput = document.getElementById("input_quantity");
   let isAdding = false; // chống double click
 
   addButtons.forEach((btn) => {
@@ -110,6 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
           showToast(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`, "success");
         } else {
           showToast(data.message, "error");
+
+          // 🔹 Nếu chưa đăng nhập, chuyển hướng sau 1.5s
+          if (data.message.includes("đăng nhập")) {
+            setTimeout(() => {
+              window.location.href = "index.php?controller=auth&action=login";
+            }, 1500);
+          }
         }
       } catch (err) {
         showToast("Đã xảy ra lỗi, vui lòng thử lại!", "error");

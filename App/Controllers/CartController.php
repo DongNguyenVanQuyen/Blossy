@@ -26,60 +26,54 @@ class CartController extends BaseController
     public function add()
     {
         header('Content-Type: application/json; charset=utf-8');
+        ini_set('display_errors', 0);
+
+        if (session_status() === PHP_SESSION_NONE) session_start();
+
+        if (!isset($_SESSION['user']['user_id'])) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng'
+            ]);
+            exit;
+        }
 
         if (!isset($_POST['product_id']) || !is_numeric($_POST['product_id'])) {
             echo json_encode(['success' => false, 'message' => 'Sản phẩm không hợp lệ']);
-            return;
+            exit;
         }
 
         $productId = (int)$_POST['product_id'];
-        $quantity = isset($_POST['quantity']) && is_numeric($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+        $quantity  = isset($_POST['quantity']) && is_numeric($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
 
         $productModel = new ProductModel();
-        $cartModel = new CartModel();
-        $product = $productModel->getById($productId);
+        $cartModel    = new CartModel();
+        $product      = $productModel->getById($productId);
 
         if (!$product) {
             echo json_encode(['success' => false, 'message' => 'Không tìm thấy sản phẩm']);
-            return;
+            exit;
         }
 
         $stock = $product['stock'] ?? 0;
         if ($stock <= 0) {
             echo json_encode(['success' => false, 'message' => 'Sản phẩm đã hết hàng']);
-            return;
+            exit;
         }
 
         if ($quantity > $stock) $quantity = $stock;
 
-        // ✅ Nếu người dùng đăng nhập → lưu SQL
-        if (isset($_SESSION['user']['user_id'])) {
-            $userId = $_SESSION['user']['user_id'];
-            $cartId = $cartModel->getOrCreateCart($userId);
-            $cartModel->addItem($cartId, $productId, $quantity);
-        }
+        $userId = $_SESSION['user']['user_id'];
+        $cartId = $cartModel->getOrCreateCart($userId);
+        $cartModel->addItem($cartId, $productId, $quantity);
 
-        // ✅ Đồng thời lưu session (hiển thị nhanh)
-        if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
-
-        if (isset($_SESSION['cart'][$productId])) {
-            $_SESSION['cart'][$productId]['quantity'] += $quantity;
-            if ($_SESSION['cart'][$productId]['quantity'] > $stock)
-                $_SESSION['cart'][$productId]['quantity'] = $stock;
-        } else {
-            $_SESSION['cart'][$productId] = [
-                'id' => $product['id'],
-                'name' => $product['name'],
-                'price' => $product['price'],
-                'price_old' => $product['compare_at_price'],
-                'image_url' => $product['url'] ?? '',
-                'stock' => $stock,
-                'quantity' => $quantity
-            ];
-        }
+        // session cache
+        $_SESSION['cart'][$productId]['quantity'] = ($_SESSION['cart'][$productId]['quantity'] ?? 0) + $quantity;
 
         echo json_encode(['success' => true, 'message' => 'Đã thêm vào giỏ hàng']);
+        exit;
     }
+
 
     /** ✅ Cập nhật số lượng (AJAX) */
    public function update()
@@ -187,20 +181,6 @@ class CartController extends BaseController
 
         echo json_encode(['success' => true]);
     }
-    public function clearCart($userId)
-{
-    // Lấy cart_id theo user
-    $stmt = $this->conn->prepare("SELECT id FROM carts WHERE user_id = ?");
-    $stmt->execute([$userId]);
-    $cart = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($cart) {
-        $cartId = $cart['id'];
-
-        // Xóa tất cả sản phẩm trong cart_items
-        $stmt = $this->conn->prepare("DELETE FROM cart_items WHERE cart_id = ?");
-        $stmt->execute([$cartId]);
-    }
-}
 
 }

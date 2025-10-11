@@ -13,7 +13,7 @@
     <div class="hero-content">
       <h2>Gửi tặng một bó hoa tình yêu chỉ với một cú nhấp chuột</h2>
       <p>Chọn những bó hoa tươi được chúng tôi tuyển chọn kỹ lưỡng cho mọi dịp.</p>
-      <button><a href="#" class="btn-shop-now">Chọn Hoa</a></button>
+      <button><a href="index.php?controller=products&action=index" class="btn-shop-now">Chọn Hoa</a></button>
 
     </div>
     
@@ -31,78 +31,103 @@
   <section class="shop-flowers">
     <h2 class="section-title">Cửa Hàng <span>Hoa</span></h2>
     <!-- Danh Sach Hoa -->
+      <?php
+    // Tạo mảng ánh xạ tên danh mục => số lượng
+    $countMap = [];
+    foreach ($categoriesQuantity as $cat) {
+      $countMap[$cat['category_name']] = $cat['total'];
+    }
+    ?>
+
     <div class="flower-list">
-      <div class="flower-item">
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=1" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Bo.png" alt="Hoa bó">
         <h3>Hoa bó</h3>
-        <p>42 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa bó'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=2" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Gio.png" alt="Hoa giỏ">
         <h3>Hoa giỏ</h3>
-        <p>36 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa giỏ'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=3" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Cuoi.png" alt="Hoa cưới">
         <h3>Hoa cưới</h3>
-        <p>28 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa cưới'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=4" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Tinh-Yeu.png" alt="Hoa Tình Yêu">
         <h3>Hoa Tình Yêu</h3>
-        <p>51 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Tình Yêu'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=5" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Sinh-Nhat.png" alt="Hoa Sinh Nhật">
         <h3>Hoa Sinh Nhật</h3>
-        <p>33 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Sinh Nhật'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=6" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Cay-Van-Phong.png" alt="Cây Văn Phòng">
         <h3>Cây Văn Phòng</h3>
-        <p>21 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Cây Văn Phòng'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=7" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Mau-Hoa-Moi.png" alt="Mẫu Hoa Mới">
         <h3>Mẫu Hoa Mới</h3>
-        <p>15 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Mẫu Hoa Mới'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=8" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Chuc-Mung.png" alt="Hoa Chúc Mừng">
         <h3>Hoa Chúc Mừng</h3>
-        <p>39 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Chúc Mừng'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=9" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Chia-Buon.png" alt="Hoa Chia Buồn">
         <h3>Hoa Chia Buồn</h3>
-        <p>19 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Chia Buồn'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=10" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Tot-Nghiep.png" alt="Hoa Tốt Nghiệp">
         <h3>Hoa Tốt Nghiệp</h3>
-        <p>27 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Tốt Nghiệp'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=11" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Cao-Cap.png" alt="Hoa Cao Cấp">
         <h3>Hoa Cao Cấp</h3>
-        <p>12 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Cao Cấp'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=12" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Theo-Mua.png" alt="Hoa Theo Mùa">
         <h3>Hoa Theo Mùa</h3>
-        <p>25 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Theo Mùa'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=13" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Hoa-Su-Kien.png" alt="Hoa Sự Kiện">
         <h3>Hoa Sự Kiện</h3>
-        <p>30 Sản phẩm</p>
-      </div>
-      <div class="flower-item">
+        <p><?= $countMap['Hoa Sự Kiện'] ?? 0 ?> sản phẩm</p>
+      </a>
+
+      <a href="<?= BASE_URL ?>index.php?controller=products&action=index&category[]=15" class="flower-item">
         <img src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_2/Flowers/Khac.png" alt="Khác">
         <h3>Khác</h3>
-        <p>18 Sản phẩm</p>
-      </div>
+        <p><?= $countMap['Khác'] ?? 0 ?> sản phẩm</p>
+      </a>
+
     </div>
+
+
       <!-- Khuyến mãi -->
     <div class="promo-wrapper">
       <div class="promo-card">
@@ -134,54 +159,33 @@
   <section class="featured-section">
     <div class="products-header">
       <h2>Sản Phẩm<span class="highlight"> Nổi Bật:</span></h2>
-      <a href="../Pages/User/Shop/Shop.php"  class="view-all">Xem Tất Cả Sản Phẩm</a>
+      <a href="index.php?controller=products&action=index"  class="view-all">Xem Tất Cả Sản Phẩm</a>
     </div>
 
     <div class="product-list">
-          <div class="arrival-item">
-            <span class="tag-off">20% off</span>
-            <img src="" alt="Morning Dew">
-            <div class="info">
-              <h4>Morning Dew</h4>
-              <p>$49.00 <del>$55.00</del></p>
-              <small>⭐ 4.9 &nbsp;|&nbsp; "Celebrate every moment with pure beauty."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
+      <?php foreach ($featuredProducts as $item): ?>
+        <div class="arrival-item">
+          <?php if ($item['compare_at_price'] > $item['price']): ?>
+            <span class="tag-off">
+              Giảm <?= round((($item['compare_at_price'] - $item['price']) / $item['compare_at_price']) * 100) ?>%
+            </span>
+          <?php endif; ?>
+          <img src="<?= htmlspecialchars($item['url']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
+          <div class="info">
+            <h4><?= htmlspecialchars($item['name']) ?></h4>
+            <p><?= number_format($item['price'], 0, ',', '.') ?>đ 
+              <?php if ($item['compare_at_price'] > $item['price']): ?>
+                <del><?= number_format($item['compare_at_price'], 0, ',', '.') ?>đ</del>
+              <?php endif; ?>
+            </p>
+            <small>⭐ <?= $item['rating'] ?> &nbsp;|&nbsp; <?= htmlspecialchars($item['description']) ?></small>
+            <a href="<?= BASE_URL ?>index.php?controller=products&action=detail&id=<?= $item['id'] ?>" 
+              class="shop-now btn-promo">Khám Phá Ngay</a>
           </div>
-
-          <div class="arrival-item">
-            <span class="tag-off">20% off</span>
-            <img src="" alt="Morning Dew">
-            <div class="info">
-              <h4>Morning Dew</h4>
-              <p>$49.00 <del>$55.00</del></p>
-              <small>⭐ 4.5 &nbsp;|&nbsp; "Celebrate every moment with pure beauty."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
-          </div>
-
-          <div class="arrival-item">
-            <span class="tag-off">20% off</span>
-            <img src="" alt="Morning Dew">
-            <div class="info">
-              <h4>Morning Dew</h4>
-              <p>$49.00 <del>$55.00</del></p>
-              <small>⭐ 4.8 &nbsp;|&nbsp; "Celebrate every moment with pure beauty."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
-          </div>
-
-              <div class="arrival-item">
-            <span class="tag-off">20% off</span>
-            <img src="" alt="Morning Dew">
-            <div class="info">
-              <h4>Morning Dew</h4>
-              <p>$49.00 <del>$55.00</del></p>
-              <small>⭐ 5.0 &nbsp;|&nbsp; "Celebrate every moment with pure beauty."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
-          </div>
+        </div>
+      <?php endforeach; ?>
     </div>
+
     <div id="holiday">
       <img class="side-image left" src="<?= BASE_URL ?>Public/Assets/Image/Main/Section_3/holiday_Left.png" alt="Left Flower">
 
@@ -208,60 +212,32 @@
   <!-- Section 4: New Arrival + Weekly Deals-->
   <section class="section4">
     <!-- 1. New Arrival -->
-      <div class="new-arrival">
-        <div class="section-title">
-          <strong>Sản Phẩm </strong><span class="highlight">Mới:</span> 
-        </div>
-        <!-- 1. New Arrival -->
+     <div class="new-arrival">
+       <div class="section-title"> <strong>Sản Phẩm </strong><span class="highlight">Mới:</span> </div>
         <div class="arrival-list">
-        <!-- Item 1 -->
-          <div class="arrival-item">
-            <span class="tag-off">30% off</span>
-            <img src="" alt="Lovely Day">
-            <div class="info">
-              <h4>Lovely Day</h4>
-              <p>$56.00 <del>$64.00</del></p>
-              <small>⭐ 3.5 &nbsp;|&nbsp; "Celebrate every moment with pure beauty."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
+          <?php foreach ($newProducts as $item): ?>
+            <div class="arrival-item">
+              <?php if ($item['compare_at_price'] > $item['price']): ?>
+                <span class="tag-off">
+                  Giảm <?= round((($item['compare_at_price'] - $item['price']) / $item['compare_at_price']) * 100) ?>%
+                </span>
+              <?php endif; ?>
+              <img src="<?= htmlspecialchars($item['url']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
+              <div class="info">
+                <h4><?= htmlspecialchars($item['name']) ?></h4>
+                <p><?= number_format($item['price'], 0, ',', '.') ?>đ 
+                  <?php if ($item['compare_at_price'] > $item['price']): ?>
+                    <del><?= number_format($item['compare_at_price'], 0, ',', '.') ?>đ</del>
+                  <?php endif; ?>
+                </p>
+                <small>⭐ <?= $item['rating'] ?> &nbsp;|&nbsp; <?= htmlspecialchars($item['description']) ?></small>
+                <a href="<?= BASE_URL ?>index.php?controller=products&action=detail&id=<?= $item['id'] ?>" 
+                  class="shop-now btn-promo">Khám Phá Ngay</a>
+              </div>
             </div>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="arrival-item">
-            <span class="tag-off">20% off</span>
-            <img src="" alt="Morning Dew">
-            <div class="info">
-              <h4>Morning Dew</h4>
-              <p>$49.00 <del>$55.00</del></p>
-              <small>⭐ 3.5 &nbsp;|&nbsp; "Celebrate every moment with pure beauty."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="arrival-item">
-            <span class="tag-off">15% off</span>
-            <img src="" alt="Pink Delight">
-            <div class="info">
-              <h4>Pink Delight</h4>
-              <p>$34.00 <del>$40.00</del></p>
-              <small>⭐ 4.2 &nbsp;|&nbsp; "Blush with freshness and charm."</small>
-            <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
-          </div>
-
-          <!-- Item 4 -->
-          <div class="arrival-item">
-            <span class="tag-off">25% off</span>
-            <img src="" alt="Sunshine Bliss">
-            <div class="info">
-              <h4>Sunshine Bliss</h4>
-              <p>$45.00 <del>$60.00</del></p>
-              <small>⭐ 4.6 &nbsp;|&nbsp; "Brighten their day with sunlit beauty."</small>
-              <button class="shop-now btn-promo">Khám Phá Ngay</button>
-            </div>
-          </div>
-      </div>
+          <?php endforeach; ?>
+        </div>
+     </div>              
 
     <!-- 2. Weekly Deals -->
     <div id="Weekly">
@@ -270,7 +246,9 @@
               <h3>Ưu Đãi Hàng Tuần</h3>
               <h2>Những đóa hoa tươi mỗi tuần để làm <span class="highlight">Bừng Sáng</span> ngày của bạn</h2>
               <p>Khám phá những bó hoa tươi mới và ưu đãi đặc biệt mỗi tuần. Hãy tạo bất ngờ cho người bạn yêu thương – hoặc tự thưởng cho chính mình!</p>
-              <button class="btn-shop">Khám Phá Ngay →</button>
+              <a href="index.php?controller=products&action=index">
+                <button class="btn-shop">Khám Phá Ngay →</button>
+              </a>
             </div>
         </div>
     </div>

@@ -29,5 +29,6 @@ $discount = $product['compare_at_price']
       <del><?= $compare ?></del>
     <?php endif; ?>
   </p>
-  <div class="rating">⭐ 4.8</div>
+  <div class="rating">⭐ <?= $product['rating'] ?? '5' ?></div>
+
 </div>

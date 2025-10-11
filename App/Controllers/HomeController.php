@@ -1,21 +1,26 @@
 <?php
 require_once 'BaseController.php';
+require_once __DIR__ . '/../Models/ProductModel.php';
 
 class HomeController extends BaseController
 {
     public function index()
     {
-        // Gán tiêu đề trang để hiển thị trên <title>
         global $title;
         $title = "Trang chủ | Blossy";
 
-        // Dữ liệu cần truyền ra View
+        $productModel = new ProductModel();
+
+        $featuredProducts = $productModel->getTopRatedProducts(4);
+        $newProducts = $productModel->getNewestProducts(4);
+        $categories = $productModel->countProductsByCategory();
+
         $data = [
-            'pageHeading' => 'Chào mừng đến với Blossy',
-            'introMessage' => 'Gửi tặng một bó hoa tình yêu chỉ với một cú nhấp chuột.'
+            'featuredProducts' => $featuredProducts,
+            'newProducts' => $newProducts,
+            'categoriesQuantity' => $categories
         ];
 
-        // Load view Home/index.php
         $this->loadView('Home.index', $data);
     }
 }
