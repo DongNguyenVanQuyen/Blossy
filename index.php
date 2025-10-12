@@ -1,61 +1,59 @@
 <?php
-// ============================================================
-// 🔹 Khởi động session & output buffer
-// ============================================================
 session_start();
 ob_start();
+require_once 'App/Includes/config.php';
 
 // ============================================================
-// 🔹 Cấu hình ban đầu
+// 🔹 Xác định controller & action NGAY TỪ ĐẦU
 // ============================================================
-require_once 'App/Includes/config.php';
+$controller = isset($_GET['controller']) ? strtolower($_GET['controller']) : 'home';
+$action     = isset($_GET['action']) ? strtolower($_GET['action']) : 'index';
 
 // ============================================================
 // 🔹 Xử lý nhanh cho AJAX (Cart / Payment / Voucher / v.v.)
 // ============================================================
 
 // --- CartController (add / update / remove / clear)
-if (
-    isset($_GET['controller']) && $_GET['controller'] === 'cart' &&
-    isset($_GET['action']) && in_array($_GET['action'], ['add', 'update', 'remove', 'clear'])
-) {
+if ($controller === 'cart' && in_array($action, ['add', 'update', 'remove', 'clear'])) {
     require_once __DIR__ . "/App/Controllers/CartController.php";
-    $controller = new CartController();
-    $controller->{$_GET['action']}();
+    $controllerObj = new CartController();
+    $controllerObj->$action();
     exit;
 }
 
 // --- VoucherController (apply)
-if (
-    isset($_GET['controller']) && $_GET['controller'] === 'voucher' &&
-    in_array($_GET['action'], ['apply'])
-) {
+if ($controller === 'voucher' && $action === 'apply') {
     require_once __DIR__ . "/App/Controllers/VoucherController.php";
-    $controller = new VoucherController();
-    $controller->{$_GET['action']}();
+    $controllerObj = new VoucherController();
+    $controllerObj->$action();
     exit;
 }
 
 // --- PaymentController (getMethods / add)
-if (
-    isset($_GET['controller']) && $_GET['controller'] === 'payment' &&
-    in_array($_GET['action'], ['getMethods', 'add'])
-) {
+if ($controller === 'payment' && in_array($action, ['getmethods', 'add'])) {
     require_once __DIR__ . "/App/Controllers/PaymentController.php";
-    $controller = new PaymentController();
-    $controller->{$_GET['action']}();
+    $controllerObj = new PaymentController();
+    $controllerObj->$action();
     exit;
 }
 
 // ============================================================
-// 🔹 Lấy controller & action hiện tại
+// 🔹 Xử lý controller admin (AdminProductController...)
 // ============================================================
-$controller = isset($_GET['controller']) ? strtolower($_GET['controller']) : 'home';
-$action     = isset($_GET['action']) ? strtolower($_GET['action']) : 'index';
+if ($controller === 'adminproduct') {
+    require_once __DIR__ . '/App/Controllers/AdminProductController.php';
+    $controllerObject = new AdminProductController();
+    if (method_exists($controllerObject, $action)) {
+        isset($_GET['id']) ? $controllerObject->$action($_GET['id']) : $controllerObject->$action();
+    } else {
+        echo "<h3>❌ Action không tồn tại: $action</h3>";
+    }
+    exit;
+}
+
 
 // ============================================================
 // ⚠️ Không xóa session last_order ngay sau khi đặt hàng
-//    Chỉ xóa khi người dùng rời trang OrderCompleted
 // ============================================================
 if (
     isset($_SESSION['last_order']) &&
@@ -64,29 +62,39 @@ if (
     unset($_SESSION['last_order']);
 }
 
+// Nếu controller = admin mà không có action => tự động về dashboard
+if ($controller === 'admin' && empty($_GET['action'])) {
+    $action = 'dashboard';
+}
+
+// ============================================================
+// 🔹 UploadController (upload ảnh Cloudinary)
+// ============================================================
+if ($controller === 'upload') {
+    require_once __DIR__ . '/App/Controllers/UploadController.php';
+    $controllerObj = new UploadController();
+    if (method_exists($controllerObj, $action)) {
+        $controllerObj->$action();
+    } else {
+        echo json_encode(['success' => false, 'message' => "❌ Không tìm thấy action $action"]);
+    }
+    exit;
+}
+
 // ============================================================
 // 🔹 Gọi đúng Controller & Action
 // ============================================================
 $controllerName = ucfirst($controller) . 'Controller';
-$actionName     = $action;
 $controllerPath = __DIR__ . '/App/Controllers/' . $controllerName . '.php';
 
 if (file_exists($controllerPath)) {
     require_once $controllerPath;
-
     if (class_exists($controllerName)) {
-        $controllerObject = new $controllerName();
-
-        // ✅ Kiểm tra xem action có tồn tại
-        if (method_exists($controllerObject, $actionName)) {
-            // 🧩 Tự động truyền tham số nếu có trong URL
-            if (isset($_GET['id']) && !empty($_GET['id'])) {
-                $controllerObject->$actionName($_GET['id']); // Gọi action có id
-            } else {
-                $controllerObject->$actionName(); // Gọi action bình thường
-            }
+        $controllerObj = new $controllerName();
+        if (method_exists($controllerObj, $action)) {
+            isset($_GET['id']) ? $controllerObj->$action($_GET['id']) : $controllerObj->$action();
         } else {
-            echo "<h3>❌ Không tìm thấy action <b>$actionName</b> trong controller <b>$controllerName</b>.</h3>";
+            echo "<h3>❌ Không tìm thấy action <b>$action</b> trong controller <b>$controllerName</b>.</h3>";
         }
     } else {
         echo "<h3>❌ Không tìm thấy class controller: <b>$controllerName</b>.</h3>";
@@ -95,7 +103,4 @@ if (file_exists($controllerPath)) {
     echo "<h3>❌ Không tìm thấy file controller: <b>$controllerPath</b>.</h3>";
 }
 
-// ============================================================
-// 🔹 Kết thúc buffer
-// ============================================================
 ob_end_flush();

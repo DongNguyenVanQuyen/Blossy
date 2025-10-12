@@ -77,52 +77,77 @@ class CartController extends BaseController
 
     /** ✅ Cập nhật số lượng (AJAX) */
    public function update()
-{
-    header('Content-Type: application/json; charset=utf-8');
+    {
+        header('Content-Type: application/json; charset=utf-8');
 
-    if (!isset($_POST['product_id'], $_POST['quantity'])) {
-        echo json_encode(['success' => false, 'message' => 'Thiếu dữ liệu']);
+        if (!isset($_POST['product_id'], $_POST['quantity'])) {
+            echo json_encode(['success' => false, 'message' => 'Thiếu dữ liệu']);
+            exit;
+        }
+
+        $id  = (int)$_POST['product_id'];
+        $qty = max(1, (int)$_POST['quantity']);
+
+        require_once __DIR__ . '/../Models/ProductModel.php';
+        $productModel = new ProductModel();
+        $product = $productModel->getById($id);
+
+        if (!$product) {
+            echo json_encode(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
+            exit;
+        }
+
+        $stock = (int)$product['stock'];
+        if ($stock <= 0) {
+            echo json_encode(['success' => false, 'message' => 'Sản phẩm đã hết hàng']);
+            exit;
+        }
+
+        // 🔹 Giới hạn không vượt quá tồn kho
+        if ($qty > $stock) {
+            $qty = $stock;
+            $message = "Số lượng vượt quá tồn kho (chỉ còn $stock)";
+        } else {
+            $message = "Đã cập nhật số lượng";
+        }
+
+        // 🔹 Cập nhật session
+        if (isset($_SESSION['cart'][$id])) {
+            $_SESSION['cart'][$id]['quantity'] = $qty;
+        }
+
+        // 🔹 Cập nhật DB nếu user đăng nhập
+        if (isset($_SESSION['user']['user_id'])) {
+            $cartModel = new CartModel();
+            $userId = $_SESSION['user']['user_id'];
+            $cartId = $cartModel->getOrCreateCart($userId);
+
+            $stmt = $cartModel->conn->prepare("
+                UPDATE cart_items 
+                SET quantity = ?, added_at = NOW() 
+                WHERE cart_id = ? AND product_id = ?
+            ");
+            $stmt->execute([$qty, $cartId, $id]);
+        }
+
+        // 🔹 Tính lại tổng
+        $subtotal = 0;
+        $totalItems = 0;
+        foreach ($_SESSION['cart'] ?? [] as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+            $totalItems += $item['quantity'];
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => $message,
+            'quantity' => $qty,
+            'subtotal' => number_format($subtotal, 0, ',', '.') . 'đ',
+            'totalItems' => $totalItems
+        ]);
         exit;
     }
 
-    $id = (int)$_POST['product_id'];
-    $qty = max(1, (int)$_POST['quantity']);
-
-    // Cập nhật session
-    if (isset($_SESSION['cart'][$id])) {
-        $stock = $_SESSION['cart'][$id]['stock'] ?? 1;
-        $_SESSION['cart'][$id]['quantity'] = min($qty, $stock);
-    }
-
-    // Cập nhật DB
-    if (isset($_SESSION['user']['user_id'])) {
-        $cartModel = new CartModel();
-        $userId = $_SESSION['user']['user_id'];
-        $cartId = $cartModel->getOrCreateCart($userId);
-
-        $stmt = $cartModel->conn->prepare("
-            UPDATE cart_items 
-            SET quantity = ?, added_at = NOW() 
-            WHERE cart_id = ? AND product_id = ?
-        ");
-        $stmt->execute([$qty, $cartId, $id]);
-    }
-
-    // Tính lại tổng
-    $subtotal = 0;
-    $totalItems = 0;
-    foreach ($_SESSION['cart'] ?? [] as $item) {
-        $subtotal += $item['price'] * $item['quantity'];
-        $totalItems += $item['quantity'];
-    }
-
-    echo json_encode([
-        'success' => true,
-        'subtotal' => number_format($subtotal, 0, ',', '.') . 'đ',
-        'totalItems' => $totalItems
-    ]);
-    exit; // 🔥 Thêm dòng này để dừng hoàn toàn output
-}
 
 
   /** Xóa 1 sản phẩm khỏi giỏ hàng (AJAX) */

@@ -179,4 +179,35 @@ class UserModel extends BaseModel
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // =========================
+    // LẤY ĐƠN HÀNG THEO USER (PHÂN TRANG)
+    // =========================
+    public function getUserOrdersPaginated($userId, $limit = 10, $offset = 0): array
+    {
+        $sql = "SELECT 
+                    id,
+                    CONCAT('OD', LPAD(id, 5, '0')) AS code,
+                    DATE_FORMAT(created_at, '%d/%m/%Y') AS created_date,
+                    status,
+                    grand_total,
+                    payment_method
+                FROM orders
+                WHERE user_id = ?
+                ORDER BY created_at DESC
+                LIMIT $limit OFFSET $offset";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    // Đếm tổng đơn hàng để tính số trang
+    public function countUserOrders($userId): int
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM orders WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        return (int)$stmt->fetchColumn();
+    }
+
 }

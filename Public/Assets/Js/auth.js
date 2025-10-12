@@ -42,7 +42,3 @@ document.querySelectorAll(".toggle-link a").forEach((link) => {
 // ===== Close when clicking overlay or close button =====
 overlay.addEventListener("click", closeAuthForm);
 btnClose.addEventListener("click", closeAuthForm);
-
-// ===== Optional: Open from buttons =====
-// document.querySelector("#btnLogin")?.addEventListener("click", () => openAuthForm("login"));
-// document.querySelector("#btnRegister")?.addEventListener("click", () => openAuthForm("register"));

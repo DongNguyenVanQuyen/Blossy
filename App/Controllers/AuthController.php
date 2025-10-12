@@ -20,13 +20,24 @@ class AuthController extends BaseController
 
         $userModel = new UserModel();
         $addresses = $userModel->getAddresses($userId); 
-        $orders = $userModel->getUserOrders($userId); 
+
+        // Pagination setup
+        $limit = 10;
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        $totalOrders = $userModel->countUserOrders($userId);
+        $totalPages = ceil($totalOrders / $limit);
+
+        $orders = $userModel->getUserOrdersPaginated($userId, $limit, $offset);
+
         $this->loadView('User.Account', [
             'user' => $user,
             'addresses' => $addresses,
-            'orders' => $orders 
+            'orders' => $orders,
+            'page' => $page,
+            'totalPages' => $totalPages
         ]);
-
     }
 
     public function login()
@@ -54,47 +65,53 @@ class AuthController extends BaseController
     public function handleLogin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $email = trim($_POST['email'] ?? '');
+            $password = trim($_POST['password'] ?? '');
 
             $db = new BaseModel();
-
-            // 1. Tìm user theo email
             $stmt = $db->conn->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // 2. Kiểm tra mật khẩu (nếu đã hash thì dùng password_verify)
-           // if ($user && password_verify($password, $user['password'])) {
+            // ✅ Kiểm tra đăng nhập
             if ($user && $password === $user['password']) {
+                // Tạo session
                 $_SESSION['user'] = [
-                    'name' => $user['first_name'] . ' ' . $user['last_name'],
-                    'email' => $user['email'],
-                    'role_id' => $user['role_id'],
-                    'user_id' => $user['id'],
+                    'name'       => trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '')),
+                    'email'      => $user['email'],
+                    'role_id'    => $user['role_id'],
+                    'user_id'    => $user['id'],
                     'first_name' => $user['first_name'],
                     'last_name'  => $user['last_name'],
                     'phone'      => $user['phone'],
                     'address'    => $user['address'],
                     'gender'     => $user['gender']
                 ];
+
                 $_SESSION['toast'] = [
                     'type' => 'success',
-                    'message' => 'Đăng nhập thành công!'
+                    'message' => '✅ Đăng nhập thành công!'
                 ];
 
-                header("Location: " . BASE_URL . "index.php");
-                exit();
-            } else {
-                $_SESSION['toast'] = [
-                    'type' => 'error',
-                    'message' => '❌ Email hoặc mật khẩu không đúng!'
-                ];
-                header("Location: index.php?controller=auth&action=login");
+                // Nếu là admin thì vào Dashboard
+                if ((int)$user['role_id'] === 3) {
+                    header("Location: index.php?controller=admin&action=dashboard");
+                } else {
+                    header("Location: index.php");
+                }
                 exit;
             }
+
+            // ❌ Sai tài khoản hoặc mật khẩu
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => '❌ Email hoặc mật khẩu không đúng!'
+            ];
+            header("Location: index.php?controller=auth&action=login");
+            exit;
         }
     }
+
     public function handleRegister()
 {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {

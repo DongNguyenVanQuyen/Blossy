@@ -172,7 +172,7 @@ button.disabled:hover {
   border-bottom: 2px solid var(--header-border);
   display: flex;
   padding: 10px 24px;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   z-index: 100;
   position: fixed;
@@ -180,6 +180,13 @@ button.disabled:hover {
   left: 0;
   right: 0;
   height: 66.6px;
+}
+
+#Header #Logo {
+  margin-left: 80px;
+}
+#Header #User {
+  margin-right: 80px;
 }
 
 .header-container {
@@ -467,7 +474,7 @@ hr {
   justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
-  margin-bottom: 60px;
+  margin: 0 80px 60px;
 }
 
 .flower-item {

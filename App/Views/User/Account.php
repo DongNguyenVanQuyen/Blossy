@@ -122,6 +122,25 @@ include_once __DIR__ . '/../Layouts/Header.php';
           <?php endif; ?>
         </tbody>
       </table>
+      <?php if ($totalPages > 1): ?>
+      <div class="pagination">
+        <?php if ($page > 1): ?>
+          <a href="?controller=auth&action=Info&page=<?= $page - 1 ?>" class="pagination-link">&lt;</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+          <a href="?controller=auth&action=Info&page=<?= $i ?>" 
+            class="pagination-link <?= $i == $page ? 'active' : '' ?>">
+            <?= $i ?>
+          </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $totalPages): ?>
+          <a href="?controller=auth&action=Info&page=<?= $page + 1 ?>" class="pagination-link">&gt;</a>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
+
     </div>
 
     <!-- ===== 3. Quản Lý Địa Chỉ ===== -->

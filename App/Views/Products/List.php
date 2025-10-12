@@ -39,7 +39,16 @@
         <div class="filter-group">
           <h4>Màu sắc</h4>
           <?php 
-            $colorsList = ['Hồng'=>'hong','Đỏ'=>'do','Vàng'=>'vang','Trắng'=>'trang','Xanh'=>'xanh','Cam'=>'cam','Tím'=>'tim','Tất cả'=>'all'];
+            $colorsList = [
+              'Hồng'  => 'Hồng',
+              'Đỏ'    => 'Đỏ',
+              'Vàng'  => 'Vàng',
+              'Trắng' => 'Trắng',
+              'Xanh'  => 'Xanh lá', 
+              'Cam'   => 'Cam',
+              'Tím'   => 'Tím',
+              'Tất cả'=> 'all'
+            ];
             foreach ($colorsList as $label=>$val): ?>
             <label>
               <input type="checkbox" name="color[]" value="<?= $val ?>"
