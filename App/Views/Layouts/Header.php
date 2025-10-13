@@ -14,7 +14,7 @@
     <div id="Logo">
       <a href="<?= BASE_URL ?>Public/index.php">    
         <ul>
-          <li>B</li>
+          <li>BL</li>
           <img class="logoImg" src="" alt="Mùa Xuân">
           <li>S</li>
           <li>S</li>

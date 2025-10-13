@@ -54,7 +54,62 @@ class CheckoutController extends BaseController
 
     echo json_encode(['success' => true]);
     exit;
+}public function buyinCard()
+{
+    header('Content-Type: application/json; charset=utf-8');
+
+    if (!isset($_SESSION['user']['user_id'])) {
+        echo json_encode(['success' => false, 'message' => 'Bạn cần đăng nhập để mua hàng.']);
+        exit;
+    }
+
+    // ✅ Đọc dữ liệu JSON từ fetch body
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input || empty($input['products'])) {
+        echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ.']);
+        exit;
+    }
+
+    require_once __DIR__ . '/../Models/ProductModel.php';
+    $productModel = new ProductModel();
+
+    $buyNowItems = [];
+    foreach ($input['products'] as $p) {
+        $productId = (int)($p['product_id'] ?? 0);
+        $quantity  = max(1, (int)($p['quantity'] ?? 1));
+
+        $product = $productModel->getById($productId);
+
+        if (!$product || !$product['is_active']) {
+            echo json_encode(['success' => false, 'message' => 'Sản phẩm không tồn tại hoặc đã ngừng kinh doanh.']);
+            exit;
+        }
+
+        if ($quantity > ($product['stock'] ?? 0)) {
+            echo json_encode(['success' => false, 'message' => "Sản phẩm '{$product['name']}' không đủ hàng."]);
+            exit;
+        }
+
+        $buyNowItems[] = [
+            'product_id' => $product['id'],
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'quantity' => $quantity,
+            'image_url' => $product['url'] ?? '',
+            'stock' => $product['stock']
+        ];
+    }
+
+    // ✅ Lưu vào session để trang Checkout hiển thị
+    $_SESSION['buy_now'] = $buyNowItems;
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Tạo đơn hàng tạm thành công.'
+    ]);
+    exit;
 }
+
 
     public function index()
 {
@@ -69,6 +124,7 @@ class CheckoutController extends BaseController
 
     $userModel = new UserModel();
     $user = $userModel->getUserById($userId);
+    $user_address = $userModel->getAddresses($userId);
 
     $cartModel = new CartModel();
 
@@ -113,6 +169,7 @@ class CheckoutController extends BaseController
 
     $data = [
         'user' => $user,
+        'user_address' => $user_address,
         'cartItems' => $cartItems,
         'methods' => $methods,
         'voucher' => $voucher,

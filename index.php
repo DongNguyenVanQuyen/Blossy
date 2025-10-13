@@ -46,7 +46,7 @@ if ($controller === 'adminproduct') {
     if (method_exists($controllerObject, $action)) {
         isset($_GET['id']) ? $controllerObject->$action($_GET['id']) : $controllerObject->$action();
     } else {
-        echo "<h3>❌ Action không tồn tại: $action</h3>";
+        echo "<h3>Action không tồn tại: $action</h3>";
     }
     exit;
 }

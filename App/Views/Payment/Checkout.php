@@ -22,12 +22,19 @@ include_once __DIR__ . '/../Layouts/Header.php';
             <input type="text" name="last_name" value="<?= htmlspecialchars($user['last_name'] ?? '') ?>" required>
           </div>
         </div>
-
+        <?php
+        $defaultAddress = $user_address[0] ?? null; // lấy địa chỉ đầu tiên (đã ORDER BY is_default DESC)
+        ?>
         <div class="form-group">
           <label>Địa Chỉ*</label>
+          <?php
+          $addressValue = $defaultAddress['line1'] ?? $user['address'] ?? '';
+          ?>
           <input type="text" name="street" placeholder="Số nhà, tên đường"
-                value="<?= htmlspecialchars($user['address'] ?? '') ?>" required>
+                value="<?= htmlspecialchars($addressValue) ?>" required>
+
         </div>
+
 
         <div class="form-group">
           <label>Thành Phố*</label>

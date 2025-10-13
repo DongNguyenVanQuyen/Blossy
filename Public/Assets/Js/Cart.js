@@ -146,3 +146,47 @@ function showToast(message, type = "success") {
     setTimeout(() => toast.remove(), 300);
   }, 2500);
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const checkoutBtn = document.querySelector(".checkout-now-card");
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", async () => {
+      const items = Array.from(document.querySelectorAll(".cart-item")).map(
+        (el) => {
+          const product_id = el.dataset.id;
+          const quantity = parseInt(
+            el.querySelector(".cart-quantity span")?.textContent || "1"
+          );
+          return { product_id, quantity };
+        }
+      );
+
+      if (items.length === 0) {
+        alert("Giỏ hàng của bạn đang trống!");
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          "index.php?controller=checkout&action=buyinCard",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ products: items }),
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+          window.location.href = "index.php?controller=checkout&action=index";
+        } else {
+          alert(data.message || "Không thể xử lý thanh toán.");
+        }
+      } catch (err) {
+        console.error("❌ Lỗi thanh toán:", err);
+        alert("Đã xảy ra lỗi, vui lòng thử lại!");
+      }
+    });
+  }
+});
