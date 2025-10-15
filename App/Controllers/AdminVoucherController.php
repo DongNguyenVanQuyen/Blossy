@@ -13,8 +13,8 @@ class AdminVoucherController extends BaseController
 
     private function guardAdmin()
     {
-        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] !== 3) {
-            $_SESSION['toast'] = ['type' => 'error', 'message' => '⚠️ Bạn không có quyền truy cập Admin!'];
+        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] === 1) {
+            $_SESSION['toast'] = ['type' => 'error', 'message' => 'Bạn không có quyền truy cập Admin!'];
             header("Location: index.php");
             exit;
         }
@@ -60,7 +60,7 @@ class AdminVoucherController extends BaseController
                 'created_by'      => $_SESSION['user']['user_id']
             ];
             $this->model->create($data);
-            $_SESSION['toast'] = ['type' => 'success', 'message' => '✅ Thêm voucher thành công!'];
+            $_SESSION['toast'] = ['type' => 'success', 'message' => 'Thêm voucher thành công!'];
             header("Location: index.php?controller=adminvoucher&action=index");
             exit;
         }
@@ -84,7 +84,7 @@ class AdminVoucherController extends BaseController
                 'is_active'       => isset($_POST['is_active']) ? 1 : 0
             ];
             $this->model->update($id, $data);
-            $_SESSION['toast'] = ['type' => 'success', 'message' => '✅ Cập nhật voucher thành công!'];
+            $_SESSION['toast'] = ['type' => 'success', 'message' => 'Cập nhật voucher thành công!'];
             header("Location: index.php?controller=adminvoucher&action=index");
             exit;
         }
@@ -95,7 +95,7 @@ class AdminVoucherController extends BaseController
     {
         if (isset($_GET['id'])) {
             $this->model->delete($_GET['id']);
-            $_SESSION['toast'] = ['type' => 'success', 'message' => '🗑️ Xóa voucher thành công!'];
+            $_SESSION['toast'] = ['type' => 'success', 'message' => 'Xóa voucher thành công!'];
             header("Location: index.php?controller=adminvoucher&action=index");
             exit;
         }

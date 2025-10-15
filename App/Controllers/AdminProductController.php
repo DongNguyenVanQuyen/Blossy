@@ -15,7 +15,7 @@ class AdminProductController extends BaseController
     /** Chặn truy cập không phải admin */
     private function guardAdmin()
     {
-        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] !== 3) {
+        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] === 1) {
             $_SESSION['toast'] = ['type' => 'error', 'message' => 'Bạn không có quyền truy cập Admin!'];
             header("Location: index.php");
             exit;

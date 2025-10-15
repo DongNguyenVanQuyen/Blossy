@@ -14,7 +14,7 @@ class AdminStaffController extends BaseController
     private function guardAdmin()
     {
         if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] !== 3) {
-            $_SESSION['toast'] = ['type' => 'error', 'message' => '🚫 Không có quyền truy cập!'];
+            $_SESSION['toast'] = ['type' => 'error', 'message' => 'Không có quyền truy cập!'];
             header("Location: index.php");
             exit;
         }
@@ -38,7 +38,7 @@ class AdminStaffController extends BaseController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
-            $_SESSION['toast'] = ['type' => 'success', 'message' => '✅ Đã thêm nhân viên mới!'];
+            $_SESSION['toast'] = ['type' => 'success', 'message' => 'Đã thêm nhân viên mới!'];
         }
 
         header("Location: index.php?controller=adminstaff&action=index");
@@ -52,7 +52,7 @@ class AdminStaffController extends BaseController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->update($_POST);
-            $_SESSION['toast'] = ['type' => 'success', 'message' => '✏️ Đã cập nhật nhân viên thành công!'];
+            $_SESSION['toast'] = ['type' => 'success', 'message' => 'Đã cập nhật nhân viên thành công!'];
         }
 
         header("Location: index.php?controller=adminstaff&action=index");
@@ -64,7 +64,7 @@ class AdminStaffController extends BaseController
     {
         $this->guardAdmin();
         $this->model->delete($id);
-        $_SESSION['toast'] = ['type' => 'success', 'message' => '🗑️ Đã xóa nhân viên!'];
+        $_SESSION['toast'] = ['type' => 'success', 'message' => 'Đã xóa nhân viên!'];
         header("Location: index.php?controller=adminstaff&action=index");
         exit;
     }

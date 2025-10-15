@@ -14,13 +14,12 @@ class AdminPromotionController extends BaseController
 
     private function guardAdmin()
     {
-        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] !== 3) {
-            $_SESSION['toast'] = ['type' => 'error', 'message' => '⚠️ Bạn không có quyền truy cập!'];
+        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] === 1) {
+            $_SESSION['toast'] = ['type' => 'error', 'message' => 'Bạn không có quyền truy cập Admin!'];
             header("Location: index.php");
             exit;
         }
     }
-
     public function index()
     {
         $this->guardAdmin();
@@ -38,7 +37,7 @@ class AdminPromotionController extends BaseController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
-            $_SESSION['toast'] = ['type' => 'success', 'message' => '✅ Đã thêm khuyến mãi thành công!'];
+            $_SESSION['toast'] = ['type' => 'success', 'message' => 'Đã thêm khuyến mãi thành công!'];
             header("Location: index.php?controller=adminpromotion&action=index");
             exit;
         }

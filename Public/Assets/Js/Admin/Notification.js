@@ -21,12 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const json = await res.json();
 
     if (json.success) {
-      alert(
-        json.updated ? "Cập nhật thành công!" : "Tạo thông báo thành công!"
-      );
-      window.location.reload();
+      showToast("Lưu Thành Công!", "success");
+      setTimeout(() => location.reload(), 500);
     } else {
-      alert(json.message || "Lỗi khi lưu!");
+      showToast("Lỗi lưu thông báo!", "error");
     }
   });
 
@@ -74,10 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       const json = await res.json();
       if (json.success) {
-        alert(" Đã xóa thành công!");
+        showToast("Xóa Thành Công!", "success");
         btn.closest("tr").remove();
       } else {
-        alert(json.message || "Lỗi khi xóa!");
+        showToast("Xóa thất bại", "error");
       }
     });
   });

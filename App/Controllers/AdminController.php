@@ -7,7 +7,7 @@ class AdminController extends BaseController
     private function guardAdmin(): void
     {
         // role_id: 1 = admin (tùy DB của bạn, sửa nếu khác)
-        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] !== 3) {
+        if (!isset($_SESSION['user']) || (int)$_SESSION['user']['role_id'] === 1) {
             $_SESSION['toast'] = ['type' => 'error', 'message' => '⚠️ Bạn không có quyền truy cập Admin!'];
             header("Location: " . BASE_URL . "index.php");
             exit;
