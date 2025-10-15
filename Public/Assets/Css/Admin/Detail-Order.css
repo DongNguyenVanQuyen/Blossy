@@ -1,0 +1,54 @@
+/* Detai */
+#admin_detail {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+.order-summary,
+.order-details {
+  background: var(--panel-bg);
+  border: 1px solid var(--header-border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.order-summary div {
+  margin-bottom: 6px;
+}
+.order-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.order-detail-table th,
+.order-detail-table td {
+  border-bottom: 1px solid var(--header-border);
+  padding: 8px 10px;
+  text-align: center;
+}
+.order-detail-table th {
+  background: #faf1e8;
+  color: #6a4c3b;
+}
+.order-detail-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+.order-actions {
+  text-align: right;
+}
+.btn-back {
+  display: inline-block;
+  background: #b4662a;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.btn-back:hover {
+  background: #8a4f1e;
+}

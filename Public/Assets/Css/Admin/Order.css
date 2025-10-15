@@ -1,0 +1,184 @@
+/* Order */
+/* ===============================
+   TRANG QUẢN LÝ ĐƠN HÀNG (ORDER)
+=============================== */
+
+.order-content {
+  flex: 1;
+  background: var(--bg);
+  padding: 24px 28px;
+  color: var(--text);
+}
+
+.order-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+/* ====== BẢNG ĐƠN HÀNG ====== */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.order-table th {
+  background: #f6e6d6;
+  color: #5b3b28;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.order-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--header-border);
+  text-align: center;
+  color: var(--text);
+}
+
+.order-table tr:hover {
+  background: #fff3e7;
+  transition: 0.2s ease;
+}
+
+/* ====== TRẠNG THÁI ====== */
+#order_admin {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.admin-main {
+  flex: 1; /* ✅ Chiếm toàn bộ phần còn lại bên phải sidebar */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.order-content {
+  flex: 1;
+  padding: 24px 28px;
+  background: var(--panel-bg);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.order-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.order-status.pending {
+  background: #fff6e6;
+  color: #c88b1b;
+  border: 1px solid #f2d09c;
+}
+
+.order-status.shipping {
+  background: #e6f0ff;
+  color: #1976d2;
+  border: 1px solid #a7c7f7;
+}
+
+.order-status.success {
+  background: #e9f7ed;
+  color: #2e7d32;
+  border: 1px solid #a9d6b4;
+}
+
+.order-status.cancel {
+  background: #fdecea;
+  color: #c62828;
+  border: 1px solid #f4b2a7;
+}
+
+/* ====== NÚT ====== */
+.order-update-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.order-status-select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--header-border);
+  background: #fff;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.order-status-select:hover {
+  border-color: var(--primary);
+}
+
+.order-btn-update {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.order-btn-update:hover {
+  background: #3e8e41;
+}
+
+/* PHÂN TRANG */
+.order-pagination {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.order-page-link {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--header-border);
+  color: var(--text);
+  background: var(--panel-bg);
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.order-page-link:hover {
+  background: var(--header-bg);
+}
+
+.order-page-link.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .order-table th:nth-child(3),
+  .order-table td:nth-child(3),
+  .order-table th:nth-child(5),
+  .order-table td:nth-child(5) {
+    display: none;
+  }
+}

@@ -143,23 +143,41 @@ class CheckoutController extends BaseController
         $subtotal += $item['price'] * $item['quantity'];
     }
 
-    // ✅ Áp dụng voucher
-    $voucherCode = $_GET['voucher'] ?? '';
+    // ✅ Áp dụng khuyến mãi tự động hoặc voucher
+    $voucherCode = $_GET['voucher'] ?? ''; // mã user nhập (nếu có)
     $discount = 0;
     $voucher = null;
 
-    if ($voucherCode !== '') {
+    require_once __DIR__ . '/../Models/AdminPromotionModel.php';
+    $promotionModel = new AdminPromotionModel();
+
+    // 🔹 Nếu người dùng KHÔNG nhập mã → kiểm tra khuyến mãi tự động
+    if ($voucherCode === '') {
+        $promo = $promotionModel->getActivePromotion();
+        if ($promo) {
+            $discount = $subtotal * ($promo['discount_percent'] / 100);
+            $voucher = [
+                'code' => $promo['code'] ?? 'AUTO_PROMO',
+                'name' => $promo['name'],
+                'type' => 'percent',
+                'value' => $promo['discount_percent']
+            ];
+        }
+    }
+    // 🔹 Nếu người dùng nhập mã → kiểm tra voucher
+    else {
         $voucherModel = new VoucherModel();
         $voucher = $voucherModel->getActiveVoucher($voucherCode);
 
-        if ($voucher && $subtotal >= $voucher['min_order_total']) {
+        if ($voucher && $subtotal >= ($voucher['min_order_total'] ?? 0)) {
             $discount = ($voucher['type'] === 'percent')
-                ? min($subtotal * ($voucher['value'] / 100), $voucher['max_discount'])
+                ? min($subtotal * ($voucher['value'] / 100), $voucher['max_discount'] ?? $subtotal)
                 : $voucher['value'];
         } else {
             $voucher = null;
         }
     }
+
     $shippingFee = 30000;
     $total = $subtotal - $discount + $shippingFee;
 

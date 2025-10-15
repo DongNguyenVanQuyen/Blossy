@@ -29,18 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!email || !password) {
       e.preventDefault();
-      showToast("⚠️ Vui lòng nhập đầy đủ Email và Mật khẩu!", "warning");
+      showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "warning");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       e.preventDefault();
-      showToast("❌ Email không hợp lệ!", "error");
+      showToast("Email không hợp lệ!", "error");
       return;
     }
 
     // OK
-    showToast("⏳ Đang đăng nhập...", "success");
+    showToast("Đang đăng nhập...", "success");
   });
 });

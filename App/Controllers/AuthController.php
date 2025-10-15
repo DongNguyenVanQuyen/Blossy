@@ -73,9 +73,28 @@ class AuthController extends BaseController
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // ✅ Kiểm tra đăng nhập
+            // ⚠️ Kiểm tra tồn tại tài khoản
+            if (!$user) {
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '❌ Email không tồn tại trong hệ thống!'
+                ];
+                header("Location: index.php?controller=auth&action=login");
+                exit;
+            }
+
+            // ⚠️ Kiểm tra trạng thái tài khoản bị khóa
+            if (!empty($user['is_blocked']) && (int)$user['is_blocked'] === 1) {
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => '🚫 Tài khoản của bạn đã bị khóa! Vui lòng liên hệ Admin.'
+                ];
+                header("Location: index.php?controller=auth&action=login");
+                exit;
+            }
+
+            // ✅ Kiểm tra mật khẩu
             if ($user && $password === $user['password']) {
-                // Tạo session
                 $_SESSION['user'] = [
                     'name'       => trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '')),
                     'email'      => $user['email'],
@@ -90,10 +109,10 @@ class AuthController extends BaseController
 
                 $_SESSION['toast'] = [
                     'type' => 'success',
-                    'message' => '✅ Đăng nhập thành công!'
+                    'message' => 'Đăng nhập thành công!'
                 ];
 
-                // Nếu là admin thì vào Dashboard
+                // Admin → vào dashboard
                 if ((int)$user['role_id'] === 3) {
                     header("Location: index.php?controller=admin&action=dashboard");
                 } else {
@@ -102,15 +121,16 @@ class AuthController extends BaseController
                 exit;
             }
 
-            // ❌ Sai tài khoản hoặc mật khẩu
+            // ❌ Sai mật khẩu
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '❌ Email hoặc mật khẩu không đúng!'
+                'message' => 'Mật khẩu không chính xác!'
             ];
             header("Location: index.php?controller=auth&action=login");
             exit;
         }
     }
+
 
     public function handleRegister()
 {
@@ -125,14 +145,14 @@ class AuthController extends BaseController
         $gender     = trim($_POST['gender']);
 
         if ($password !== $confirm) {
-            $this->loadView('User.Register', ['error' => '❌ Mật khẩu không khớp!']);
+            $this->loadView('User.Register', ['error' => 'Mật khẩu không khớp!']);
             return;
         }
 
         $userModel = new UserModel();
 
         if ($userModel->emailExists($email)) {
-            $this->loadView('User.Register', ['error' => '❌ Email đã tồn tại!']);
+            $this->loadView('User.Register', ['error' => 'Email đã tồn tại!']);
             return;
         }
 
@@ -153,14 +173,14 @@ class AuthController extends BaseController
         if ($success) {
             $_SESSION['toast'] = [
                 'type' => 'success',
-                'message' => '✅ Đăng ký thành công! Vui lòng đăng nhập.'
+                'message' => 'Đăng ký thành công! Vui lòng đăng nhập.'
             ];
             header("Location: index.php?controller=auth&action=login");
             exit;
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '❌ Có lỗi xảy ra khi đăng ký!'
+                'message' => 'Có lỗi xảy ra khi đăng ký!'
             ];
             header("Location: index.php?controller=auth&action=register");
             exit;
@@ -180,7 +200,7 @@ public function handleUpdateInfo()
         if (empty($first_name) || empty($last_name) || empty($phone)) {
             $_SESSION['toast'] = [
                 'type' => 'warning',
-                'message' => '⚠️ Vui lòng nhập đầy đủ thông tin!'
+                'message' => 'Vui lòng nhập đầy đủ thông tin!'
             ];
             header("Location: index.php?controller=auth&action=Info");
             exit;
@@ -205,12 +225,12 @@ public function handleUpdateInfo()
 
             $_SESSION['toast'] = [
                 'type' => 'success',
-                'message' => '✅ Cập nhật thông tin thành công!'
+                'message' => 'Cập nhật thông tin thành công!'
             ];
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '❌ Có lỗi xảy ra khi cập nhật!'
+                'message' => 'Có lỗi xảy ra khi cập nhật!'
             ];
         }
 
@@ -220,7 +240,7 @@ public function handleUpdateInfo()
         // Nếu chưa đăng nhập
         $_SESSION['toast'] = [
             'type' => 'error',
-            'message' => '⚠️ Bạn cần đăng nhập để thực hiện thao tác này!'
+            'message' => 'Bạn cần đăng nhập để thực hiện thao tác này!'
         ];
         header("Location: index.php?controller=auth&action=login");
         exit;
@@ -274,12 +294,12 @@ public function handleUpdateInfo()
             if ($success) {
                 $_SESSION['toast'] = [
                     'type' => 'success',
-                    'message' => '✅ Thêm thẻ mới thành công!'
+                    'message' => 'Thêm thẻ mới thành công!'
                 ];
             } else {
                 $_SESSION['toast'] = [
                     'type' => 'error',
-                    'message' => '❌ Lưu thẻ thất bại, vui lòng thử lại!'
+                    'message' => 'Lưu thẻ thất bại, vui lòng thử lại!'
                 ];
             }
 
@@ -288,7 +308,7 @@ public function handleUpdateInfo()
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '⚠️ Bạn cần đăng nhập để thêm thẻ!'
+                'message' => 'Bạn cần đăng nhập để thêm thẻ!'
             ];
             header("Location: index.php?controller=auth&action=login");
             exit;
@@ -306,12 +326,12 @@ public function handleUpdateInfo()
             if ($deleted) {
                 $_SESSION['toast'] = [
                     'type' => 'success',
-                    'message' => '✅ Xóa thẻ thành công!'
+                    'message' => 'Xóa thẻ thành công!'
                 ];
             } else {
                 $_SESSION['toast'] = [
                     'type' => 'error',
-                    'message' => '❌ Xóa thẻ thất bại, vui lòng thử lại!'
+                    'message' => 'Xóa thẻ thất bại, vui lòng thử lại!'
                 ];
             }
 
@@ -320,7 +340,7 @@ public function handleUpdateInfo()
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '⚠️ Bạn cần đăng nhập để thực hiện thao tác này!'
+                'message' => 'Bạn cần đăng nhập để thực hiện thao tác này!'
             ];
             header("Location: index.php?controller=auth&action=login");
             exit;
@@ -344,7 +364,7 @@ public function handleUpdateInfo()
         // ✅ Kiểm tra có user thật không
         $user = $userModel->getUserById($userId);
         if (!$user) {
-            echo "<script>alert('❌ Không tìm thấy thông tin người dùng!'); 
+            echo "<script>alert('Không tìm thấy thông tin người dùng!'); 
                 window.location.href='" . BASE_URL . "index.php?controller=auth&action=login';</script>";
             exit();
         }
@@ -371,7 +391,7 @@ public function handleUpdateInfo()
             if (empty($address)) {
                 $_SESSION['toast'] = [
                     'type' => 'warning',
-                    'message' => '⚠️ Vui lòng nhập địa chỉ!'
+                    'message' => 'Vui lòng nhập địa chỉ!'
                 ];
                 header("Location: index.php?controller=auth&action=Info");
                 exit;
@@ -386,12 +406,12 @@ public function handleUpdateInfo()
                 if ($updated) {
                     $_SESSION['toast'] = [
                         'type' => 'success',
-                        'message' => '✅ Cập nhật địa chỉ thành công!'
+                        'message' => 'Cập nhật địa chỉ thành công!'
                     ];
                 } else {
                     $_SESSION['toast'] = [
                         'type' => 'error',
-                        'message' => '❌ Cập nhật địa chỉ thất bại!'
+                        'message' => 'Cập nhật địa chỉ thất bại!'
                     ];
                 }
             } else {
@@ -400,12 +420,12 @@ public function handleUpdateInfo()
                 if ($added) {
                     $_SESSION['toast'] = [
                         'type' => 'success',
-                        'message' => '✅ Thêm địa chỉ mới thành công!'
+                        'message' => 'Thêm địa chỉ mới thành công!'
                     ];
                 } else {
                     $_SESSION['toast'] = [
                         'type' => 'error',
-                        'message' => '❌ Không thể thêm địa chỉ, vui lòng thử lại!'
+                        'message' => 'Không thể thêm địa chỉ, vui lòng thử lại!'
                     ];
                 }
             }
@@ -415,7 +435,7 @@ public function handleUpdateInfo()
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '⚠️ Bạn cần đăng nhập để quản lý địa chỉ!'
+                'message' => 'Bạn cần đăng nhập để quản lý địa chỉ!'
             ];
             header("Location: index.php?controller=auth&action=login");
             exit;
@@ -436,12 +456,12 @@ public function handleUpdateInfo()
             if ($deleted) {
                 $_SESSION['toast'] = [
                     'type' => 'success',
-                    'message' => '🗑️ Xóa địa chỉ thành công!'
+                    'message' => 'Xóa địa chỉ thành công!'
                 ];
             } else {
                 $_SESSION['toast'] = [
                     'type' => 'error',
-                    'message' => '❌ Không thể xóa địa chỉ!'
+                    'message' => 'Không thể xóa địa chỉ!'
                 ];
             }
 
@@ -450,7 +470,7 @@ public function handleUpdateInfo()
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '⚠️ Không xác định được địa chỉ cần xóa!'
+                'message' => 'Không xác định được địa chỉ cần xóa!'
             ];
             header("Location: index.php?controller=auth&action=Info");
             exit;
@@ -471,7 +491,7 @@ public function handleUpdateInfo()
             if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
                 $_SESSION['toast'] = [
                     'type' => 'warning',
-                    'message' => '⚠️ Vui lòng nhập đầy đủ các trường mật khẩu!'
+                    'message' => 'Vui lòng nhập đầy đủ các trường mật khẩu!'
                 ];
                 header("Location: index.php?controller=auth&action=Info");
                 exit;
@@ -481,7 +501,7 @@ public function handleUpdateInfo()
             if ($newPassword !== $confirmPassword) {
                 $_SESSION['toast'] = [
                     'type' => 'warning',
-                    'message' => '⚠️ Mật khẩu mới và xác nhận không khớp!'
+                    'message' => 'Mật khẩu mới và xác nhận không khớp!'
                 ];
                 header("Location: index.php?controller=auth&action=Info");
                 exit;
@@ -494,7 +514,7 @@ public function handleUpdateInfo()
             if (!$user || $user['password'] !== $currentPassword) {
                 $_SESSION['toast'] = [
                     'type' => 'error',
-                    'message' => '❌ Mật khẩu hiện tại không đúng!'
+                    'message' => 'Mật khẩu hiện tại không đúng!'
                 ];
                 header("Location: index.php?controller=auth&action=Info");
                 exit;
@@ -506,12 +526,12 @@ public function handleUpdateInfo()
             if ($success) {
                 $_SESSION['toast'] = [
                     'type' => 'success',
-                    'message' => '✅ Đổi mật khẩu thành công!'
+                    'message' => 'Đổi mật khẩu thành công!'
                 ];
             } else {
                 $_SESSION['toast'] = [
                     'type' => 'error',
-                    'message' => '❌ Có lỗi xảy ra khi đổi mật khẩu!'
+                    'message' => 'Có lỗi xảy ra khi đổi mật khẩu!'
                 ];
             }
 
@@ -520,7 +540,7 @@ public function handleUpdateInfo()
         } else {
             $_SESSION['toast'] = [
                 'type' => 'error',
-                'message' => '⚠️ Bạn cần đăng nhập để đổi mật khẩu!'
+                'message' => 'Bạn cần đăng nhập để đổi mật khẩu!'
             ];
             header("Location: index.php?controller=auth&action=login");
             exit;

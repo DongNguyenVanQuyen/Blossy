@@ -17,6 +17,9 @@ document.querySelectorAll(".wishlist__remove").forEach((btn) => {
             data.message || "🗑️ Đã xóa khỏi danh sách yêu thích!",
             "warning"
           );
+
+          // Cập nhật lại số lượng badge yêu thích
+          updateHeaderCounts();
         } else {
           showToast(data.message || "Không thể xóa khỏi yêu thích!", "error");
         }
@@ -52,7 +55,10 @@ document.querySelectorAll(".wishlist__add-btn").forEach((btn) => {
       const data = await res.json();
 
       if (data.success) {
-        showToast(" Đã thêm vào giỏ hàng!", "success");
+        showToast("🛒 Đã thêm vào giỏ hàng!", "success");
+
+        // ✅ Cập nhật lại số lượng giỏ hàng
+        updateHeaderCounts();
       } else {
         showToast(data.message || "Không thể thêm vào giỏ hàng!", "error");
       }

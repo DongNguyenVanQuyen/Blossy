@@ -7,8 +7,12 @@ class ReportModel extends BaseModel
     {
         $allowed = ['products','orders','users','reviews','vouchers'];
         if (!in_array($table, $allowed, true)) return 0;
-        $stmt = $this->conn->query("SELECT COUNT(*) FROM {$table}");
-        return (int)$stmt->fetchColumn();
+            if ($table === 'users') {
+        $stmt = $this->conn->query("SELECT COUNT(*) FROM users WHERE role_id = 1");
+        } else {
+            $stmt = $this->conn->query("SELECT COUNT(*) FROM {$table}");
+        }
+            return (int)$stmt->fetchColumn();
     }
 
     public function getTotalRevenue(): int

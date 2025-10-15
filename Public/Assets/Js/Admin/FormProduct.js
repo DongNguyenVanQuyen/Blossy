@@ -19,6 +19,7 @@ function previewMulti(input, targetId) {
     });
   }
 }
+
 document.addEventListener("DOMContentLoaded", () => {
   const mainBtn = document.getElementById("upload-main-btn");
   const mainFile = document.getElementById("main_image_file");
@@ -33,13 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==== Upload ảnh chính ====
   mainBtn.addEventListener("click", async () => {
     const file = mainFile.files[0];
-    if (!file) return alert("⚠️ Hãy chọn một ảnh trước!");
+    if (!file) return showToast("Hãy chọn một ảnh trước.", "warning");
 
     const formData = new FormData();
     formData.append("file", file);
 
     mainBtn.disabled = true;
-    mainBtn.textContent = "⏳ Đang tải...";
+    mainBtn.textContent = "Đang tải...";
 
     try {
       const res = await fetch("index.php?controller=upload&action=main", {
@@ -51,29 +52,31 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.success) {
         mainUrlInput.value = data.url;
         mainPreview.innerHTML = `<img src="${data.url}" alt="Ảnh chính mới">`;
-        alert("✅ Ảnh chính đã tải lên!");
+        showToast("Ảnh chính đã tải lên thành công.", "success");
       } else {
-        alert("❌ Upload thất bại!");
+        showToast("Tải ảnh chính thất bại.", "error");
       }
     } catch (err) {
       console.error("Lỗi upload:", err);
-      alert("❌ Lỗi khi upload!");
+      showToast("Có lỗi khi tải ảnh chính.", "error");
     } finally {
       mainBtn.disabled = false;
-      mainBtn.textContent = "📤 Tải lên";
+      mainBtn.textContent = "Tải lên";
     }
   });
 
   // ==== Upload ảnh phụ ====
   subBtn.addEventListener("click", async () => {
     const files = Array.from(subFiles.files);
-    if (!files.length) return alert("⚠️ Hãy chọn ít nhất 1 ảnh!");
+    if (!files.length)
+      return showToast("Hãy chọn ít nhất một ảnh phụ.", "warning");
 
     subBtn.disabled = true;
-    subBtn.textContent = "⏳ Đang tải...";
-
+    subBtn.textContent = "Đang tải...";
     subPreview.innerHTML = "";
     subContainer.innerHTML = "";
+
+    let successCount = 0;
 
     for (const file of files) {
       const formData = new FormData();
@@ -89,16 +92,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           subPreview.innerHTML += `<img src="${data.url}" alt="Ảnh phụ">`;
           subContainer.innerHTML += `<input type="hidden" name="sub_urls[]" value="${data.url}">`;
+          successCount++;
         } else {
-          alert("❌ Upload thất bại cho 1 ảnh!");
+          showToast("Một ảnh phụ tải lên thất bại.", "error");
         }
       } catch (err) {
         console.error("Lỗi upload:", err);
+        showToast("Lỗi khi tải một ảnh phụ.", "error");
       }
     }
 
-    alert("✅ Tất cả ảnh phụ đã tải lên!");
+    if (successCount > 0) {
+      showToast(`Đã tải lên ${successCount} ảnh phụ thành công.`, "success");
+    }
+
     subBtn.disabled = false;
-    subBtn.textContent = "📤 Tải lên";
+    subBtn.textContent = "Tải lên";
   });
 });

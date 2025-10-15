@@ -35,4 +35,5 @@ class AdminController extends BaseController
 
         $this->loadView('Admin.Dashboard', compact('stats','recentOrders','topProducts','revMonth'));
     }
+    
 }

@@ -1,9 +1,12 @@
 // =======================
-// GIỎ HÀNG AJAX FULL MƯỢT
+// GIỎ HÀNG AJAX FULL MƯỢT + CẬP NHẬT HEADER
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
   const cartList = document.querySelector(".cart-list");
   if (!cartList) return;
+
+  //  Lần đầu load trang gọi lấy số lượng giỏ hàng
+  updateHeaderCounts();
 
   // ====== Tăng / Giảm số lượng ======
   cartList.addEventListener("click", async (e) => {
@@ -33,8 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // ✅ Cập nhật lại DOM
-      qtySpan.textContent = data.quantity; // số lượng mới
+      qtySpan.textContent = data.quantity;
 
       const price = parseInt(
         item.querySelector(".cart-price").textContent.replace(/\D/g, "")
@@ -43,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
       item.querySelector(".cart-subtotal").textContent =
         newSubtotal.toLocaleString("vi-VN") + "đ";
 
-      // Tổng cộng & tạm tính
       document
         .querySelectorAll(".summary-item")[0]
         .querySelector("span").textContent = data.totalItems;
@@ -53,12 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".summary-item.total span").textContent =
         data.subtotal;
 
-      // Nếu vượt tồn kho → thông báo
       if (data.message.includes("tồn kho")) {
         showToast("⚠️ " + data.message, "warning");
       } else {
         showToast("✅ " + data.message, "success");
       }
+
+      // ✅ Sau khi update, refresh badge
+      updateHeaderCounts();
     } catch (err) {
       console.error("AJAX update error:", err);
       alert("Lỗi khi cập nhật giỏ hàng!");
@@ -88,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         item.remove();
         showToast("🗑️ Đã xóa sản phẩm.", "success");
 
-        // Cập nhật lại tổng
         document
           .querySelectorAll(".summary-item")[0]
           .querySelector("span").textContent = data.totalItems;
@@ -98,11 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".summary-item.total span").textContent =
           data.subtotal;
 
-        // Nếu giỏ trống
         if (!document.querySelector(".cart-item")) {
           document.querySelector(".cart-list").innerHTML =
             '<p class="empty-cart">🛒 Giỏ hàng của bạn đang trống.</p>';
         }
+
+        // ✅ Sau khi xóa, refresh badge
+        updateHeaderCounts();
       } else {
         alert(data.message || "Không thể xóa sản phẩm!");
       }
@@ -128,27 +132,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document
           .querySelectorAll(".summary-item span")
           .forEach((s) => (s.textContent = "0"));
+        // ✅ Sau khi xóa hết, refresh badge
+        updateHeaderCounts();
       }
     });
   }
-});
 
-// ====== Hàm Toast nho nhỏ ======
-function showToast(message, type = "success") {
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.classList.add("show"), 50);
-  setTimeout(() => {
-    toast.classList.remove("show");
-    setTimeout(() => toast.remove(), 300);
-  }, 2500);
-}
-document.addEventListener("DOMContentLoaded", () => {
+  // ====== Thanh toán ======
   const checkoutBtn = document.querySelector(".checkout-now-card");
-
   if (checkoutBtn) {
     checkoutBtn.addEventListener("click", async () => {
       const items = Array.from(document.querySelectorAll(".cart-item")).map(
@@ -190,3 +181,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// ====== Hàm Toast nho nhỏ ======
+function showToast(message, type = "success") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.classList.add("show"), 50);
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+}

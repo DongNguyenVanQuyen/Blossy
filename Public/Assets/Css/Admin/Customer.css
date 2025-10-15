@@ -1,0 +1,132 @@
+/* ===============================
+   QUẢN LÝ KHÁCH HÀNG
+=============================== */
+#customer_admin {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+.customer-content {
+  flex: 1;
+  padding: 24px 28px;
+  background: var(--panel-bg);
+  color: var(--text);
+}
+.customer-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.customer-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.customer-table th {
+  background: #f6e6d6;
+  color: #5b3b28;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 10px;
+  text-align: center;
+}
+.customer-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--header-border);
+  text-align: center;
+}
+
+/* Cấp độ khách hàng */
+.customer-level {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.lvl-diamond {
+  background: #e3f2fd;
+  color: #0d47a1;
+  border: 1px solid #90caf9;
+}
+.lvl-gold {
+  background: #fff8e1;
+  color: #b8860b;
+  border: 1px solid #ffd54f;
+}
+.lvl-silver {
+  background: #f5f5f5;
+  color: #616161;
+  border: 1px solid #bdbdbd;
+}
+.lvl-normal {
+  background: #fefefe;
+  color: #795548;
+  border: 1px solid #d7ccc8;
+}
+
+/* Trạng thái */
+.customer-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.customer-status.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+.customer-status.blocked {
+  background: #fdecea;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+/* Nút toggle */
+.customer-btn-toggle {
+  background: #b4662a;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.customer-btn-toggle:hover {
+  background: #9a5623;
+}
+
+/* Phân trang */
+.customer-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.customer-page-link {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--header-border);
+  color: var(--text);
+  background: var(--panel-bg);
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+.customer-page-link:hover {
+  background: var(--header-bg);
+}
+.customer-page-link.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}

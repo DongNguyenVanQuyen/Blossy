@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// kiểm tra hàng và thiết lặp mua
+// kiểm tra hàng và thiết lập mua
 document.addEventListener("DOMContentLoaded", function () {
   const quantityInput = document.getElementById("input_quantity");
   const decreaseBtn = document.querySelector(".btn-decrease");
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const addBtn = document.querySelector(".btn.add");
   const buyBtn = document.querySelector(".btn.buy");
 
-  const stock = parseInt(quantityInput.dataset.stock || 0);
+  const stock = parseInt(quantityInput?.dataset.stock || 0);
 
   // === Nếu hết hàng thì disable toàn bộ ===
   if (stock <= 0) {
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ====== Thêm yêu thích giữ nguyên ======
+  // ====== Thêm yêu thích ======
   const favoriteBtn = document.querySelector(".favorite-btn");
   if (favoriteBtn) {
     favoriteBtn.addEventListener("click", function () {
@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.success) {
             icon.classList.toggle("active", data.favorited);
             showToast(data.message, "success");
+
+            // ✅ Cập nhật badge header
+            updateHeaderCounts();
           } else {
             showToast(data.message || "Lỗi không xác định", "error");
           }
@@ -98,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const res = await fetch("index.php?controller=cart&action=add", {
           method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams({
             product_id: id,
             quantity: quantity,
@@ -108,6 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (data.success) {
           showToast(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`, "success");
+
+          // ✅ Cập nhật badge header
+          updateHeaderCounts();
         } else {
           showToast(data.message, "error");
 

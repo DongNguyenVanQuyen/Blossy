@@ -1,0 +1,74 @@
+:root {
+  --bg: #fff7ef;
+  --text: #4b2e23;
+  --primary: #b4662a;
+  --header-border: #e7d4c2;
+  --panel-bg: #fff;
+}
+
+/* Khung tổng thể */
+.notify-detail {
+  margin-top: 126.6px;
+  background: var(--bg);
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px;
+}
+
+/* Hộp nội dung */
+.notify-detail__container {
+  background: var(--panel-bg);
+  border: 1px solid var(--header-border);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.4s ease;
+}
+
+/* Tiêu đề */
+.notify-detail__title {
+  font-size: 26px;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid var(--header-border);
+  padding-bottom: 10px;
+}
+
+/* Nội dung */
+.notify-detail__body {
+  font-size: 17px;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin-bottom: 40px;
+}
+
+/* Nút quay lại */
+.notify-detail__back {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.notify-detail__back:hover {
+  background: #8d4e20;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

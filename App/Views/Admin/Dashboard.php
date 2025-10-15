@@ -1,7 +1,4 @@
-<?php
-include_once __DIR__ . '/../../Includes/config.php';
-?>
-
+<link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Admin/Dashboard.css">
 <body>
 <div class="admin-container">
   <?php include __DIR__ . '/Layouts/Sidebar.php'; ?>
@@ -117,7 +114,6 @@ include_once __DIR__ . '/../../Includes/config.php';
     </div>
   </div>
 </div>
-<canvas id="revChart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 new Chart(document.getElementById("revChart"), {

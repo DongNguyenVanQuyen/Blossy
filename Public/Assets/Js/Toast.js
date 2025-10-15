@@ -1,4 +1,6 @@
 window.showToast = function (message, type = "success") {
+  const oldToast = document.querySelector(".toast");
+  if (oldToast) oldToast.remove();
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.textContent = message;

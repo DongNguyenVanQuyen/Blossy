@@ -23,6 +23,10 @@ class VoucherController extends BaseController
             echo json_encode(['success' => false, 'message' => 'Mã không hợp lệ hoặc đã hết hạn.']);
             exit;
         }
+        if (!empty($voucher['error_message'])) {
+            echo json_encode(['success' => false, 'message' => $voucher['error_message']]);
+            exit;
+        }
 
         $discount = $voucherModel->calculateDiscount($voucher, $subtotal);
         if ($discount <= 0) {
