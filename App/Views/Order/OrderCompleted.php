@@ -5,10 +5,12 @@
   include_once __DIR__ . '/../../Includes/head.php';
   include_once __DIR__ . '/../Layouts/Header.php';
 
+
   // ✅ Đảm bảo biến có dữ liệu, tránh lỗi Notice nếu trống
   $order = $order ?? [];
   $items = $items ?? [];
   ?>
+  <link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/User/OrderCompleted.css?v=<?= time() ?>">
 
   <div class="order-completed">
     <!-- 🔹 TRẠNG THÁI ĐƠN HÀNG -->
@@ -58,20 +60,20 @@
                   <span>Số lượng: <?= htmlspecialchars($item['quantity'] ?? 1) ?></span>
                 </div>
               </div>
-            <div class="order-completed__product-price">
-              <?php 
-                $price = $item['price'] ?? $item['unit_price'] ?? 0;
-                $discount = $item['discount'] ?? 0;
-                $priceAfter = $item['price_after'] ?? ($price - $discount);
-              ?>
-              <?php if (!empty($discount) && $discount > 0): ?>
-                <span class="old-price"><?= number_format($price, 0, ',', '.') ?>đ</span>
-                <span class="new-price"><?= number_format($priceAfter, 0, ',', '.') ?>đ</span>
-              <?php else: ?>
-                <span><?= number_format($price, 0, ',', '.') ?>đ</span>
-              <?php endif; ?>
-            </div>
-
+             <div class="order-completed__product-price">
+                <?php 
+                  $price = $item['price'] ?? $item['unit_price'] ?? 0;
+                  $discount = $item['discount'] ?? 0;
+                  $old = $item['compare_at_price'] ?? $item['old_price'] ?? $price;
+                  $new_price = max(0, $price - $discount);
+                ?>
+                <?php if ($price > $new_price): ?>
+                  <span class="old-price"><?= number_format($old, 0, ',', '.') ?>đ</span>
+                  <span class="new-price"><?= number_format($new_price, 0, ',', '.') ?>đ</span>
+                <?php else: ?>
+                  <span><?= number_format($price, 0, ',', '.') ?>đ</span>
+                <?php endif; ?>
+              </div>
             </div>
           <?php endforeach; ?>
         </div>

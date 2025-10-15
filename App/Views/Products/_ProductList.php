@@ -1,5 +1,4 @@
 
-
 <?php if (!empty($products)): ?>
   <?php foreach ($products as $product): ?>
     <?php include __DIR__ . '/_ProductCard.php'; ?>

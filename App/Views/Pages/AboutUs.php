@@ -6,6 +6,7 @@
 <!-- Header -->
 <?php include_once __DIR__ . '/../Layouts/Header.php'; ?>
 
+<link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Pages/About.css?v-<?= time() ?>">
 <section class="about-section">
     <header class="shop-header">
       <h1>Giới Thiệu</h1>
@@ -49,7 +50,7 @@
     <p>
       Biến mỗi ngày trở nên tươi đẹp hơn bằng cách trao gửi những bó hoa tươi, được sắp xếp tinh tế để lan tỏa niềm vui, tôn vinh khoảnh khắc và kết nối trái tim.
     </p>
-    <a href="<?= BASE_URL ?>Pages/User/Shop/Shop.php" class="btn-mission">Mua Ngay</a>
+    <a href="<?= BASE_URL ?>index.php?controller=products&action=index" class="btn-mission">Mua Ngay</a>
   </div>
 
   <!-- Hoa nền -->

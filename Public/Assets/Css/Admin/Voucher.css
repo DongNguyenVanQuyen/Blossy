@@ -71,27 +71,6 @@
   color: white;
 }
 
-/* === Buttons === */
-.voucher-edit,
-.voucher-delete {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 16px;
-  border: 1px solid var(--primary);
-  padding: 5px 10px;
-  border-radius: 9px;
-}
-
-.voucher-edit:hover {
-  color: #008cff;
-  background-color: yellow;
-}
-.voucher-delete:hover {
-  color: var(--text);
-  background-color: var(--primary);
-}
-
 .voucher-toggle {
   padding: 6px 12px;
   border-radius: 6px;

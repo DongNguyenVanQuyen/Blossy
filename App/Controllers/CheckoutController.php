@@ -40,17 +40,18 @@ class CheckoutController extends BaseController
         exit;
     }
 
-    // ✅ Tạo session tạm chỉ chứa sản phẩm này
     $_SESSION['buy_now'] = [
         [
             'product_id' => $product['id'],
             'name' => $product['name'],
             'price' => $product['price'],
+            'old_price' => $product['compare_at_price'] ?? $product['price'],
             'quantity' => $quantity,
             'image_url' => $product['url'] ?? '',
             'stock' => $product['stock']
         ]
     ];
+
 
     echo json_encode(['success' => true]);
     exit;
@@ -111,7 +112,7 @@ class CheckoutController extends BaseController
 }
 
 
-    public function index()
+  public function index()
 {
     global $title;
     $title = "Thanh Toán | Blossy";
@@ -143,29 +144,12 @@ class CheckoutController extends BaseController
         $subtotal += $item['price'] * $item['quantity'];
     }
 
-    // ✅ Áp dụng khuyến mãi tự động hoặc voucher
-    $voucherCode = $_GET['voucher'] ?? ''; // mã user nhập (nếu có)
+    // ✅ Chỉ xử lý voucher người dùng nhập (không auto promotion)
+    $voucherCode = $_GET['voucher'] ?? '';
     $discount = 0;
     $voucher = null;
 
-    require_once __DIR__ . '/../Models/AdminPromotionModel.php';
-    $promotionModel = new AdminPromotionModel();
-
-    // 🔹 Nếu người dùng KHÔNG nhập mã → kiểm tra khuyến mãi tự động
-    if ($voucherCode === '') {
-        $promo = $promotionModel->getActivePromotion();
-        if ($promo) {
-            $discount = $subtotal * ($promo['discount_percent'] / 100);
-            $voucher = [
-                'code' => $promo['code'] ?? 'AUTO_PROMO',
-                'name' => $promo['name'],
-                'type' => 'percent',
-                'value' => $promo['discount_percent']
-            ];
-        }
-    }
-    // 🔹 Nếu người dùng nhập mã → kiểm tra voucher
-    else {
+    if ($voucherCode !== '') {
         $voucherModel = new VoucherModel();
         $voucher = $voucherModel->getActiveVoucher($voucherCode);
 
@@ -201,4 +185,5 @@ class CheckoutController extends BaseController
 
     $this->loadView('Payment.Checkout', $data);
 }
+
 }

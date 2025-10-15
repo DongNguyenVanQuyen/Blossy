@@ -46,6 +46,14 @@ class ProductModel extends BaseModel
         $imgStmt = $this->conn->prepare($imgSql);
         $imgStmt->execute([$id]);
         $product['images'] = $imgStmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if ($product) {
+            $product['old_price'] = $product['compare_at_price'] ?? $product['price'];
+            $product['price_after'] = ($product['compare_at_price'] > $product['price'])
+                ? $product['price']
+                : $product['compare_at_price'];
+        }
+
 
         return $product;
     }

@@ -1,0 +1,108 @@
+/* Contact */
+.contact-section {
+  background-color: var(--bg);
+  color: var(--text);
+  margin-top: 165px;
+  text-align: center;
+}
+
+.contact-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto 50px;
+  align-items: flex-start;
+}
+
+.contact-image img {
+  width: 320px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.contact-form {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-form .row {
+  display: flex;
+  gap: 20px;
+}
+
+.contact-form .form-group {
+  margin-bottom: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid var(--header-border);
+  border-radius: 6px;
+  background-color: #fff;
+  resize: vertical;
+}
+
+.btn-send {
+  margin-top: 10px;
+  background-color: var(--primary);
+  color: white;
+  padding: 10px 22px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-send:hover {
+  background-color: #a84264;
+}
+
+/* Thông tin liên hệ */
+.contact-info {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.info-box {
+  flex: 1;
+  min-width: 200px;
+  background: var(--header-bg);
+  border: 1px solid var(--header-border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.info-box img {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 10px;
+}
+
+.info-box h4 {
+  font-size: 16px;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.info-box p {
+  font-size: 14px;
+  opacity: 0.8;
+}

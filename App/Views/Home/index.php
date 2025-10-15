@@ -1,5 +1,7 @@
 
 <?php include_once __DIR__ . '/../../Includes/config.php'; ?>
+<link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Pages/Home.css?v=<?= time() ?>">
+
 
 <!-- Head -->
 <?php include_once __DIR__ . '/../../Includes/head.php'; ?>

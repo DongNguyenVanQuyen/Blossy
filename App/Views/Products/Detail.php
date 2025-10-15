@@ -3,6 +3,7 @@
 include_once __DIR__ . '/../../Includes/config.php';
 include_once __DIR__ . '/../../Includes/head.php';
 ?>
+<link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Products/Products.css?v=<?= time() ?>">
 
 <body>
 <!-- Header -->

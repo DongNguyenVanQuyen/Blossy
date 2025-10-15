@@ -5,6 +5,8 @@
   include_once __DIR__ . '/../../Includes/head.php';
   include_once __DIR__ . '/../Layouts/Header.php';
 ?>
+<link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/User/Payment.css?v=<?= time() ?>">
+
 <div class="checkout-payment">
   <div class="checkout-payment__left">
     <h2 class="checkout-payment__title">Thêm Tài Khoản Thanh Toán</h2>
