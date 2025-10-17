@@ -41,20 +41,25 @@ class ReportModel extends BaseModel
     // Top sp theo số lượng bán (dựa vào order_items)
     public function getTopProducts(int $limit = 8): array
     {
-        $sql = "SELECT p.id, p.name,
-                    COALESCE(SUM(oi.quantity),0) AS qty_sold,
-                    COALESCE(SUM(oi.line_total),0) AS revenue
+        $sql = "SELECT 
+                    p.id, 
+                    p.name,
+                    COALESCE(SUM(oi.quantity), 0) AS qty_sold,
+                    COALESCE(SUM(oi.line_total), 0) AS revenue
                 FROM products p
-                LEFT JOIN order_items oi ON oi.product_id = p.id
-                LEFT JOIN orders o ON o.id = oi.order_id AND o.status = 'hoan_thanh'
+                JOIN order_items oi ON oi.product_id = p.id
+                JOIN orders o ON o.id = oi.order_id
+                WHERE o.status = 'hoan_thanh'
                 GROUP BY p.id, p.name
                 ORDER BY qty_sold DESC
                 LIMIT :limit";
+                
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
+
 
 
 

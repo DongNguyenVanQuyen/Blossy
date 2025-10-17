@@ -31,7 +31,18 @@ class AdminController extends BaseController
 
         $recentOrders = $report->getRecentOrders(10);
         $topProducts  = $report->getTopProducts(8);
-        $revMonth     = $report->getRevenueByMonth(6); // 6 tháng gần nhất
+        $revMonth     = $report->getRevenueByMonth(6); // 6 tháng gần nhất cho so sánh doanh thu
+
+        // Dữ liệu fake
+        // if (count($revMonth) <= 6) {
+        //     $revMonth = [
+        //         ['mth' => '06/2025', 'revenue' => 7500000],
+        //         ['mth' => '07/2025', 'revenue' => 7500000],
+        //         ['mth' => '08/2025', 'revenue' => 10200000],
+        //         ['mth' => '09/2025', 'revenue' => 12500000],
+        //     ];
+        // }
+
 
         $this->loadView('Admin.Dashboard', compact('stats','recentOrders','topProducts','revMonth'));
     }

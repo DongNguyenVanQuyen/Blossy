@@ -9,7 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (method) {
       selectedText.textContent =
         method.nextElementSibling.nextElementSibling.textContent;
-      alert(`Bạn đã chọn phương thức thanh toán: ${selectedText.textContent}`);
+      showToast(
+        "Bạn đã chọn Phương thức thanh toán"` ${selectedText.textContent}`,
+        "success"
+      );
     }
   });
 });

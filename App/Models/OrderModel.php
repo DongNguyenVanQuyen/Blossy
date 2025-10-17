@@ -78,4 +78,19 @@ class OrderModel extends BaseModel{
             $line_total
         ]);
     }
+    public function hasUserBoughtProduct($userId, $productId)
+{
+    $sql = "
+        SELECT COUNT(*) 
+        FROM orders o
+        JOIN order_items oi ON o.id = oi.order_id
+        WHERE o.user_id = ? 
+          AND oi.product_id = ?
+          AND o.status IN ('hoan_thanh', 'dang_giao', 'cho_xac_nhan')
+    ";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$userId, $productId]);
+    return $stmt->fetchColumn() > 0;
+}
+
 }

@@ -119,9 +119,14 @@ class CheckoutController extends BaseController
 
     $userId = $_SESSION['user']['user_id'] ?? null;
     if (!$userId) {
-        echo "<script>alert('Bạn cần đăng nhập để thanh toán!'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=login';</script>";
+        $_SESSION['toast'] = [
+            'type' => 'error',
+            'message' => 'Bạn cần đăng nhập để thanh toán!'
+        ];
+        header("Location: " . BASE_URL . "index.php?controller=auth&action=login");
         exit;
     }
+
 
     $userModel = new UserModel();
     $user = $userModel->getUserById($userId);
@@ -164,6 +169,7 @@ class CheckoutController extends BaseController
 
     $shippingFee = 30000;
     $total = $subtotal - $discount + $shippingFee;
+    
 
     // ✅ Lấy phương thức thanh toán
     $paymentModel = new PaymentModel();
@@ -185,5 +191,6 @@ class CheckoutController extends BaseController
 
     $this->loadView('Payment.Checkout', $data);
 }
+
 
 }

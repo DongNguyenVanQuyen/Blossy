@@ -12,7 +12,7 @@ class PaymentController extends BaseController
     }
 
     /**
-     * ✅ Lấy danh sách phương thức thanh toán của user (AJAX / API)
+     * Lấy danh sách phương thức thanh toán của user (AJAX / API)
      */
     public function getMethods()
     {
@@ -28,7 +28,7 @@ class PaymentController extends BaseController
     }
 
     /**
-     * ✅ Thêm phương thức thanh toán mới
+     * Thêm phương thức thanh toán mới
      */
     public function add()
     {

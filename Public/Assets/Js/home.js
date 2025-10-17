@@ -46,7 +46,7 @@ document
     e.preventDefault();
     const email = this.querySelector("input").value;
     if (email) {
-      alert(`✅ Subscribed with ${email}`);
+      showToast("Tham Gia Thành Công với "`${email}`);
       this.reset();
     }
   });

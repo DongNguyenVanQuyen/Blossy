@@ -1,7 +1,3 @@
-// ===============================
-// LOGIN VALIDATION + TOAST
-// ===============================
-
 // Bảo đảm showToast có sẵn
 if (typeof showToast === "undefined") {
   window.showToast = function (message, type = "success") {

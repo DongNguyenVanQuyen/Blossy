@@ -230,34 +230,6 @@
   transform: translateY(-2px);
 }
 
-/* ==================== PAGINATION ==================== */
-.pagination {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.pagination a {
-  font-size: 16px;
-  color: var(--primary);
-  font-weight: 600;
-  text-decoration: none;
-  margin: 0 6px;
-  border-radius: 8px;
-  padding: 6px 12px;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.pagination a:hover {
-  border-color: var(--header-border);
-}
-
-.pagination a.active {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
-}
-
 /* Product - details */
 
 /* ===== PRODUCT DETAIL PAGE (CSS) ===== */
@@ -555,4 +527,179 @@
 .favorite-btn .active,
 .favorite-btn i.active {
   color: red !important;
+}
+/* 🌸 PHẦN ĐÁNH GIÁ SẢN PHẨM */
+.product-reviews {
+  background: var(--panel-bg);
+  border-radius: 12px;
+  padding: 30px;
+  margin: 60px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  transition: 0.3s;
+}
+
+.product-reviews:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Tiêu đề chính --- */
+.product-reviews h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--header-border);
+  padding-bottom: 8px;
+}
+
+/* --- Tóm tắt trung bình --- */
+.review-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.review-summary .average-rating strong {
+  color: #f1b400;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* --- Danh sách review --- */
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.review-item {
+  background: #fffaf2;
+  border: 1px solid var(--header-border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  transition: 0.25s;
+}
+
+.review-item:hover {
+  border-color: var(--primary);
+  background: #fff7ec;
+}
+
+/* --- Header người review --- */
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.review-author {
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.review-stars {
+  color: #f1b400;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* --- Tiêu đề nhỏ trong review --- */
+.review-title {
+  color: var(--primary);
+  margin: 5px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* --- Nội dung review --- */
+.review-content {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 10px;
+  white-space: pre-line;
+}
+
+/* --- Hình ảnh trong review --- */
+.review-images {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.review-images img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--header-border);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.review-images img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Ngày đăng --- */
+.review-date {
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+  text-align: right;
+  display: block;
+}
+
+/* --- Không có review --- */
+.no-reviews {
+  text-align: center;
+  font-size: 15px;
+  color: #999;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+/* --- Phân trang --- */
+.reviews-pagination {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.reviews-pagination a {
+  display: inline-block;
+  margin: 0 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--header-border);
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.reviews-pagination a:hover {
+  background: var(--header-border);
+}
+
+.reviews-pagination a.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* Responsive nhỏ */
+@media (max-width: 600px) {
+  .product-reviews {
+    padding: 18px;
+  }
+  .review-content {
+    font-size: 14px;
+  }
 }

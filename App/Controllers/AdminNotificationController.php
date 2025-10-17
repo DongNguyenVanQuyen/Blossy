@@ -43,7 +43,7 @@ class AdminNotificationController extends BaseController
         ]);
     }
 
-    /** ✅ Gửi thông báo mới (system) đến toàn bộ khách hàng */
+    /** Gửi thông báo mới (system) đến toàn bộ khách hàng */
     public function create()
     {
         $this->guardAdmin();
@@ -112,12 +112,12 @@ class AdminNotificationController extends BaseController
 
         try {
             if ($id > 0) {
-                // ✅ Cập nhật
+                // Cập nhật
                 $stmt = $conn->prepare("UPDATE messages SET title=?, body=?, updated_at=NOW() WHERE id=?");
                 $stmt->execute([$title, $body, $id]);
                 echo json_encode(['success' => true, 'updated' => true]);
             } else {
-                // ✅ Thêm mới (system notice)
+                // Thêm mới (system notice)
                 $conn->beginTransaction();
                 $stmt = $conn->prepare("
                     INSERT INTO messages (title, body, type, created_by, created_at)

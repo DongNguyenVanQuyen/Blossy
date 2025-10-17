@@ -15,6 +15,11 @@ include_once __DIR__ . '/../Layouts/Header.php';
       <div class="my-account__tab" data-tab="address">Quản Lý Địa Chỉ</div>
       <div class="my-account__tab" data-tab="payment">Phương Thức Thanh Toán</div>
       <div class="my-account__tab" data-tab="password">Quản Lý Mật Khẩu</div>
+        <?php if (isset($_SESSION['user']) && (int)$_SESSION['user']['role_id'] !== 1): ?>
+      <a href="<?= BASE_URL ?>index.php?controller=admin&action=dashboard">
+        <div class="my-account__tab">Trang Quản Trị</div>
+      </a>
+    <?php endif; ?>
       <a href="<?= BASE_URL ?>index.php?controller=auth&action=logout">
         <div class="my-account__tab">Đăng Xuất</div>
       </a>
@@ -28,6 +33,9 @@ include_once __DIR__ . '/../Layouts/Header.php';
     <div class="my-account__panel active" id="info">
       <h2 class="my-account__title">Tài Khoản Của Tôi</h2>
       <p class="my-account__breadcrumb">Trang chủ / Tài Khoản</p>
+      <span class="user-level <?= htmlspecialchars($user['level'] ?? '') ?>">
+        <?= htmlspecialchars(ucfirst($user['level'] ?? '')) ?>
+      </span>
 
       <form class="my-account__form"
             method="POST"

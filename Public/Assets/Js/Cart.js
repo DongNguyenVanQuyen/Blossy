@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
       if (!data.success) {
-        alert(data.message || "Không thể cập nhật số lượng!");
+        showToast(data.success || "Không thể cập nhật số lượng", "error");
         return;
       }
 
@@ -55,9 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
         data.subtotal;
 
       if (data.message.includes("tồn kho")) {
-        showToast("⚠️ " + data.message, "warning");
+        showToast("" + data.message, "warning");
       } else {
-        showToast("✅ " + data.message, "success");
+        showToast("" + data.message, "success");
       }
 
       // ✅ Sau khi update, refresh badge
@@ -105,14 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
             '<p class="empty-cart">🛒 Giỏ hàng của bạn đang trống.</p>';
         }
 
-        // ✅ Sau khi xóa, refresh badge
+        // Sau khi xóa, refresh badge
         updateHeaderCounts();
       } else {
         alert(data.message || "Không thể xóa sản phẩm!");
       }
     } catch (err) {
       console.error("Xóa giỏ hàng lỗi:", err);
-      alert("Không thể xóa sản phẩm!");
+      showToast("Lỗi không thể xóa sản phẩm", "error");
     }
   });
 
@@ -126,13 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const data = await res.json();
       if (data.success) {
-        showToast("🗑️ Giỏ hàng đã được xóa.", "success");
+        showToast("Giỏ hàng đã được xóa.", "success");
         document.querySelector(".cart-list").innerHTML =
-          '<p class="empty-cart">🛒 Giỏ hàng của bạn đang trống.</p>';
+          '<p class="empty-cart">Giỏ hàng của bạn đang trống.</p>';
         document
           .querySelectorAll(".summary-item span")
           .forEach((s) => (s.textContent = "0"));
-        // ✅ Sau khi xóa hết, refresh badge
+        // Sau khi xóa hết, refresh badge
         updateHeaderCounts();
       }
     });
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (items.length === 0) {
-        alert("Giỏ hàng của bạn đang trống!");
+        showToast("Giỏ hàng của bạn đang trống", "warning");
         return;
       }
 
@@ -175,8 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(data.message || "Không thể xử lý thanh toán.");
         }
       } catch (err) {
-        console.error("❌ Lỗi thanh toán:", err);
-        alert("Đã xảy ra lỗi, vui lòng thử lại!");
+        console.error("Lỗi thanh toán:", err);
+        showToast("Đã xảy ra lỗi ở Cart", "error");
       }
     });
   }

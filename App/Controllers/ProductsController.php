@@ -128,43 +128,75 @@ class ProductsController extends BaseController
 
 
 
-   public function detail()
-{
-    global $title;
-    $title = "Chi Tiết Sản Phẩm | Blossy";
+    public function detail()
+    {
+        global $title;
+        $title = "Chi Tiết Sản Phẩm | Blossy";
 
-    $id = $_GET['id'] ?? 0;
-    $product = $this->productModel->getById($id);
+        // 🔹 Lấy ID sản phẩm từ URL
+        $id = $_GET['id'] ?? 0;
+        $product = $this->productModel->getById($id);
 
-    if (!$product) {
-        echo "Sản phẩm không tồn tại!";
-        return;
+        if (!$product) {
+            $_SESSION['toast'] = [
+            'type' => 'error',
+            'message' => 'Sản phẩm không tồn tại!'
+        ];
+            return;
+        }
+
+        // =============================
+        // 🔹 Wishlist (yêu thích)
+        // =============================
+        if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
+        $userId = $_SESSION['user']['user_id'] ?? null;
+
+        require_once __DIR__ . '/../Models/FavoritesModel.php';
+        $favoritesModel = new FavoritesModel();
+
+        $product['is_favorite'] = $userId
+            ? $favoritesModel->isFavorite($userId, $product['id'])
+            : false;
+
+        // =============================
+        // 🔹 Sản phẩm liên quan
+        // =============================
+        $relatedProducts = $this->productModel->getRelatedProducts($product['id'], $product['category_id']);
+
+        // =============================
+        // 🔹 Lấy review thật từ DB
+        // =============================
+        require_once __DIR__ . '/../Models/ReviewModel.php';
+        $reviewModel = new ReviewModel();
+
+        $perPage = 5;
+        $page = isset($_GET['rpage']) ? max(1, (int)$_GET['rpage']) : 1;
+        $offset = ($page - 1) * $perPage;
+
+        // Danh sách review + tổng số trang
+        $reviews = $reviewModel->getProductReviews($id, $perPage, $offset);
+        $totalReviews = $reviewModel->countProductReviews($id);
+        $totalPages = ceil($totalReviews / $perPage);
+
+        // Trung bình sao (nếu có)
+        $averageRating = $reviewModel->getAverageRating($id);
+
+        // =============================
+        // 🔹 Gửi dữ liệu sang View
+        // =============================
+        $this->loadView('Products.Detail', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts,
+            'reviews' => $reviews,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'averageRating' => $averageRating,
+            'totalReviews' => $totalReviews
+        ]);
     }
 
-    // =============================
-    // 🔹 Kiểm tra yêu thích (wishlist)
-    // =============================
-    session_start();
-    $userId = $_SESSION['user']['user_id'] ?? null;
-
-    require_once __DIR__ . '/../Models/FavoritesModel.php';
-    $favoritesModel = new FavoritesModel();
-
-    // Gán cờ để giữ màu tim trong view
-    $product['is_favorite'] = $userId
-        ? $favoritesModel->isFavorite($userId, $product['id'])
-        : false;
-
-    // =============================
-    // 🔹 Sản phẩm liên quan
-    // =============================
-    $relatedProducts = $this->productModel->getRelatedProducts($product['id'], $product['category_id']);
-
-    // Gửi dữ liệu sang View
-    $this->loadView('Products.Detail', [
-        'product' => $product,
-        'relatedProducts' => $relatedProducts
-    ]);
-}
 
 }

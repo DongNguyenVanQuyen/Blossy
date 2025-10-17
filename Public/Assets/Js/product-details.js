@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (value < stock) {
       quantityInput.value = value + 1;
     } else {
-      alert("Không thể vượt quá số lượng tồn kho (" + stock + ")");
+      showToast("Không thể vượt quá số lượng tồn kho!", "warning");
     }
   });
 
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
             icon.classList.toggle("active", data.favorited);
             showToast(data.message, "success");
 
-            // ✅ Cập nhật badge header
+            // Cập nhật badge header
             updateHeaderCounts();
           } else {
             showToast(data.message || "Lỗi không xác định", "error");
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((err) => {
           console.error("Lỗi yêu thích:", err);
-          showToast("❌ Kết nối thất bại!", "error");
+          showToast("Kết nối thất bại!", "error");
         });
     });
   }
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const id = btn.dataset.id;
 
-      // ✅ Lấy số lượng từ input (nếu có), ngược lại mặc định 1
+      //Lấy số lượng từ input (nếu có), ngược lại mặc định 1
       const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
 
       try {
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.success) {
           showToast(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`, "success");
 
-          // ✅ Cập nhật badge header
+          // Cập nhật badge header
           updateHeaderCounts();
         } else {
           showToast(data.message, "error");
@@ -133,18 +133,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // ===== Toast thông báo =====
-  function showToast(message, type = "success") {
-    let toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.classList.add("show"), 50);
-    setTimeout(() => {
-      toast.classList.remove("show");
-      setTimeout(() => toast.remove(), 300);
-    }, 2500);
-  }
 });

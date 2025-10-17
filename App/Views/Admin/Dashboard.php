@@ -48,16 +48,21 @@
                      <td>#<?= htmlspecialchars($o['code']) ?></td>
                     <td><?= htmlspecialchars($o['created_at_fmt']) ?></td>
                     <td>
-                    <?php
+                      <?php
                         $statusMap = [
-                        'cho_xac_nhan' => 'Chờ xác nhận',
-                        'dang_giao'    => 'Đang giao hàng',
-                        'hoan_thanh'   => 'Hoàn thành',
-                        'da_huy'       => 'Đã hủy'
+                          'cho_xac_nhan' => ['text' => 'Chờ xác nhận', 'class' => 'pending'],
+                          'dang_giao'    => ['text' => 'Đang giao hàng', 'class' => 'shipping'],
+                          'hoan_thanh'   => ['text' => 'Hoàn thành', 'class' => 'success'],
+                          'huy'       => ['text' => 'Đã hủy', 'class' => 'cancel']
                         ];
-                        echo $statusMap[$o['status']] ?? ucfirst($o['status']);
-                    ?>
-                    </td>
+
+                        $status = $o['status'] ?? '';
+                        $info = $statusMap[$status] ?? ['text' => ucfirst($status), 'class' => ''];
+                      ?>
+                      <span class="order-status <?= $info['class'] ?>">
+                        <?= htmlspecialchars($info['text']) ?>
+                      </span>
+                    </td> 
                     <td>
                     <?php
                         $methodMap = [

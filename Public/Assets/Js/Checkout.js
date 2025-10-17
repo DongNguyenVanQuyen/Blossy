@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.textContent = "Thanh Toán";
       }
     } catch (err) {
-      console.error("❌ Lỗi thanh toán:", err);
+      console.error("Lỗi thanh toán:", err);
       showToast("Có lỗi xảy ra, vui lòng thử lại.", "error");
       btn.disabled = false;
       btn.textContent = "Thanh Toán";
@@ -54,8 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
   btnApply.addEventListener("click", async () => {
     const code = input.value.trim();
     if (!code) {
-      showToast("⚠️ Vui lòng nhập mã voucher.", "warning");
-      msg.textContent = "⚠️ Vui lòng nhập mã voucher.";
+      showToast("Vui lòng nhập mã voucher.", "warning");
+      msg.textContent = "Vui lòng nhập mã voucher.";
       msg.className = "voucher-error";
       return;
     }
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.success) {
         showToast("✅ Mã hợp lệ! Đã áp dụng giảm giá.", "success");
-        msg.textContent = "✅ " + data.message + " - Giảm " + data.discount;
+        msg.textContent = "" + data.message + " - Giảm " + data.discount;
         msg.className = "voucher-success";
 
         discountText.textContent = "-" + data.discount;
@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("voucher_discount").value =
           data.discount.replace(/[^\d]/g, "");
       } else {
-        showToast("❌ " + (data.message || "Mã không hợp lệ."), "error");
-        msg.textContent = "❌ " + data.message;
+        showToast("" + (data.message || "Mã không hợp lệ."), "error");
+        msg.textContent = "" + data.message;
         msg.className = "voucher-error";
 
         discountText.textContent = "-0đ";
@@ -92,25 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (err) {
       console.error("Lỗi áp dụng voucher:", err);
-      showToast("⚠️ Có lỗi khi áp dụng mã, thử lại.", "warning");
-      msg.textContent = "⚠️ Có lỗi khi áp dụng mã, thử lại.";
+      showToast("Có lỗi khi áp dụng mã, thử lại.", "warning");
+      msg.textContent = "Có lỗi khi áp dụng mã, thử lại.";
       msg.className = "voucher-error";
     }
   });
 });
-
-// ====================
-// HÀM HIỂN THỊ TOAST
-// ====================
-function showToast(message, type = "success") {
-  let toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.classList.add("show"), 50);
-  setTimeout(() => {
-    toast.classList.remove("show");
-    setTimeout(() => toast.remove(), 300);
-  }, 2500);
-}

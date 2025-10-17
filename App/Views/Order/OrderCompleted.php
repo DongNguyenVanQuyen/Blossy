@@ -32,10 +32,10 @@
           <?php
             $status = strtolower($order['status'] ?? 'cho_xac_nhan');
             echo match($status) {
-                'cho_xac_nhan' => '🕒 Chờ xác nhận',
-                'dang_giao'    => '🚚 Đang giao hàng',
-                'hoan_thanh'   => '✅ Hoàn thành',
-                'da_huy'       => '❌ Đã hủy',
+                'cho_xac_nhan' => 'Chờ xác nhận',
+                'dang_giao'    => 'Đang giao hàng',
+                'hoan_thanh'   => 'Hoàn thành',
+                'da_huy'       => 'Đã hủy',
                 default        => 'Không xác định'
             };
           ?>
@@ -43,7 +43,7 @@
       </div>
 
     </div>
-  $
+  
     <!-- 🔹 CHI TIẾT SẢN PHẨM -->
     <div class="order-completed__details">
       <h3>Chi Tiết Sản Phẩm</h3>
@@ -60,6 +60,11 @@
                   <span>Số lượng: <?= htmlspecialchars($item['quantity'] ?? 1) ?></span>
                 </div>
               </div>
+              <div class="note">
+                <p>đây là note dài vãi chưởng
+
+                </p>
+              </div>
              <div class="order-completed__product-price">
                 <?php 
                   $price = $item['price'] ?? $item['unit_price'] ?? 0;
@@ -67,13 +72,19 @@
                   $old = $item['compare_at_price'] ?? $item['old_price'] ?? $price;
                   $new_price = max(0, $price - $discount);
                 ?>
-                <?php if ($price > $new_price): ?>
+                <?php if ($old > $new_price): ?>
                   <span class="old-price"><?= number_format($old, 0, ',', '.') ?>đ</span>
                   <span class="new-price"><?= number_format($new_price, 0, ',', '.') ?>đ</span>
                 <?php else: ?>
                   <span><?= number_format($price, 0, ',', '.') ?>đ</span>
                 <?php endif; ?>
               </div>
+               <?php if (!empty($item['product_id'])): ?>
+                <a href="<?= BASE_URL ?>index.php?controller=order&action=reviewform&id=<?= $item['product_id'] ?>&order_item_id=<?= $item['id'] ?? 0 ?>" 
+                  class="btn btn-review-item">
+                  Đánh giá
+                </a>
+              <?php endif; ?>
             </div>
           <?php endforeach; ?>
         </div>
@@ -82,11 +93,12 @@
       <?php endif; ?>
     </div>
 
-    <!-- 🔹 NÚT HÀNH ĐỘNG -->
+    <!--NÚT HÀNH ĐỘNG -->
     <div class="order-completed__actions">
       <a href="<?= BASE_URL ?>index.php?controller=products&action=index" class="btn btn-primary">Tiếp tục mua sắm</a>
       <a href="<?= BASE_URL ?>index.php?controller=auth&action=info" class="btn btn-secondary">Xem đơn hàng của tôi</a>
     </div>
+
   </div>
 
   <?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>

@@ -23,7 +23,7 @@ async function updateHeaderCounts() {
         );
     }
 
-    // 🛒 Giỏ hàng
+    // Giỏ hàng
     if (data.cart > 0) {
       const cartIcon = document.querySelector(
         "#favourite-Cart .fa-cart-shopping"
@@ -35,7 +35,7 @@ async function updateHeaderCounts() {
         );
     }
   } catch (err) {
-    console.error("❌ Lỗi cập nhật badge header:", err);
+    console.error("Lỗi cập nhật badge header:", err);
   }
 }
 

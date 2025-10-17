@@ -10,61 +10,62 @@ class OrderController extends BaseController
     /**
      * Xem chi tiết đơn hàng
      */
-public function detail($id)
-{
-    global $title;
-    $title = "Chi tiết đơn hàng | Blossy";
+    public function detail($id)
+    {
+        global $title;
+        $title = "Chi tiết đơn hàng | Blossy";
 
-    $orderModel = new OrderModel();
-    $order = $orderModel->getOrderById($id);
+        $orderModel = new OrderModel();
+        $order = $orderModel->getOrderById($id);
 
-    if (!$order) {
-        echo "<script>alert('❌ Không tìm thấy đơn hàng!'); window.location.href='" . BASE_URL . "index.php?controller=auth&action=info';</script>";
-        exit;
-    }
-
-    // ✅ Tạo mã đơn hàng nếu chưa có
-    if (empty($order['code'])) {
-        $order['code'] = 'OD' . str_pad($order['id'], 5, '0', STR_PAD_LEFT);
-    }
-
-    // ✅ Tổng tiền, phương thức, ngày giao
-    $order['total'] = number_format($order['grand_total'] ?? 0, 0, ',', '.') . 'đ';
-    $order['payment'] = strtoupper($order['payment_method'] ?? 'COD');
-    $order['delivery_date'] = !empty($order['delivery_date'])
-        ? date('d/m/Y', strtotime($order['delivery_date']))
-        : date('d/m/Y', strtotime(($order['created_at'] ?? 'now') . ' +3 days'));
-
-    // ✅ Lấy danh sách sản phẩm
-    $orderItems = $orderModel->getOrderItems($id);
-
-    // ✅ Xử lý giá cũ / mới
-    foreach ($orderItems as &$item) {
-        $price = $item['price'] ?? $item['unit_price'] ?? 0;
-        $discount = $item['discount'] ?? 0;
-        $old = $item['compare_at_price'] ?? $item['old_price'] ?? $price;
-        $quantity = $item['quantity'] ?? 1;
-
-        // Nếu đơn hàng có giảm giá tổng mà item chưa có discount
-        if ($discount == 0 && !empty($order['discount_total']) && !empty($order['subtotal']) && $order['subtotal'] > 0) {
-            $share = ($price * $quantity) / $order['subtotal'];
-            $discount = round($order['discount_total'] * $share, 0);
+        if (!$order) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Không tìm thấy đơn hàng!'
+            ];
+            header("Location: " . BASE_URL . "index.php?controller=auth&action=info");
+            exit;
         }
 
-        $item['new_price'] = max(0, $price - ($discount / $quantity));
-        $item['old_price'] = $old;
+        // Tạo mã đơn hàng nếu chưa có
+        if (empty($order['code'])) {
+            $order['code'] = 'OD' . str_pad($order['id'], 5, '0', STR_PAD_LEFT);
+        }
+
+        // Tổng tiền, phương thức, ngày giao
+        $order['total'] = number_format($order['grand_total'] ?? 0, 0, ',', '.') . 'đ';
+        $order['payment'] = strtoupper($order['payment_method'] ?? 'COD');
+        $order['delivery_date'] = !empty($order['delivery_date'])
+            ? date('d/m/Y', strtotime($order['delivery_date']))
+            : date('d/m/Y', strtotime(($order['created_at'] ?? 'now') . ' +3 days'));
+
+        // Lấy danh sách sản phẩm
+        $orderItems = $orderModel->getOrderItems($id);
+
+        // Xử lý giá cũ / mới
+        foreach ($orderItems as &$item) {
+            $price = $item['price'] ?? $item['unit_price'] ?? 0;
+            $discount = $item['discount'] ?? 0;
+            $old = $item['compare_at_price'] ?? $item['old_price'] ?? $price;
+            $quantity = $item['quantity'] ?? 1;
+
+            if ($discount == 0 && !empty($order['discount_total']) && !empty($order['subtotal']) && $order['subtotal'] > 0) {
+                $share = ($price * $quantity) / $order['subtotal'];
+                $discount = round($order['discount_total'] * $share, 0);
+            }
+
+            $item['new_price'] = max(0, $price - ($discount / $quantity));
+            $item['old_price'] = $old;
+        }
+        unset($item);
+
+        $data = [
+            'order' => $order,
+            'items' => $orderItems
+        ];
+
+        $this->loadView('Order.OrderCompleted', $data);
     }
-    unset($item); // tránh tham chiếu sau foreach
-
-    // ✅ Truyền dữ liệu sang view
-    $data = [
-        'order' => $order,
-        'items' => $orderItems
-    ];
-
-    $this->loadView('Order.OrderCompleted', $data);
-}
-
 
     /**
      * Xử lý khi người dùng bấm "Thanh Toán"
@@ -85,12 +86,10 @@ public function detail($id)
         $productModel = new ProductModel();
         $orderModel = new OrderModel();
 
-        // ✅ Ưu tiên session Mua Ngay
         if (!empty($_SESSION['buy_now'])) {
             $cartItems = $_SESSION['buy_now'];
         } else {
             $cartItems = $cartModel->getCartItemsByUser($userId);
-
             if (empty($cartItems) && !empty($_SESSION['cart'])) {
                 $cartItems = array_map(function ($item) {
                     return [
@@ -110,7 +109,6 @@ public function detail($id)
             exit;
         }
 
-        // ✅ Kiểm tra sản phẩm hợp lệ + tồn kho
         foreach ($cartItems as $item) {
             $pid = $item['product_id'] ?? 0;
             $product = $productModel->getById($pid);
@@ -126,20 +124,17 @@ public function detail($id)
             }
         }
 
-        // ✅ Tính tổng tiền
         $subtotal = 0;
         foreach ($cartItems as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        // ✅ Giữ voucher (người dùng nhập)
         $discount = (float)($_POST['voucher_discount'] ?? 0);
         $voucherCode = $_POST['voucher_code'] ?? null;
 
         $shipping = 30000;
         $total = max(0, $subtotal - $discount + $shipping);
 
-        // 🔹 Chia đều phần giảm giá cho từng sản phẩm (tỷ lệ theo giá)
         if ($discount > 0 && $subtotal > 0) {
             foreach ($cartItems as &$item) {
                 $share = ($item['price'] * $item['quantity']) / $subtotal;
@@ -152,7 +147,6 @@ public function detail($id)
         $paymentStatus = ($paymentMethod !== 'cod') ? 'Đã thanh toán' : 'Chưa thanh toán';
         $deliveryDate = date('Y-m-d', strtotime('+3 days'));
 
-        // ✅ Tạo đơn hàng
         $orderId = $orderModel->createOrder([
             'user_id' => $userId,
             'address_id' => 1,
@@ -168,7 +162,6 @@ public function detail($id)
             'delivery_date' => $deliveryDate
         ]);
 
-        // ✅ Ghi nhận voucher usage nếu có mã
         if (!empty($voucherCode)) {
             require_once __DIR__ . '/../Models/VoucherModel.php';
             $voucherModel = new VoucherModel();
@@ -179,21 +172,17 @@ public function detail($id)
             }
         }
 
-        // ✅ Lưu chi tiết sản phẩm vào order_items
         foreach ($cartItems as $product) {
             $orderModel->addOrderItem($orderId, $product);
         }
 
-        // ✅ Giảm tồn kho sản phẩm
         foreach ($cartItems as $item) {
             $productModel->reduceStock($item['product_id'], $item['quantity']);
         }
 
-        // ✅ Xóa giỏ hàng
         $cartModel->clearCart($userId);
         unset($_SESSION['cart'], $_SESSION['buy_now']);
 
-        // ✅ Lưu session hiển thị trang thành công
         $_SESSION['last_order'] = [
             'order' => [
                 'code' => 'OD' . str_pad($orderId, 5, '0', STR_PAD_LEFT),
@@ -207,7 +196,7 @@ public function detail($id)
                 'status' => 'cho_xac_nhan',
                 'delivery_date' => $deliveryDate
             ],
-            'items' => $cartItems // 🔹 giờ mỗi item có discount & new_price
+            'items' => $cartItems
         ];
 
         echo json_encode([
@@ -222,18 +211,32 @@ public function detail($id)
         global $title;
         $title = "Đặt hàng thành công | Blossy";
 
-        if (isset($_SESSION['last_order'])) {
-            $order = $_SESSION['last_order']['order'];
-            $items = $_SESSION['last_order']['items'];
-
-            $this->loadView('Order.OrderCompleted', [
-                'order' => $order,
-                'items' => $items
-            ]);
-        } else {
-            echo "<script>window.location.href='index.php?controller=products&action=index';</script>";
+        if (!isset($_SESSION['last_order'])) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Không tìm thấy đơn hàng!'
+            ];
+            header("Location: index.php?controller=products&action=index");
             exit;
         }
+
+        $order = $_SESSION['last_order']['order'] ?? [];
+        $items = $_SESSION['last_order']['items'] ?? [];
+
+        $lastProductId = null;
+        $lastOrderItemId = null;
+
+        if (!empty($items) && isset($items[0]['product_id'])) {
+            $lastProductId = $items[0]['product_id'];
+            $lastOrderItemId = $items[0]['id'] ?? null;
+        }
+
+        $this->loadView('Order.OrderCompleted', [
+            'order' => $order,
+            'items' => $items,
+            'lastProductId' => $lastProductId,
+            'lastOrderItemId' => $lastOrderItemId
+        ]);
     }
 
     public function clearSession()
@@ -242,5 +245,42 @@ public function detail($id)
         echo json_encode(['success' => true]);
         exit;
     }
+
+    // 🔹 Mở form đánh giá sản phẩm trong đơn hàng
+    public function reviewForm()
+    {
+        global $title;
+        $title = "Đánh giá sản phẩm | Blossy";
+
+        $productId = $_GET['id'] ?? null;
+        $orderItemId = $_GET['order_item_id'] ?? null;
+
+        if (!$productId || !$orderItemId) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Thiếu thông tin sản phẩm hoặc đơn hàng!'
+            ];
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        $productModel = new ProductModel();
+        $product = $productModel->getById($productId);
+
+        if (!$product) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Không tìm thấy sản phẩm!'
+            ];
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        $data = [
+            'product' => $product,
+            'order_item_id' => $orderItemId,
+        ];
+
+        $this->loadView('Order.ReviewForm', $data);
+    }
 }
- 

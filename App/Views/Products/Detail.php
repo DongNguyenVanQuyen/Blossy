@@ -84,6 +84,57 @@ include_once __DIR__ . '/../../Includes/head.php';
 
     </div>
   </section>
+  
+    <!-- 💬 PHẦN ĐÁNH GIÁ -->
+    <section class="product-reviews">
+      <h3>Đánh giá sản phẩm</h3>
+
+      <div class="review-summary">
+        <div class="average-rating">
+          ⭐ <strong><?= $averageRating ?: '5.0' ?></strong> / 5
+        </div>
+        <p>(<?= $totalReviews ?> đánh giá)</p>
+      </div>
+
+      <?php if (!empty($reviews)): ?>
+        <div class="review-list" id="reviewList">
+          <?php foreach ($reviews as $r): ?>
+            <div class="review-item">
+              <div class="review-header">
+                <span class="review-author">
+                  <?= htmlspecialchars(trim($r['first_name'] . ' ' . $r['last_name'])) ?>
+                </span>
+                <span class="review-stars">⭐ <?= intval($r['rating']) ?></span>
+              </div>
+              <?php if (!empty($r['title'])): ?>
+                <p class="review-title"><strong><?= htmlspecialchars($r['title']) ?></strong></p>
+              <?php endif; ?>
+              <p class="review-content"><?= nl2br(htmlspecialchars($r['content'])) ?></p>
+              <?php if (!empty($r['images'])): ?>
+                <div class="review-images">
+                  <?php foreach (explode(',', $r['images']) as $img): ?>
+                    <img src="<?= htmlspecialchars($img) ?>" alt="Review Image">
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+              <span class="review-date"><?= date('d/m/Y', strtotime($r['created_at'])) ?></span>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php else: ?>
+        <p class="no-reviews">🌸 Chưa có đánh giá nào cho sản phẩm này.</p>
+      <?php endif; ?>
+
+      <?php if ($totalPages > 1): ?>
+        <div class="pagination reviews-pagination">
+          <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <a href="?controller=products&action=detail&id=<?= $product['id'] ?>&rpage=<?= $i ?>"
+              class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+          <?php endfor; ?>
+        </div>
+      <?php endif; ?>
+    </section>
+
 
   <!--  Sản phẩm liên quan  -->
   <section class="related-products">

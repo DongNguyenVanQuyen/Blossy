@@ -2,21 +2,6 @@
 // REGISTER VALIDATION + TOAST
 // ===============================
 
-// Bảo đảm showToast có sẵn
-if (typeof showToast === "undefined") {
-  window.showToast = function (message, type = "success") {
-    const t = document.createElement("div");
-    t.className = `toast ${type}`;
-    t.textContent = message;
-    document.body.appendChild(t);
-    setTimeout(() => t.classList.add("show"), 50);
-    setTimeout(() => {
-      t.classList.remove("show");
-      setTimeout(() => t.remove(), 300);
-    }, 2500);
-  };
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.querySelector(".register-box form");
   if (!registerForm) return;
@@ -54,37 +39,37 @@ document.addEventListener("DOMContentLoaded", () => {
       !address
     ) {
       e.preventDefault();
-      showToast("⚠️ Vui lòng nhập đầy đủ thông tin!", "warning");
+      showToast("Vui lòng nhập đầy đủ thông tin!", "warning");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       e.preventDefault();
-      showToast("❌ Email không hợp lệ!", "error");
+      showToast("Email không hợp lệ!", "error");
       return;
     }
 
     const phoneRegex = /^[0-9]{9,11}$/;
     if (!phoneRegex.test(phone)) {
       e.preventDefault();
-      showToast("❌ Số điện thoại phải có 9-11 chữ số!", "error");
+      showToast("Số điện thoại phải có 9-11 chữ số!", "error");
       return;
     }
 
     if (password.length < 6) {
       e.preventDefault();
-      showToast("⚠️ Mật khẩu phải có ít nhất 6 ký tự!", "warning");
+      showToast("Mật khẩu phải có ít nhất 6 ký tự!", "warning");
       return;
     }
 
     if (password !== confirm) {
       e.preventDefault();
-      showToast("❌ Mật khẩu xác nhận không khớp!", "error");
+      showToast("Mật khẩu xác nhận không khớp!", "error");
       return;
     }
 
     // OK
-    showToast("✅ Đang xử lý đăng ký...", "success");
+    showToast("Đang xử lý đăng ký...", "success");
   });
 });

@@ -14,7 +14,7 @@ document.querySelectorAll(".wishlist__remove").forEach((btn) => {
           // Xóa hàng khỏi danh sách
           this.closest(".wishlist__row").remove();
           showToast(
-            data.message || "🗑️ Đã xóa khỏi danh sách yêu thích!",
+            data.message || "Đã xóa khỏi danh sách yêu thích!",
             "warning"
           );
 
@@ -57,7 +57,7 @@ document.querySelectorAll(".wishlist__add-btn").forEach((btn) => {
       if (data.success) {
         showToast("🛒 Đã thêm vào giỏ hàng!", "success");
 
-        // ✅ Cập nhật lại số lượng giỏ hàng
+        // Cập nhật lại số lượng giỏ hàng
         updateHeaderCounts();
       } else {
         showToast(data.message || "Không thể thêm vào giỏ hàng!", "error");
@@ -71,36 +71,3 @@ document.querySelectorAll(".wishlist__add-btn").forEach((btn) => {
     }
   });
 });
-
-// ====== Toast thông báo ======
-function showToast(message, type = "success") {
-  // Xóa toast cũ (tránh bị chồng)
-  const oldToast = document.querySelector(".toast");
-  if (oldToast) oldToast.remove();
-
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-
-  // Icon tự động theo loại
-  const icon =
-    type === "success"
-      ? "✅"
-      : type === "error"
-      ? "❌"
-      : type === "warning"
-      ? "⚠️"
-      : "ℹ️";
-
-  toast.innerHTML = `
-    <span class="toast__icon">${icon}</span>
-    <span class="toast__msg">${message}</span>
-  `;
-
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.classList.add("show"), 50);
-  setTimeout(() => {
-    toast.classList.remove("show");
-    setTimeout(() => toast.remove(), 300);
-  }, 2500);
-}

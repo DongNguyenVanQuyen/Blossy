@@ -140,6 +140,12 @@ if (isset($_SESSION['user'])) {
   </div>
 </div>
 <div id="Time" class="pos-fx"></div>
-
+<script src="<?= BASE_URL ?>/Public/Assets/Js/Toast.js?v=<?= time()?>"></script>
+  <?php if (!empty($_SESSION['toast'])): ?>
+    <script>
+      showToast("<?= addslashes($_SESSION['toast']['message']) ?>","<?= $_SESSION['toast']['type'] ?>");
+    </script>
+    <?php unset($_SESSION['toast']); ?>
+  <?php endif; ?>
 <script src="<?= BASE_URL ?>Public/Assets/Js/list.js?v=<?= time() ?>"></script>
 <script src="<?= BASE_URL ?>Public/Assets/Js/HeaderCount.js?v=<?= time() ?>"></script>

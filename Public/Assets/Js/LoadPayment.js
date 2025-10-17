@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const quantity = parseInt(qtyInput?.value || "1");
 
       try {
-        // ✅ Gửi request tạo đơn tạm "mua ngay"
+        // Gửi request tạo đơn tạm "mua ngay"
         const res = await fetch("index.php?controller=checkout&action=buyNow", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -18,14 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (data.success) {
-          // ✅ Chuyển đến trang checkout với 1 sản phẩm duy nhất
+          // Chuyển đến trang checkout với 1 sản phẩm duy nhất
           window.location.href = "index.php?controller=checkout&action=index";
         } else {
-          alert(data.message || "Không thể xử lý mua ngay");
+          showToast(data.success || "Không thể xử lý Mua Ngay!", "error");
         }
       } catch (err) {
-        console.error("❌ Lỗi mua ngay:", err);
-        alert("Có lỗi xảy ra, vui lòng thử lại.");
+        console.error("Lỗi mua ngay:", err);
+        showToast("Có lỗi xảy ra, vui lòng thử lại.", "error");
       }
     });
   }

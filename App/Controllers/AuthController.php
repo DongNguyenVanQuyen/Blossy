@@ -15,13 +15,12 @@ class AuthController extends BaseController
         }
 
         $user = $_SESSION['user'];
-        $data = ['user' => $user];
         $userId = $user['user_id'];
 
         $userModel = new UserModel();
         $addresses = $userModel->getAddresses($userId); 
 
-        // Pagination setup
+        // Pagination order
         $limit = 10;
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
@@ -104,7 +103,8 @@ class AuthController extends BaseController
                     'last_name'  => $user['last_name'],
                     'phone'      => $user['phone'],
                     'address'    => $user['address'],
-                    'gender'     => $user['gender']
+                    'gender'     => $user['gender'],
+                    'level'      => $user['level'],
                 ];
 
                 $_SESSION['toast'] = [

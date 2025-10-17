@@ -43,12 +43,55 @@
 
 /* Content */
 .my-account__content {
+  position: relative;
   flex: 1;
   background: var(--header-bg);
   border-radius: 12px;
   padding: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   height: fit-content;
+}
+/* ===============================
+   🏅 CẤP ĐỘ NGƯỜI DÙNG (LEVEL)
+================================= */
+.user-level {
+  display: inline-block;
+  padding: 15px 35px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: capitalize;
+  border: none;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+}
+
+/*Level thường */
+.user-level.normal {
+  background-color: #f1f1f1;
+  color: #555;
+}
+
+/* Silver */
+.user-level.silver {
+  background-color: #c0c0c0;
+  color: var(--text);
+  box-shadow: 0 0 6px rgba(192, 192, 192, 0.6);
+}
+
+/* Gold */
+.user-level.gold {
+  background-color: #ffd700;
+  color: var(--text);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+}
+
+/* Diamond */
+.user-level.diamond {
+  background: linear-gradient(135deg, #b3e5fc, #e1f5fe);
+  color: var(--text);
+  box-shadow: 0 0 8px rgba(0, 102, 204, 0.4);
 }
 
 .my-account__title {

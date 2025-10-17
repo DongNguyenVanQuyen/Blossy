@@ -11,13 +11,17 @@ class NotificationController extends BaseController
         $this->model = new NotificationModel();
     }
 
-    /** 🔹 Trang danh sách thông báo (dạng chi tiết nếu cần) */
+    /** 🔹 Trang danh sách thông báo */
     public function index()
     {
         global $title;
         $title = "Thông Báo | Blossy";
 
         if (!isset($_SESSION['user'])) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Vui lòng đăng nhập để xem thông báo!'
+            ];
             header("Location: index.php?controller=auth&action=login");
             exit;
         }
@@ -32,6 +36,10 @@ class NotificationController extends BaseController
     public function open()
     {
         if (!isset($_SESSION['user'])) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Vui lòng đăng nhập để xem thông báo!'
+            ];
             header("Location: index.php?controller=auth&action=login");
             exit;
         }
@@ -43,7 +51,11 @@ class NotificationController extends BaseController
         $msg = $this->model->getMessageById($messageId);
 
         if (!$msg) {
-            echo "<script>alert('❌ Thông báo không tồn tại!');history.back();</script>";
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Thông báo không tồn tại!'
+            ];
+            header("Location: index.php?controller=notification&action=index");
             exit;
         }
 
@@ -56,7 +68,11 @@ class NotificationController extends BaseController
             $valid = $check->fetch(PDO::FETCH_ASSOC);
 
             if (!$valid) {
-                echo "<script>alert('⚠️ Bạn không có quyền xem đơn hàng này!');history.back();</script>";
+                $_SESSION['toast'] = [
+                    'type' => 'error',
+                    'message' => 'Bạn không có quyền xem đơn hàng này!'
+                ];
+                header("Location: index.php?controller=notification&action=index");
                 exit;
             }
 
@@ -77,7 +93,11 @@ class NotificationController extends BaseController
         $msg = $this->model->getMessageById($id);
 
         if (!$msg) {
-            echo "<script>alert('❌ Không tìm thấy thông báo!');history.back();</script>";
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Không tìm thấy thông báo!'
+            ];
+            header("Location: index.php?controller=notification&action=index");
             exit;
         }
 
@@ -87,7 +107,7 @@ class NotificationController extends BaseController
         $this->loadView('Notification.Detail', ['message' => $msg]);
     }
 
-    /**  Khi user click vào icon chuông */
+    /** 🔹 Khi user click vào icon chuông → đánh dấu tất cả đã đọc */
     public function markAll()
     {
         if (!isset($_SESSION['user'])) {
@@ -101,5 +121,4 @@ class NotificationController extends BaseController
         echo json_encode(['success' => true]);
         exit;
     }
-
 }

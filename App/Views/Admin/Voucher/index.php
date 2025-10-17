@@ -63,10 +63,10 @@
     </tbody>
   </table>
 
-  <div class="voucher-pagination">
+  <div class="pagination">
     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
       <a href="index.php?controller=adminvoucher&action=index&page=<?= $i ?>" 
-         class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+         class="pagination-link <?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
     <?php endfor; ?>
   </div>
 </div>
