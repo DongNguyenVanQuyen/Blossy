@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 13, 2025 lúc 04:57 AM
+-- Thời gian đã tạo: Th10 17, 2025 lúc 12:16 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -83,7 +83,8 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`id`, `user_id`, `updated_at`) VALUES
-(1, 8, '2025-10-13 09:55:47');
+(1, 8, '2025-10-17 16:43:23'),
+(2, 7, '2025-10-15 14:49:09');
 
 -- --------------------------------------------------------
 
@@ -98,6 +99,13 @@ CREATE TABLE `cart_items` (
   `quantity` int(11) NOT NULL CHECK (`quantity` > 0),
   `added_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `cart_items`
+--
+
+INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `quantity`, `added_at`) VALUES
+(62, 1, 36, 1, '2025-10-17 16:43:23');
 
 --
 -- Bẫy `cart_items`
@@ -222,9 +230,13 @@ INSERT INTO `favorites` (`id`, `user_id`, `product_id`, `created_at`) VALUES
 (7, 8, 12, '2025-10-06 23:07:17'),
 (8, 8, 9, '2025-10-06 23:07:34'),
 (9, 8, 17, '2025-10-06 23:08:51'),
-(170, 8, 37, '2025-10-10 20:42:27'),
-(178, 8, 39, '2025-10-11 19:27:42'),
-(179, 8, 36, '2025-10-13 08:40:31');
+(180, 8, 5, '2025-10-13 10:05:18'),
+(181, 1, 46, '2025-10-13 10:19:37'),
+(197, 7, 16, '2025-10-15 13:57:46'),
+(198, 7, 37, '2025-10-15 14:15:25'),
+(199, 7, 38, '2025-10-15 14:15:26'),
+(200, 8, 36, '2025-10-17 16:34:49'),
+(202, 8, 39, '2025-10-17 16:46:31');
 
 -- --------------------------------------------------------
 
@@ -248,7 +260,7 @@ INSERT INTO `inventory` (`product_id`, `stock`, `low_stock_threshold`, `updated_
 (2, 14, 5, '2025-10-09 22:45:34'),
 (3, 52, 5, '2025-10-03 17:24:50'),
 (4, 10, 5, '2025-10-03 17:24:50'),
-(5, 20, 10, '2025-10-03 17:24:50'),
+(5, 18, 10, '2025-10-13 18:53:43'),
 (6, 66, 5, '2025-10-03 17:24:50'),
 (7, 6, 5, '2025-10-03 17:24:50'),
 (8, 9, 5, '2025-10-03 17:24:50'),
@@ -259,7 +271,7 @@ INSERT INTO `inventory` (`product_id`, `stock`, `low_stock_threshold`, `updated_
 (13, 0, 5, '2025-10-03 17:24:50'),
 (14, 11, 10, '2025-10-03 17:24:50'),
 (15, 16, 5, '2025-10-03 17:24:50'),
-(16, 4, 10, '2025-10-03 17:24:50'),
+(16, 0, 10, '2025-10-15 14:15:39'),
 (17, 0, 5, '2025-10-03 17:24:50'),
 (18, 18, 5, '2025-10-03 17:24:50'),
 (19, 10, 10, '2025-10-03 17:24:50'),
@@ -279,14 +291,14 @@ INSERT INTO `inventory` (`product_id`, `stock`, `low_stock_threshold`, `updated_
 (33, 42, 5, '2025-10-03 17:29:44'),
 (34, 13, 5, '2025-10-03 17:29:44'),
 (35, 19, 5, '2025-10-03 17:29:44'),
-(36, 41, 5, '2025-10-12 21:09:35'),
-(37, 14, 5, '2025-10-12 19:27:22'),
-(38, 11, 5, '2025-10-10 15:55:02'),
-(39, 14, 10, '2025-10-13 09:47:10'),
+(36, 38, 5, '2025-10-15 14:14:22'),
+(37, 4, 5, '2025-10-15 14:33:07'),
+(38, 7, 5, '2025-10-15 14:31:50'),
+(39, 12, 10, '2025-10-15 14:49:09'),
 (40, 5, 5, '2025-10-13 09:47:52'),
 (41, 7, 5, '2025-10-09 00:16:48'),
 (42, 10, 5, '2025-10-09 00:16:48'),
-(43, 10, 5, '2025-10-10 15:57:30'),
+(43, 9, 5, '2025-10-15 14:46:00'),
 (44, 19, 5, '2025-10-10 15:43:03'),
 (45, 12, 5, '2025-10-09 00:16:48'),
 (46, 0, 5, '2025-10-09 00:16:48'),
@@ -297,11 +309,11 @@ INSERT INTO `inventory` (`product_id`, `stock`, `low_stock_threshold`, `updated_
 (51, 12, 5, '2025-10-09 00:16:48'),
 (52, 10, 5, '2025-10-09 00:16:48'),
 (53, 8, 5, '2025-10-09 00:16:48'),
-(54, 6, 5, '2025-10-09 00:16:48'),
+(54, 4, 5, '2025-10-13 18:46:17'),
 (55, 15, 10, '2025-10-09 00:16:48'),
-(56, 14, 5, '2025-10-09 00:16:48'),
+(56, 13, 5, '2025-10-15 14:41:18'),
 (57, 19, 5, '2025-10-10 15:48:29'),
-(58, 14, 5, '2025-10-09 00:16:48'),
+(58, 13, 5, '2025-10-15 14:43:53'),
 (59, 13, 5, '2025-10-09 00:16:48'),
 (60, 0, 5, '2025-10-09 00:16:48'),
 (61, 19, 10, '2025-10-09 00:16:48'),
@@ -317,8 +329,7 @@ INSERT INTO `inventory` (`product_id`, `stock`, `low_stock_threshold`, `updated_
 (71, 10, 10, '2025-10-09 00:16:48'),
 (72, 11, 5, '2025-10-09 00:16:48'),
 (73, 6, 5, '2025-10-09 00:16:48'),
-(74, 13, 5, '2025-10-09 00:16:48'),
-(79, 51, 5, '2025-10-12 21:11:40');
+(74, 13, 5, '2025-10-09 00:16:48');
 
 -- --------------------------------------------------------
 
@@ -331,15 +342,27 @@ CREATE TABLE `messages` (
   `title` varchar(191) NOT NULL,
   `body` text NOT NULL,
   `created_by` bigint(20) UNSIGNED NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `type` enum('order','promotion','system') DEFAULT 'system',
+  `order_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `messages`
 --
 
-INSERT INTO `messages` (`id`, `title`, `body`, `created_by`, `created_at`) VALUES
-(1, 'Ưu đãi mùa Thu', 'Giảm 15% cho bộ sưu tập mùa Thu!', 1, '2025-09-14 20:57:51');
+INSERT INTO `messages` (`id`, `title`, `body`, `created_by`, `created_at`, `updated_at`, `type`, `order_id`) VALUES
+(1, 'Ưu đãi mùa Thu', 'Giảm 15% cho bộ sưu tập mùa Thu! \nTặng ngay mã Voucher \'muathu\' ngay bây giờ nếu bạn mua sản phẩm sẽ được giảm giá 15%', 1, '2025-09-14 20:57:51', NULL, 'system', NULL),
+(2, 'Đơn hàng #57', 'Đơn hàng của bạn đã giao thành công!', 1, '2025-10-14 18:04:19', '2025-10-15 12:11:19', 'order', 57),
+(21, 'Đơn hàng #66', 'Đơn hàng #66 đang được giao đến bạn.', 1, '2025-10-14 21:00:18', NULL, 'order', 66),
+(29, 'Đơn hàng #66', 'Đơn hàng #66 đã giao thành công! Cảm ơn bạn đã mua sắm tại Blossy.', 1, '2025-10-14 21:54:35', NULL, 'order', 66),
+(30, 'Đơn hàng #65', 'Đơn hàng #65 đã giao thành công! Cảm ơn bạn đã mua sắm tại Blossy.', 1, '2025-10-14 21:56:10', '2025-10-15 12:12:08', 'order', 65),
+(32, 'Đơn hàng #76', 'Đơn hàng #76 đang được giao đến bạn.', 1, '2025-10-15 14:55:19', NULL, 'order', 76),
+(33, 'Đơn hàng #74', 'Đơn hàng #74 đang được giao đến bạn.', 1, '2025-10-15 17:15:25', NULL, 'order', 74),
+(34, 'Đơn hàng #73', 'Đơn hàng #73 đã bị hủy. Nếu cần hỗ trợ, vui lòng liên hệ Blossy.', 1, '2025-10-17 16:23:15', NULL, 'order', 73),
+(35, 'Đơn hàng #72', 'Đơn hàng #72 đã bị hủy. Nếu cần hỗ trợ, vui lòng liên hệ Blossy.', 1, '2025-10-17 16:26:36', NULL, 'order', 72),
+(36, 'Lễ  Giáng Sinh Sắp Đến!', 'Bạn đã chuẩn bị sẵn sàng để sắm cho mình/mọi người 1 bó hoa tuyệt vời chưa?', 1, '2025-10-17 16:33:03', '2025-10-17 16:33:35', 'system', NULL);
 
 -- --------------------------------------------------------
 
@@ -359,7 +382,23 @@ CREATE TABLE `message_users` (
 --
 
 INSERT INTO `message_users` (`message_id`, `user_id`, `is_read`, `read_at`) VALUES
-(1, 2, 0, NULL);
+(1, 1, 1, '2025-10-17 17:15:11'),
+(1, 2, 0, NULL),
+(1, 7, 1, '2025-10-15 14:55:26'),
+(1, 8, 1, '2025-10-17 16:34:42'),
+(2, 8, 1, '2025-10-17 16:34:42'),
+(21, 8, 1, '2025-10-17 16:34:42'),
+(29, 8, 1, '2025-10-17 16:34:42'),
+(30, 8, 1, '2025-10-17 16:34:42'),
+(32, 7, 1, '2025-10-15 14:55:27'),
+(33, 7, 0, NULL),
+(34, 7, 0, NULL),
+(35, 7, 0, NULL),
+(36, 1, 1, '2025-10-17 17:15:12'),
+(36, 7, 0, NULL),
+(36, 8, 1, '2025-10-17 16:34:42'),
+(36, 9, 0, NULL),
+(36, 10, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -371,7 +410,7 @@ CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `address_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `status` enum('cho_xac_nhan','dang_giao','thanh_cong','da_huy') NOT NULL DEFAULT 'cho_xac_nhan',
+  `status` enum('cho_xac_nhan','dang_giao','hoan_thanh','huy') NOT NULL DEFAULT 'cho_xac_nhan',
   `payment_method` enum('cod','vnpay','momo','bank') NOT NULL DEFAULT 'cod',
   `payment_status` enum('chua_thanh_toan','da_thanh_toan','hoan_tien') NOT NULL DEFAULT 'chua_thanh_toan',
   `subtotal` decimal(12,2) NOT NULL DEFAULT 0.00,
@@ -397,13 +436,32 @@ INSERT INTO `orders` (`id`, `user_id`, `address_id`, `status`, `payment_method`,
 (48, 8, 1, 'cho_xac_nhan', 'cod', '', 867000.00, 50000.00, 30000.00, 847000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:41:13', '2025-10-10 15:41:13'),
 (49, 8, 1, 'cho_xac_nhan', 'cod', '', 950000.00, 50000.00, 30000.00, 930000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:43:03', '2025-10-10 15:43:03'),
 (50, 8, 1, 'cho_xac_nhan', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:45:23', '2025-10-10 15:45:23'),
-(51, 8, 1, 'cho_xac_nhan', 'cod', '', 3467000.00, 0.00, 30000.00, 3497000.00, '', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:48:29', '2025-10-10 15:48:29'),
-(52, 8, 1, 'cho_xac_nhan', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:53:25', '2025-10-10 15:53:25'),
-(53, 8, 1, 'cho_xac_nhan', 'cod', '', 490000.00, 0.00, 30000.00, 520000.00, '', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:53:40', '2025-10-10 15:53:40'),
-(54, 8, 1, 'cho_xac_nhan', 'cod', '', 490000.00, 0.00, 30000.00, 520000.00, '', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:55:02', '2025-10-10 15:55:02'),
-(55, 8, 1, 'cho_xac_nhan', 'cod', '', 1130000.00, 50000.00, 30000.00, 1110000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:57:30', '2025-10-10 15:57:30'),
-(56, 8, 1, 'cho_xac_nhan', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 09:47:10', '2025-10-13 09:47:10'),
-(57, 8, 1, 'cho_xac_nhan', 'cod', '', 590000.00, 50000.00, 30000.00, 570000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 09:47:52', '2025-10-13 09:47:52');
+(51, 8, 1, 'hoan_thanh', 'cod', '', 3467000.00, 0.00, 30000.00, 3497000.00, '', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:48:29', '2025-10-13 17:22:01'),
+(52, 8, 1, 'huy', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:53:25', '2025-10-14 19:15:00'),
+(53, 8, 1, 'hoan_thanh', 'cod', '', 490000.00, 0.00, 30000.00, 520000.00, '', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:53:40', '2025-10-14 19:14:55'),
+(54, 8, 1, 'dang_giao', 'cod', '', 490000.00, 0.00, 30000.00, 520000.00, '', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:55:02', '2025-10-14 19:14:52'),
+(55, 8, 1, 'hoan_thanh', 'cod', '', 1130000.00, 50000.00, 30000.00, 1110000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-13', '2025-10-10 15:57:30', '2025-10-13 17:21:58'),
+(56, 8, 1, 'huy', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 09:47:10', '2025-10-13 16:22:25'),
+(57, 8, 1, 'hoan_thanh', 'cod', '', 590000.00, 50000.00, 30000.00, 570000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 09:47:52', '2025-10-13 16:28:25'),
+(58, 7, 1, 'hoan_thanh', 'cod', '', 2130000.00, 50000.00, 30000.00, 2110000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 16:29:28', '2025-10-13 17:21:47'),
+(59, 8, 1, 'cho_xac_nhan', 'cod', '', 1220000.00, 50000.00, 30000.00, 1200000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:45:22', '2025-10-13 18:45:22'),
+(60, 8, 1, 'dang_giao', 'cod', '', 870000.00, 50000.00, 30000.00, 850000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:46:17', '2025-10-14 19:15:37'),
+(61, 8, 1, 'cho_xac_nhan', 'cod', '', 1220000.00, 50000.00, 30000.00, 1200000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:49:28', '2025-10-13 18:49:28'),
+(62, 8, 1, 'cho_xac_nhan', 'cod', '', 1080000.00, 50000.00, 30000.00, 1060000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:50:05', '2025-10-13 18:50:05'),
+(63, 8, 1, 'cho_xac_nhan', 'cod', '', 1080000.00, 50000.00, 30000.00, 1060000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:50:07', '2025-10-13 18:50:07'),
+(64, 8, 1, 'dang_giao', 'cod', '', 1080000.00, 50000.00, 30000.00, 1060000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:50:13', '2025-10-14 22:04:24'),
+(65, 8, 1, 'hoan_thanh', 'cod', '', 1080000.00, 50000.00, 30000.00, 1060000.00, 'SALE50K', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:50:19', '2025-10-14 21:56:10'),
+(66, 8, 1, 'hoan_thanh', 'cod', '', 1400000.00, 50000.00, 30000.00, 1380000.00, 'SALE50K', 'Giao hàng tận nơi', '2025-10-16', '2025-10-13 18:53:43', '2025-10-14 21:54:35'),
+(67, 7, 1, 'cho_xac_nhan', 'cod', '', 4140000.00, 0.00, 30000.00, 4170000.00, '', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:14:22', '2025-10-15 14:14:22'),
+(68, 7, 1, 'cho_xac_nhan', 'cod', '', 2070000.00, 0.00, 30000.00, 2100000.00, '', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:15:39', '2025-10-15 14:15:39'),
+(69, 7, 1, 'cho_xac_nhan', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:23:00', '2025-10-15 14:23:00'),
+(70, 7, 1, 'cho_xac_nhan', 'cod', '', 770000.00, 0.00, 30000.00, 800000.00, '', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:28:08', '2025-10-15 14:28:08'),
+(71, 7, 1, 'cho_xac_nhan', 'cod', '', 490000.00, 49000.00, 30000.00, 471000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:31:50', '2025-10-15 14:31:50'),
+(72, 7, 1, 'huy', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:33:07', '2025-10-17 16:26:36'),
+(73, 7, 1, 'huy', 'cod', '', 3249000.00, 50000.00, 30000.00, 3229000.00, 'SALE50K', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:41:18', '2025-10-17 16:23:15'),
+(74, 7, 1, 'dang_giao', 'cod', '', 2835000.00, 50000.00, 30000.00, 2815000.00, 'SALE50K', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:43:53', '2025-10-15 17:15:25'),
+(75, 7, 1, 'hoan_thanh', 'cod', '', 1130000.00, 50000.00, 30000.00, 1110000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:46:00', '2025-10-15 17:14:43'),
+(76, 7, 1, 'hoan_thanh', 'cod', '', 770000.00, 50000.00, 30000.00, 750000.00, 'FLOW10', 'Giao hàng tận nơi', '2025-10-18', '2025-10-15 14:49:09', '2025-10-15 17:14:08');
 
 --
 -- Bẫy `orders`
@@ -453,6 +511,7 @@ CREATE TABLE `order_items` (
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_name` varchar(191) NOT NULL,
   `unit_price` decimal(12,2) NOT NULL,
+  `compare_at_price` decimal(10,2) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `line_total` decimal(12,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -461,21 +520,49 @@ CREATE TABLE `order_items` (
 -- Đang đổ dữ liệu cho bảng `order_items`
 --
 
-INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `unit_price`, `quantity`, `line_total`) VALUES
-(113, 44, 2, 'Hoa Mẫu Đan', 350000.00, 1, 350000.00),
-(114, 45, 2, 'Hoa Mẫu Đan', 350000.00, 1, 350000.00),
-(115, 46, 38, 'Thấu cảm', 490000.00, 1, 490000.00),
-(116, 47, 62, 'Je taime', 867000.00, 1, 867000.00),
-(117, 48, 62, 'Je taime', 867000.00, 1, 867000.00),
-(118, 49, 44, 'Món Quà Chúc Mừng', 950000.00, 1, 950000.00),
-(119, 50, 37, 'Thanh Xuân', 770000.00, 1, 770000.00),
-(120, 51, 57, 'Magnificent', 3467000.00, 1, 3467000.00),
-(121, 52, 39, 'Pretty', 770000.00, 1, 770000.00),
-(122, 53, 38, 'Thấu cảm', 490000.00, 1, 490000.00),
-(123, 54, 38, 'Thấu cảm', 490000.00, 1, 490000.00),
-(124, 55, 43, 'Tươi Sáng', 1130000.00, 1, 1130000.00),
-(125, 56, 39, 'Pretty', 770000.00, 1, 770000.00),
-(126, 57, 40, 'Sắc tím mộng mơ', 590000.00, 1, 590000.00);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `unit_price`, `compare_at_price`, `quantity`, `line_total`) VALUES
+(113, 44, 2, 'Hoa Mẫu Đan', 350000.00, NULL, 1, 350000.00),
+(114, 45, 2, 'Hoa Mẫu Đan', 350000.00, NULL, 1, 350000.00),
+(115, 46, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(116, 47, 62, 'Je taime', 867000.00, NULL, 1, 867000.00),
+(117, 48, 62, 'Je taime', 867000.00, NULL, 1, 867000.00),
+(118, 49, 44, 'Món Quà Chúc Mừng', 950000.00, NULL, 1, 950000.00),
+(119, 50, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(120, 51, 57, 'Magnificent', 3467000.00, NULL, 1, 3467000.00),
+(121, 52, 39, 'Pretty', 770000.00, NULL, 1, 770000.00),
+(122, 53, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(123, 54, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(124, 55, 43, 'Tươi Sáng', 1130000.00, NULL, 1, 1130000.00),
+(125, 56, 39, 'Pretty', 770000.00, NULL, 1, 770000.00),
+(126, 57, 40, 'Sắc tím mộng mơ', 590000.00, NULL, 1, 590000.00),
+(127, 58, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(128, 58, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(129, 58, 42, 'Summer of soul', 870000.00, NULL, 1, 870000.00),
+(130, 59, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(131, 59, 36, 'My Muse', 450000.00, NULL, 1, 450000.00),
+(132, 60, 54, 'Soulmate', 500000.00, NULL, 1, 500000.00),
+(133, 60, 51, 'Lời Nhắn', 370000.00, NULL, 1, 370000.00),
+(134, 61, 36, 'My Muse', 450000.00, NULL, 1, 450000.00),
+(135, 61, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(136, 65, 36, 'My Muse', 450000.00, NULL, 1, 450000.00),
+(137, 65, 5, 'Ban Mai', 630000.00, NULL, 1, 630000.00),
+(138, 66, 39, 'Pretty', 770000.00, NULL, 1, 770000.00),
+(139, 66, 5, 'Ban Mai', 630000.00, NULL, 1, 630000.00),
+(140, 67, 16, 'Bó Hoa Cưới Sunshine', 810000.00, NULL, 3, 2430000.00),
+(141, 67, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(142, 67, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(143, 67, 36, 'My Muse', 450000.00, NULL, 1, 450000.00),
+(144, 68, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(145, 68, 16, 'Bó Hoa Cưới Sunshine', 810000.00, NULL, 1, 810000.00),
+(146, 68, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(147, 69, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(148, 70, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(149, 71, 38, 'Thấu cảm', 490000.00, NULL, 1, 490000.00),
+(150, 72, 37, 'Thanh Xuân', 770000.00, NULL, 1, 770000.00),
+(151, 73, 56, 'Bầu trời xanh', 3249000.00, NULL, 1, 3249000.00),
+(152, 74, 58, 'Hồng Trắng Kiêu Sa', 2835000.00, NULL, 1, 2835000.00),
+(153, 75, 43, 'Tươi Sáng', 1130000.00, NULL, 1, 1130000.00),
+(154, 76, 39, 'Pretty', 770000.00, NULL, 1, 770000.00);
 
 -- --------------------------------------------------------
 
@@ -538,7 +625,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `color`, `slug`, `season`, 
 (33, 6, 'Chút Vấn Vương', 'Tím', 'chut-van-vuong', 'spring', 'Thứ bạn nuối tiếc chính là mình đã không dành nhiều thời gian bên gia đình hay bên những người mình thương yêu nhất. Ngay khi còn có thể, hay yêu thương và sẻ chia, hãy thắp sáng nụ cười những người quan trọng ấy bằng một bình hoa ly vàng thật đẹp.', 1540000.00, 1660000.00, 1, '2025-10-03 17:23:05', '2025-10-03 17:23:05'),
 (34, 6, 'Tinh Thuần', 'Trắng', 'tinh-thuan', 'spring', 'Những sắc trắng từ những loài hoa khác nhau đan xen tạo nên một bình hoa trang trọng nhưng không hề nhàm chán nhờ sự kết hợp và sắp xếp chuyên nghiệp. Bình hoa là lựa chọn hoàn hảo dành tặng cho người yêu sắc trắng tinh khôi, thanh khiết.', 1440000.00, 1660000.00, 1, '2025-10-03 17:23:05', '2025-10-03 17:23:05'),
 (35, 7, 'Vitamin Sea', 'Vàng', 'vitamin-sea', 'spring', 'Bó hoa được kết từ những đóa hồng vàng rực rỡ, loài hoa tượng trưng cho niềm vui, hạnh phúc và tình bạn chân thành. Xen kẽ giữa sắc vàng tươi sáng là vài nhành hoa baby xanh dịu nhẹ, tạo điểm nhấn hài hòa và tinh tế.', 810000.00, 900000.00, 1, '2025-10-03 17:23:05', '2025-10-03 17:23:05'),
-(36, 7, 'My Muse', 'Trắng', 'my-muse', 'spring', 'Một bó hoa đầy ngọt ngào và tỏa sáng, được thiết kế từ những cành hồng trắng và hồng trà đẹp nhất. Thợ hoa đã cẩn thận lựa chọn những cành thật tươi, khéo léo thiết kế bởi những lớp giấy gói đẹp mặt và tinh tế. Món quà sẽ rất phù hợpcho nhiều dịp, từ sinh nhật cho đến chúc mừng.', 450000.00, 520000.00, 1, '2025-10-09 00:16:30', '2025-10-12 21:09:35'),
+(36, 7, 'My Muse', 'Trắng', 'my-muse', 'spring', 'Một bó hoa đầy ngọt ngào và tỏa sáng, được thiết kế từ những cành hồng trắng và hồng trà đẹp nhất. Thợ hoa đã cẩn thận lựa chọn những cành thật tươi, khéo léo thiết kế bởi những lớp giấy gói đẹp mặt và tinh tế. Món quà sẽ rất phù hợpcho nhiều dịp, từ sinh nhật cho đến chúc mừng.', 450000.00, 520000.00, 1, '2025-10-09 00:16:30', '2025-10-14 21:45:55'),
 (37, 7, 'Thanh Xuân', 'Hồng', 'thanh-xuan', 'spring', 'Bó hoa được tạo nên từ những đóa hồng pastel hồng nhẹ nhàng, mang vẻ đẹp ngọt ngào và tinh khôi. Từng cánh hoa mềm mại bung nở, xếp lớp uyển chuyển như gửi gắm sự dịu dàng và lãng mạn.', 770000.00, 880000.00, 1, '2025-10-09 00:16:30', '2025-10-12 19:27:22'),
 (38, 7, 'Thấu cảm', 'Trắng', 'thau-cam', 'spring', 'Bó hoa Hồng Xanh Thiên Thanh là sự kết hợp tinh tế giữa vẻ đẹp thuần khiết và màu sắc độc đáo. Mười hai đóa hồng trắng được điểm xuyết một cách nghệ thuật bằng viền xanh dương nhẹ nhàng, tạo cảm giác như những áng mây bồng bềnh giữa bầu trời trong xanh.', 490000.00, 540000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30'),
 (39, 7, 'Pretty', 'Hồng', 'pretty', 'spring', 'Một bó hoa \"giải cảm\" giúp cho tinh thần của người nhận trở nên phấn chấn và tràn đầy năng lượng hơn. Thật là một liều thuốc tinh thần thật tốt đẹp phải không nào, còn chần chừ gì mà không tặng nó ngay cho người mà bạn yêu quý nhất!', 770000.00, 860000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30'),
@@ -576,8 +663,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `color`, `slug`, `season`, 
 (71, 15, 'Mát Xanh', 'Xanh biển', 'mat-xanh', 'spring', 'Hoa baby tượng trưng cho tình yêu tinh khiết, sự trong trắng, mỏng manh, thanh tao như chính vẻ ngoài của hoa mang lại. Chính vì vậy hoa baby thường được nam giới sử dụng để tặng cho người mình yêu, đây là ý nghĩa đặc biệt nhất mà loài hoa baby đẹp mang lại.', 475000.00, 500000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30'),
 (72, 15, 'Bó Hoa Tulip - Dreamcatcher', 'Trắng', 'bo-hoa-tulip-dreamcatcher', 'spring', 'Hoa Tulip trắng tượng trưng cho tình yêu trong sáng, thuần khiết. Bó hoa tulip trắng Dreamcatcher là lựa chọn hoàn hảo làm hoa tặng sinh nhật cô bạn gái mới quen.', 1782000.00, 1980000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30'),
 (73, 15, 'Bó Hoa Tulip - Violet', 'Tím', 'bo-hoa-tulip-violet', 'spring', '20 bông hoa tulip màu tím được gói đơn giản nhưng vẫn không kém sang trọng, tinh tế. Bó hoa là lựa chọn hòa hảo để gửi tặng vợ, bạn gái vào những dịp đặc biệt.', 1881000.00, 1980000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30'),
-(74, 15, 'Forever Young', 'Cam', 'forever-young', 'spring', 'Bó hoa Forever Young là sự kết hợp hoàn hảo giữa hoa hồng cappuccino và hoa cẩm chướng màu hồng loài hoa tượng trưng cho tuổi trẻ và sự vĩnh cửu. Forever Young là lựa chọn phù hợp để làm quà tặng cho người thân, bạn bè vào mọi dịp đặc biệt.', 672000.00, 840000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30'),
-(79, 1, 'Test 1', 'Trắng', 'Test-1', 'spring', 'đay là test', 20000.00, 50000.00, 1, '2025-10-12 21:11:40', '2025-10-12 21:11:40');
+(74, 15, 'Forever Young', 'Cam', 'forever-young', 'spring', 'Bó hoa Forever Young là sự kết hợp hoàn hảo giữa hoa hồng cappuccino và hoa cẩm chướng màu hồng loài hoa tượng trưng cho tuổi trẻ và sự vĩnh cửu. Forever Young là lựa chọn phù hợp để làm quà tặng cho người thân, bạn bè vào mọi dịp đặc biệt.', 672000.00, 840000.00, 1, '2025-10-09 00:16:30', '2025-10-09 00:16:30');
 
 -- --------------------------------------------------------
 
@@ -817,17 +903,12 @@ INSERT INTO `product_images` (`id`, `product_id`, `url`, `is_primary`, `sort_ord
 (434, 74, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1759928009/nqrvznlgknylf9e0abwx.webp', 1, 1, '2025-10-09 00:19:58'),
 (435, 74, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1759928011/bbks4w0gkhdepgk9cytf.jpg', 0, 2, '2025-10-09 00:19:58'),
 (436, 74, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1759928009/mkzzhcd5s2aqg0b1qnl7.jpg', 0, 3, '2025-10-09 00:19:58'),
-(438, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278069/webbanhoa/u9k2etqxjnbo6vi9ryhq.jpg', 0, 2, '2025-10-12 21:07:56'),
-(439, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278073/webbanhoa/tykdemcljglh9pefw5jb.jpg', 0, 3, '2025-10-12 21:07:56'),
-(440, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278160/webbanhoa/ggl868ibg2xtu5zyxzm1.jpg', 1, 1, '2025-10-12 21:09:35'),
-(441, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278170/webbanhoa/xucaaw8wxv1jdyhr6hyr.webp', 0, 2, '2025-10-12 21:09:35'),
-(442, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278172/webbanhoa/pjdlhqjtsn5th8lnlpno.jpg', 0, 3, '2025-10-12 21:09:35'),
-(443, 79, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278287/webbanhoa/dahpy9s4bti4nx6tsvhj.jpg', 1, 1, '2025-10-12 21:11:40'),
-(444, 79, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278291/webbanhoa/kdcz11qutlw9nghwf3fl.jpg', 0, 2, '2025-10-12 21:11:40'),
-(445, 79, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760278294/webbanhoa/sgihwlebiwti7kimchmp.png', 0, 3, '2025-10-12 21:11:40'),
 (446, 48, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760318853/webbanhoa/qrvhvqaytogvex7gvt5e.jpg', 1, 1, '2025-10-13 08:31:22'),
 (447, 48, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760318877/webbanhoa/r2upcxmao8qnoxiolal2.png', 0, 2, '2025-10-13 08:31:22'),
-(448, 48, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760318886/webbanhoa/gtg2fxwml5alguobggjv.jpg', 0, 3, '2025-10-13 08:31:22');
+(448, 48, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760318886/webbanhoa/gtg2fxwml5alguobggjv.jpg', 0, 3, '2025-10-13 08:31:22'),
+(464, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760453041/webbanhoa/eoxxe6ghu2hxwnhltdlc.jpg', 1, 1, '2025-10-14 21:44:01'),
+(465, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760453153/webbanhoa/nid68xiyzhlqmro1gfm2.webp', 0, 2, '2025-10-14 21:45:55'),
+(466, 36, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760453155/webbanhoa/za78uihheqa5zofgfjg8.jpg', 0, 3, '2025-10-14 21:45:55');
 
 -- --------------------------------------------------------
 
@@ -852,13 +933,13 @@ CREATE TABLE `promotions` (
 --
 
 INSERT INTO `promotions` (`id`, `code`, `name`, `discount_percent`, `starts_at`, `ends_at`, `is_active`, `created_by`, `created_at`) VALUES
-(1, NULL, 'Thu vàng', 15.00, '2025-09-14 20:57:51', '2025-10-14 20:57:51', 1, 1, '2025-09-14 20:57:51'),
 (2, 'muaxuan', 'Khuyến mãi mùa xuân', 10.00, '2025-03-01 00:00:00', '2025-03-31 00:00:00', 0, 1, '2025-09-14 21:28:36'),
 (3, 'muaha', 'Khuyến mãi mùa hè', 10.00, '2025-06-01 00:00:00', '2025-06-30 00:00:00', 0, 1, '2025-09-14 21:28:36'),
-(4, 'muathu', 'Khuyến mãi mùa thu', 10.00, '2025-09-01 00:00:00', '2025-09-30 00:00:00', 1, 1, '2025-09-14 21:28:36'),
+(4, 'muathu', 'Khuyến mãi mùa thu', 10.00, '2025-09-01 00:00:00', '2025-10-30 00:00:00', 1, 1, '2025-09-14 21:28:36'),
 (5, 'muadong', 'Khuyến mãi mùa đông', 10.00, '2025-12-01 00:00:00', '2025-12-31 00:00:00', 0, 1, '2025-09-14 21:28:36'),
 (6, 'ngay8thang3', 'Mừng ngày 8/3', 15.00, '2025-03-07 00:00:00', '2025-03-09 00:00:00', 0, 1, '2025-09-14 21:28:36'),
-(7, 'ngay2011', 'Mừng ngày 20/11', 15.00, '2025-11-19 00:00:00', '2025-11-21 00:00:00', 0, 1, '2025-09-14 21:28:36');
+(7, 'ngay2011', 'Mừng ngày 20/11', 15.00, '2025-11-19 00:00:00', '2025-11-21 00:00:00', 0, 1, '2025-09-14 21:28:36'),
+(8, 'holiday', 'Holiday', 30.00, '2025-10-10 20:47:00', '2025-10-31 20:48:00', 1, 1, '2025-10-13 20:48:08');
 
 -- --------------------------------------------------------
 
@@ -886,30 +967,37 @@ CREATE TABLE `reviews` (
   `title` varchar(191) DEFAULT NULL,
   `content` text DEFAULT NULL,
   `is_approved` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Bẫy `reviews`
+-- Đang đổ dữ liệu cho bảng `reviews`
 --
-DELIMITER $$
-CREATE TRIGGER `trg_reviews_before_insert` BEFORE INSERT ON `reviews` FOR EACH ROW BEGIN
-  IF NEW.order_item_id IS NOT NULL THEN
-    IF NOT EXISTS (
-      SELECT 1
-      FROM order_items oi
-      JOIN orders o ON o.id = oi.order_id
-      WHERE oi.id = NEW.order_item_id
-        AND oi.product_id = NEW.product_id
-        AND o.user_id = NEW.user_id
-        AND o.status = 'thanh_cong'
-    ) THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Review không hợp lệ: chưa mua sản phẩm này';
-    END IF;
-  END IF;
-END
-$$
-DELIMITER ;
+
+INSERT INTO `reviews` (`id`, `user_id`, `product_id`, `order_item_id`, `rating`, `title`, `content`, `is_approved`, `created_at`, `updated_at`) VALUES
+(1, 8, 39, 138, 5, 'Hoa này đẹp vãi~', 'Quá Đẹp!', 1, '2025-10-17 15:58:50', '2025-10-17 16:32:00');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `review_images`
+--
+
+CREATE TABLE `review_images` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `review_id` bigint(20) UNSIGNED NOT NULL,
+  `image_url` varchar(500) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `review_images`
+--
+
+INSERT INTO `review_images` (`id`, `review_id`, `image_url`, `created_at`) VALUES
+(1, 1, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760691533/webbanhoa/reviews/k9fucewhanqcrrv2zleq.webp', '2025-10-17 15:58:52'),
+(2, 1, 'https://res.cloudinary.com/dgdes7cnj/image/upload/v1760691535/webbanhoa/reviews/gcmghv1frubzwfxp33dv.jpg', '2025-10-17 15:58:53');
 
 -- --------------------------------------------------------
 
@@ -986,6 +1074,8 @@ CREATE TABLE `users` (
   `password_hash` varchar(191) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `gender` enum('Nam','Nữ','Khác') DEFAULT 'Nam',
+  `level` enum('diamond','gold','silver','normal') NOT NULL DEFAULT 'normal',
+  `total_spent` decimal(12,2) NOT NULL DEFAULT 0.00,
   `address` varchar(255) DEFAULT NULL,
   `is_blocked` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -997,13 +1087,15 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `level_id`, `email`, `first_name`, `last_name`, `password_hash`, `phone`, `gender`, `address`, `is_blocked`, `created_at`, `updated_at`, `password`) VALUES
-(1, 3, 3, 'admin@hoa.vn', NULL, NULL, 'admin@123', '0900000000', 'Nam', NULL, 0, '2025-09-14 20:57:51', '2025-10-12 18:07:33', 'admin@123'),
-(2, 1, 1, 'user@hoa.vn', NULL, NULL, 'user@123', '0911111111', 'Nam', NULL, 0, '2025-09-14 20:57:51', '2025-09-14 20:57:51', ''),
-(7, 1, 1, 'dnvq2911@gmail.com', 'Quyến', 'Văn', '', '0586964157', 'Nam', '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 0, '2025-09-21 20:15:06', '2025-09-21 20:15:06', '0586964157'),
-(8, 1, 1, 'dnvq291104@gmail.com', 'Văn', 'Quyến', '', '0586964157', 'Nam', 'hehe', 0, '2025-09-28 21:59:19', '2025-10-10 20:08:43', '0586964157'),
-(9, 1, 1, 'dnvq29112004@gmail.com', 'Văn', 'Quyến', '', '0586964157', 'Nam', '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 0, '2025-10-10 16:22:00', '2025-10-10 16:22:00', '123456'),
-(10, 1, 1, 'dnvq29110114@gmail.com', 'Văn', 'Quyến', '', '0586964157', 'Nam', '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 0, '2025-10-10 16:48:43', '2025-10-10 16:48:43', '0586964157');
+INSERT INTO `users` (`id`, `role_id`, `level_id`, `email`, `first_name`, `last_name`, `password_hash`, `phone`, `gender`, `level`, `total_spent`, `address`, `is_blocked`, `created_at`, `updated_at`, `password`) VALUES
+(1, 3, 3, 'admin@hoa.vn', 'Admin', ' ', 'admin@123', '0900000000', 'Nam', 'normal', 0.00, NULL, 0, '2025-09-14 20:57:51', '2025-10-14 16:56:05', 'admin@123'),
+(2, 2, 2, 'staff@hoa.vn', 'Nhân ', 'Viên 1', '$2y$10$Ir7VV2XuWeBDPHdZEV1WiOATIZIQa8FIZLwtisOvW0DDQj/GFIJBe', '0911111111', 'Nam', 'normal', 0.00, NULL, 1, '2025-09-14 20:57:51', '2025-10-15 11:53:38', ''),
+(7, 1, 1, 'dnvq2911@gmail.com', 'Quyến', 'Văn', '', '0586964157', 'Nam', 'silver', 3970000.00, '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 0, '2025-09-21 20:15:06', '2025-10-15 17:14:43', '0586964157'),
+(8, 1, 1, 'dnvq291104@gmail.com', 'Văn', 'Quyến', '', '0586964157', 'Nam', 'gold', 8137000.00, 'hehe', 0, '2025-09-28 21:59:19', '2025-10-14 22:08:16', '0586964157'),
+(9, 1, 1, 'dnvq29112004@gmail.com', 'Văn', 'Quyến', '', '0586964157', 'Nam', 'normal', 0.00, '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 1, '2025-10-10 16:22:00', '2025-10-14 22:00:31', '123456'),
+(10, 1, 1, 'dnvq29110114@gmail.com', 'Văn', 'Quyến', '', '0586964157', 'Nam', 'normal', 0.00, '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 0, '2025-10-10 16:48:43', '2025-10-14 22:10:26', '0586964157'),
+(11, 2, 1, 'staff2@hoa.vn', 'Nhân', 'Viên 2', '$2y$10$TNxY1koEPbUc.s6.6eBAee2/2jT0jGseO7Zd3EYzqmOOsoTYPLF3G', '0123123123', 'Nữ', 'normal', 0.00, NULL, 0, '2025-10-13 20:53:15', '2025-10-14 22:22:35', ''),
+(12, 1, 1, 'duchai@gmail.com', 'Đức', 'Hải', '', '0586964157', 'Nam', 'normal', 0.00, '574/3/25/7A Kinh Dương Vương, Phường An Lạc, Quận Bình Tân', 0, '2025-10-17 16:36:12', '2025-10-17 16:36:12', '123123');
 
 -- --------------------------------------------------------
 
@@ -1031,7 +1123,8 @@ INSERT INTO `user_cards` (`id`, `user_id`, `card_holder`, `card_number_last4`, `
 (2, 8, 'Đồng Nguyễn Văn Quyến', '4157', '11//26', 'Visa', '2025-10-06 16:04:32', NULL),
 (3, 8, 'Đồng Nguyễn Văn Quyến', '3132', '21/20', 'Visa', '2025-10-06 22:08:16', '12312313132'),
 (4, 8, 'Đồng Nguyễn Văn Quyến', '4157', '12/11', 'Visa', '2025-10-08 15:34:37', '0586964157'),
-(6, 8, 'Đồng Nguyễn Văn Quyến', '3123', '12/55', 'PayPal', '2025-10-10 20:06:21', '123123');
+(6, 8, 'Đồng Nguyễn Văn Quyến', '3123', '12/55', 'PayPal', '2025-10-10 20:06:21', '123123'),
+(7, 7, 'Đồng Nguyễn Văn Quyến', '1231', '12', 'MoMo', '2025-10-15 17:41:22', '1231');
 
 -- --------------------------------------------------------
 
@@ -1060,8 +1153,10 @@ CREATE TABLE `vouchers` (
 --
 
 INSERT INTO `vouchers` (`id`, `code`, `type`, `value`, `max_discount`, `min_order_total`, `total_quantity`, `per_user_limit`, `starts_at`, `ends_at`, `is_active`, `created_by`, `created_at`) VALUES
-(1, 'FLOW10', 'percent', 10.00, 50000.00, 300000.00, 100, 3, '2025-09-14 20:57:51', '2025-12-13 20:57:51', 1, 1, '2025-09-14 20:57:51'),
-(2, 'SALE50K', 'amount', 50000.00, NULL, 400000.00, 200, 2, '2025-09-14 20:57:51', '2025-12-13 20:57:51', 1, 1, '2025-09-14 20:57:51');
+(1, 'FLOW10', 'percent', 10.00, 50000.00, 300000.00, 100, 10, '2025-09-14 00:00:00', '2025-12-13 00:00:00', 1, 1, '2025-09-14 20:57:51'),
+(2, 'SALE50K', 'amount', 50000.00, NULL, 400000.00, 200, 2, '2025-09-14 20:57:51', '2025-12-13 20:57:51', 1, 1, '2025-09-14 20:57:51'),
+(3, '20thang10', 'percent', 15.00, 100000.00, 100000.00, 200, 1, '2025-10-15 00:00:00', '2025-10-25 00:00:00', 1, 1, '2025-10-13 17:56:54'),
+(4, 'muathu', 'percent', 15.00, 50000.00, 10000.00, 10000, 1, '2025-08-01 00:00:00', '2025-11-01 00:00:00', 0, 1, '2025-10-13 19:01:43');
 
 -- --------------------------------------------------------
 
@@ -1076,6 +1171,24 @@ CREATE TABLE `voucher_usages` (
   `order_id` bigint(20) UNSIGNED DEFAULT NULL,
   `used_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `voucher_usages`
+--
+
+INSERT INTO `voucher_usages` (`id`, `voucher_id`, `user_id`, `order_id`, `used_at`) VALUES
+(1, 1, 8, 59, '2025-10-13 18:45:22'),
+(2, 1, 8, 60, '2025-10-13 18:46:17'),
+(3, 1, 8, 61, '2025-10-13 18:49:28'),
+(4, 2, 8, 65, '2025-10-13 18:50:19'),
+(5, 2, 8, 66, '2025-10-13 18:53:43'),
+(6, 1, 7, 69, '2025-10-15 14:23:00'),
+(7, 1, 7, 71, '2025-10-15 14:31:50'),
+(8, 1, 7, 72, '2025-10-15 14:33:07'),
+(9, 2, 7, 73, '2025-10-15 14:41:18'),
+(10, 2, 7, 74, '2025-10-15 14:43:53'),
+(11, 1, 7, 75, '2025-10-15 14:46:00'),
+(12, 1, 7, 76, '2025-10-15 14:49:09');
 
 --
 -- Bẫy `voucher_usages`
@@ -1231,7 +1344,8 @@ ALTER TABLE `inventory`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_msg_staff` (`created_by`);
+  ADD KEY `fk_msg_staff` (`created_by`),
+  ADD KEY `fk_messages_orders` (`order_id`);
 
 --
 -- Chỉ mục cho bảng `message_users`
@@ -1297,6 +1411,13 @@ ALTER TABLE `reviews`
   ADD UNIQUE KEY `uq_review_once` (`user_id`,`product_id`,`order_item_id`),
   ADD KEY `idx_reviews_product` (`product_id`),
   ADD KEY `fk_rev_oi` (`order_item_id`);
+
+--
+-- Chỉ mục cho bảng `review_images`
+--
+ALTER TABLE `review_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `review_id` (`review_id`);
 
 --
 -- Chỉ mục cho bảng `roles`
@@ -1372,13 +1493,13 @@ ALTER TABLE `audit_logs`
 -- AUTO_INCREMENT cho bảng `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
@@ -1402,37 +1523,37 @@ ALTER TABLE `customer_levels`
 -- AUTO_INCREMENT cho bảng `favorites`
 --
 ALTER TABLE `favorites`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 
 --
 -- AUTO_INCREMENT cho bảng `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT cho bảng `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT cho bảng `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=449;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=467;
 
 --
 -- AUTO_INCREMENT cho bảng `promotions`
@@ -1444,7 +1565,13 @@ ALTER TABLE `promotions`
 -- AUTO_INCREMENT cho bảng `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT cho bảng `review_images`
+--
+ALTER TABLE `review_images`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -1468,13 +1595,13 @@ ALTER TABLE `staff_profiles`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `user_cards`
 --
 ALTER TABLE `user_cards`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `vouchers`
@@ -1486,7 +1613,7 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT cho bảng `voucher_usages`
 --
 ALTER TABLE `voucher_usages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -1547,6 +1674,7 @@ ALTER TABLE `inventory`
 -- Các ràng buộc cho bảng `messages`
 --
 ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_messages_orders` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_msg_staff` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`);
 
 --
@@ -1602,6 +1730,12 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `fk_rev_oi` FOREIGN KEY (`order_item_id`) REFERENCES `order_items` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_rev_prod` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_rev_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `review_images`
+--
+ALTER TABLE `review_images`
+  ADD CONSTRAINT `review_images_ibfk_1` FOREIGN KEY (`review_id`) REFERENCES `reviews` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `shipments`
