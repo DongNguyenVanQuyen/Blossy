@@ -876,3 +876,11 @@
 }
 
 /* === DESKTOP (>=1024px) giữ nguyên layout gốc === */
+@media (min-width: 614px) and (max-width: 1024px) {
+  .shop-container .filters {
+    width: 200px;
+  }
+  .product-card {
+    width: 230px;
+  }
+}

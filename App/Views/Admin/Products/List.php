@@ -1,5 +1,5 @@
 
-
+<link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Admin/Product.css?v=<?= time() ?>">
 <body>
   <div class="admin-container">
 
@@ -14,7 +14,7 @@
       <section class="admin-content">
         <header class="admin-header">
           <h1 class="page-title">Quản lý sản phẩm</h1>
-          <a href="?controller=adminProduct&action=edit" class="btn btn-primary">+ Thêm sản phẩm</a>
+          <a href="?controller=adminProduct&action=edit" class="btn btn-primary">Thêm sản phẩm</a>
         </header>
 
         <article class="product-table">

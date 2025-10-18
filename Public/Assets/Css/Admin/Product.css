@@ -199,3 +199,187 @@
     padding: 8px 14px;
   }
 }
+
+/* Tổng thể trang */
+#admin-content-product {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", sans-serif;
+}
+
+#admin-content-product > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+}
+
+/* Phần nội dung chính */
+.admin-content-product {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--header-border);
+}
+
+.admin-content-product .page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Form sản phẩm */
+.admin-content-product form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-content-product label {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.admin-content-product input[type="text"],
+.admin-content-product input[type="number"],
+.admin-content-product select,
+.admin-content-product textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #d8c7b8;
+  font-size: 15px;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.admin-content-product input:focus,
+.admin-content-product textarea:focus,
+.admin-content-product select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(180, 102, 42, 0.2);
+  outline: none;
+}
+
+/* Upload hình ảnh */
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-row input[type="file"] {
+  flex: 1;
+  border: 1px dashed var(--header-border);
+  padding: 8px;
+  border-radius: 8px;
+  background: #fffefc;
+}
+
+.btn-upload {
+  padding: 8px 14px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.25s ease;
+}
+
+.btn-upload:hover {
+  background: #9d5623;
+}
+
+/* Hiển thị ảnh */
+.preview,
+.preview-multi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.preview img,
+.preview-multi img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--header-border);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.preview img:hover,
+.preview-multi img:hover {
+  transform: scale(1.05);
+  border-color: var(--primary);
+}
+
+/* Checkbox hiển thị */
+.admin-content-product input[type="checkbox"] {
+  margin-right: 6px;
+  transform: scale(1.1);
+  accent-color: var(--primary);
+}
+
+/* Nút lưu */
+.admin-content-product .btn-primary {
+  align-self: center;
+  width: 200px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.1s ease;
+}
+
+.admin-content-product .btn-primary:hover {
+  background: #9d5623;
+  transform: translateY(-1px);
+}
+
+.admin-content-product .btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-content-product {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .admin-content-product .page-title {
+    font-size: 22px;
+  }
+
+  .btn-upload,
+  .btn-primary {
+    width: 100%;
+  }
+
+  .upload-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .preview img,
+  .preview-multi img {
+    width: 90px;
+    height: 90px;
+  }
+}

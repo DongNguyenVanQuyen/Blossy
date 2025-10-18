@@ -437,3 +437,39 @@ textarea {
     box-sizing: border-box;
   }
 }
+/* 🌿 FIX TRÀN NGANG & CÂN KÍCH THƯỚC CHO TABLET */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Bọc bảng tránh tràn */
+  .my-account__table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    font-size: 14.5px;
+    margin-bottom: 10px;
+  }
+
+  /* Giảm nhẹ padding tránh cộng dồn vượt chiều rộng */
+  .my-account__table th,
+  .my-account__table td {
+    padding: 12px 14px;
+    white-space: nowrap;
+  }
+
+  /* Giữ bố cục gọn, không co méo chữ */
+  .my-account__content {
+    padding: 28px 22px;
+    overflow-x: hidden;
+  }
+
+  /* Nút "Xem" cân giữa, không bị to quá */
+  .my-account__view-btn {
+    padding: 6px 14px;
+    font-size: 14px;
+  }
+
+  /* Dòng cách vừa đẹp */
+  .my-account__table tr {
+    line-height: 1.5;
+  }
+}

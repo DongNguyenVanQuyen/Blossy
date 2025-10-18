@@ -2,7 +2,7 @@
 .contact-section {
   background-color: var(--bg);
   color: var(--text);
-  margin-top: 165px;
+  margin: 165px 10px 0;
   text-align: center;
 }
 

@@ -809,3 +809,14 @@
     opacity: 0.8;
   }
 }
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-image {
+    width: 300px;
+    height: 468px;
+  }
+  .hero-image img {
+    width: 150px;
+    height: 200px;
+  }
+}

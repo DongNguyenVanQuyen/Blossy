@@ -252,7 +252,9 @@ button.disabled {
 #Logo:hover .logoImg {
   transform: rotate(5deg) scale(1.05);
 }
-
+.menu-toggle {
+  display: none;
+}
 /* ===== MENU ===== */
 .menu {
   display: flex;
@@ -593,10 +595,9 @@ button.disabled {
    ============================================================ */
 
 /* ===================== TABLET (max-width: 1024px) ===================== */
-@media (max-width: 1024px) {
+@media (min-width: 641px) and (max-width: 1024px) {
   /* ===== OFFER BAR ===== */
   #offer {
-    height: auto;
     padding: 10px;
     flex-direction: column;
     text-align: center;
@@ -610,16 +611,14 @@ button.disabled {
 
   /* ===== HEADER ===== */
   #Header {
-    flex-wrap: wrap;
     justify-content: space-between;
     padding: 10px 20px;
     height: auto;
   }
-
-  /* LOGO */
-  #Logo {
-    margin-left: 0;
+  #Header #Logo {
+    margin-left: 30px;
   }
+
   #Logo ul {
     font-size: 26px;
   }
@@ -629,7 +628,7 @@ button.disabled {
     gap: 18px;
   }
   .menu a {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   /* SEARCH BOX */

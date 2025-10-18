@@ -3,7 +3,7 @@
   padding: 50px 0;
   background-color: var(--bg);
   font-family: inherit;
-  margin-top: 100px;
+  margin: 100px 10px 0;
 }
 
 .wishlist__header {
