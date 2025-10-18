@@ -151,40 +151,19 @@ include_once __DIR__ . '/../Layouts/Header.php';
 
     </div>
 
-    <!-- ===== 3. Quản Lý Địa Chỉ ===== -->
-    <div class="my-account__panel" id="address">
-      <h2 class="my-account__title">Quản Lý Địa Chỉ</h2>
-      <p class="my-account__breadcrumb">Trang chủ / Địa Chỉ</p>
+  <!-- ===== 3. Cập Nhật Địa Chỉ ===== -->
+  <div class="my-account__panel" id="address">
+    <h2 class="my-account__title">Cập Nhật Địa Chỉ</h2>
+    <p class="my-account__breadcrumb">Trang chủ / Địa chỉ</p>
 
-      <?php if (!empty($addresses)): ?>
-        <div class="my-account__address-list">
-          <?php foreach ($addresses as $addr): ?>
-            <div class="my-account__address-item">
-              <p><strong>Địa chỉ:</strong> <?= htmlspecialchars($addr['line1']) ?></p>
-              <div class="my-account__address-actions">
-                <a href="#"
-                   class="edit"
-                   onclick="editAddress(<?= $addr['id'] ?>, '<?= htmlspecialchars($addr['line1'], ENT_QUOTES) ?>')">✏️ Sửa</a>
-                <a href="<?= BASE_URL ?>index.php?controller=auth&action=HandleDeleteAddress&id=<?= $addr['id'] ?>"
-                   class="delete"
-                   onclick="return confirm('Xóa địa chỉ này?')">🗑️ Xóa</a>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      <?php else: ?>
-        <p class="my-account__no-address">Bạn chưa có địa chỉ nào.</p>
-      <?php endif; ?>
+    <form method="POST" 
+          action="<?= BASE_URL ?>index.php?controller=auth&action=HandleUpdateAddress" 
+          class="my-account__address-form">
+      <textarea name="address" rows="3" placeholder="Nhập địa chỉ mới..." required><?= htmlspecialchars($address ?? $_SESSION['user']['address'] ?? '') ?></textarea>
+      <button type="submit" class="my-account__submit">💾 Lưu Địa Chỉ</button>
+    </form>
+  </div>
 
-      <!-- Form thêm / sửa -->
-      <form method="POST"
-            action="<?= BASE_URL ?>index.php?controller=auth&action=HandleSaveAddress"
-            class="my-account__address-form">
-        <input type="hidden" name="id" id="addressId">
-        <textarea name="address" id="addressInput" rows="3" placeholder="Nhập địa chỉ..." required></textarea>
-        <button type="submit" class="my-account__submit" id="saveBtn">Lưu Địa Chỉ</button>
-      </form>
-    </div>
 
     <!-- ===== 4. Phương Thức Thanh Toán ===== -->
     <div class="my-account__panel" id="payment">
@@ -201,7 +180,7 @@ include_once __DIR__ . '/../Layouts/Header.php';
           <?php foreach ($cards as $card): ?>
             <div class="my-account__card-item">
               <div class="my-account__card-info">
-                <img src="<?= BASE_URL ?>Assets/Image/Icons/<?= strtolower($card['card_brand']) ?>.png" alt="<?= $card['card_brand'] ?>">
+                <img src="<?= BASE_URL ?>Public/Assets/Image/Icons/<?= strtolower($card['card_brand']) ?>.png" alt="<?= $card['card_brand'] ?>">
                 <div>
                   <p><?= htmlspecialchars($card['card_brand']) ?> **** <?= htmlspecialchars($card['card_number_last4']) ?></p>
                   <small>Hết hạn: <?= htmlspecialchars($card['expiry_date']) ?></small>

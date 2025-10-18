@@ -32,6 +32,7 @@
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  border: 2px solid;
 }
 
 .wishlist__scroll-area {
@@ -199,4 +200,11 @@
 .wishlist__footer button:hover {
   background: var(--header-border);
   color: var(--text);
+}
+
+@media (max-width: 640px) {
+  /* Favourites */
+  .wishlist__table {
+    margin: 0 10px;
+  }
 }

@@ -15,7 +15,6 @@
   <div class="order-completed">
     <!-- 🔹 TRẠNG THÁI ĐƠN HÀNG -->
     <div class="order-completed__status">
-      <div class="order-completed__icon">✅</div>
       <h2>Đơn hàng của bạn đã được xử lý thành công!</h2>
       <p>Cảm ơn bạn, đơn hàng của bạn đã được ghi nhận.</p>
     </div>
@@ -61,7 +60,7 @@
                 </div>
               </div>
               <div class="note">
-                <p>đây là note dài vãi chưởng
+                <p>
 
                 </p>
               </div>

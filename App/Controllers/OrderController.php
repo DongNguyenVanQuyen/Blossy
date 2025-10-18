@@ -81,11 +81,13 @@ class OrderController extends BaseController
             exit;
         }
 
-        $userId = $_SESSION['user']['user_id'];
+        $user = $_SESSION['user'];
+        $userId = $user['user_id'];
         $cartModel = new CartModel();
         $productModel = new ProductModel();
         $orderModel = new OrderModel();
 
+        // ✅ Ưu tiên "Mua ngay"
         if (!empty($_SESSION['buy_now'])) {
             $cartItems = $_SESSION['buy_now'];
         } else {
@@ -109,8 +111,21 @@ class OrderController extends BaseController
             exit;
         }
 
+        // ✅ Gộp sản phẩm trùng product_id
+        $mergedItems = [];
         foreach ($cartItems as $item) {
-            $pid = $item['product_id'] ?? 0;
+            $pid = $item['product_id'];
+            if (!isset($mergedItems[$pid])) {
+                $mergedItems[$pid] = $item;
+            } else {
+                $mergedItems[$pid]['quantity'] += $item['quantity'];
+            }
+        }
+        $cartItems = array_values($mergedItems);
+
+        // ✅ Kiểm tra tồn kho
+        foreach ($cartItems as $item) {
+            $pid = $item['product_id'];
             $product = $productModel->getById($pid);
 
             if (!$product || !$product['is_active']) {
@@ -124,6 +139,7 @@ class OrderController extends BaseController
             }
         }
 
+        // ✅ Tính toán tổng
         $subtotal = 0;
         foreach ($cartItems as $item) {
             $subtotal += $item['price'] * $item['quantity'];
@@ -131,22 +147,24 @@ class OrderController extends BaseController
 
         $discount = (float)($_POST['voucher_discount'] ?? 0);
         $voucherCode = $_POST['voucher_code'] ?? null;
-
         $shipping = 30000;
         $total = max(0, $subtotal - $discount + $shipping);
 
+        // ✅ Phân bổ giảm giá đều cho từng sản phẩm
         if ($discount > 0 && $subtotal > 0) {
             foreach ($cartItems as &$item) {
                 $share = ($item['price'] * $item['quantity']) / $subtotal;
                 $item['discount'] = round($discount * $share, 0);
                 $item['new_price'] = max(0, $item['price'] - ($item['discount'] / $item['quantity']));
             }
+            unset($item);
         }
 
         $paymentMethod = $_POST['payment_method'] ?? 'cod';
         $paymentStatus = ($paymentMethod !== 'cod') ? 'Đã thanh toán' : 'Chưa thanh toán';
         $deliveryDate = date('Y-m-d', strtotime('+3 days'));
 
+        // ✅ Lưu đơn hàng
         $orderId = $orderModel->createOrder([
             'user_id' => $userId,
             'address_id' => 1,
@@ -162,6 +180,7 @@ class OrderController extends BaseController
             'delivery_date' => $deliveryDate
         ]);
 
+        // ✅ Ghi nhận voucher
         if (!empty($voucherCode)) {
             require_once __DIR__ . '/../Models/VoucherModel.php';
             $voucherModel = new VoucherModel();
@@ -172,17 +191,21 @@ class OrderController extends BaseController
             }
         }
 
+        // ✅ Lưu sản phẩm trong đơn
         foreach ($cartItems as $product) {
             $orderModel->addOrderItem($orderId, $product);
         }
 
+        // ✅ Trừ tồn kho
         foreach ($cartItems as $item) {
             $productModel->reduceStock($item['product_id'], $item['quantity']);
         }
 
+        // ✅ Dọn giỏ hàng
         $cartModel->clearCart($userId);
         unset($_SESSION['cart'], $_SESSION['buy_now']);
 
+        // ✅ Lưu session đơn hàng cuối cùng
         $_SESSION['last_order'] = [
             'order' => [
                 'code' => 'OD' . str_pad($orderId, 5, '0', STR_PAD_LEFT),
@@ -199,12 +222,14 @@ class OrderController extends BaseController
             'items' => $cartItems
         ];
 
+        // ✅ Phản hồi cho AJAX
         echo json_encode([
             'success' => true,
             'redirect' => 'index.php?controller=order&action=showCompleted'
         ]);
         exit;
     }
+
 
     public function showCompleted()
     {
@@ -222,6 +247,25 @@ class OrderController extends BaseController
 
         $order = $_SESSION['last_order']['order'] ?? [];
         $items = $_SESSION['last_order']['items'] ?? [];
+        require_once __DIR__ . '/../Includes/Mailer.php';
+
+        // Sau khi INSERT đơn hàng thành công:
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
+            require_once __DIR__ . '/../Includes/Mailer.php';
+
+            $orderData = [
+                'code' => $order['code'],
+                'customer_name' => $user['first_name'] . ' ' . $user['last_name'],
+                'grand_total' => (int)str_replace(['đ', '.', ','], '', $order['total']),
+                'payment_method' => $order['payment'],
+                'address' => $user['address'] ?? 'Không xác định'
+            ];
+
+            sendOrderConfirmation($user['email'], $orderData, $items);
+        }
+
+
 
         $lastProductId = null;
         $lastOrderItemId = null;

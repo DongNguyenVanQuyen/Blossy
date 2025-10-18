@@ -33,13 +33,17 @@ class UserModel extends BaseModel
     // =========================
     public function createUser($data): bool
     {
+        $hashed = password_hash($data['password'], PASSWORD_DEFAULT);
+
         $stmt = $this->prepare("
-            INSERT INTO users (email, password, first_name, last_name, phone, address)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO users (email, password, password_hash, first_name, last_name, phone, address)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
+
         return $stmt->execute([
             $data['email'],
-            $data['password'],  // đã hash bên ngoài
+            $data['password'],   // lưu mật khẩu bình thường
+            $hashed,             // lưu mật khẩu hash
             $data['first_name'],
             $data['last_name'],
             $data['phone'],
@@ -48,9 +52,30 @@ class UserModel extends BaseModel
     }
 
     // =========================
+    // QUÊN MẬT KHẨU → CẬP NHẬT CẢ 2 CỘT
+    // =========================
+    public function updatePasswordByEmail($email, $password, $hashed): bool
+    {
+        $sql = "UPDATE users SET password = ?, password_hash = ? WHERE email = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([$password, $hashed, $email]);
+    }
+
+    // =========================
+    // ĐỔI MẬT KHẨU (THEO user_id)
+    // =========================
+    public function changePassword($userId, $newPassword): bool
+    {
+        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET password = ?, password_hash = ? WHERE id = ?";
+        $stmt = $this->prepare($sql);
+        return $stmt->execute([$newPassword, $hashed, $userId]);
+    }
+
+    // =========================
     // CẬP NHẬT THÔNG TIN NGƯỜI DÙNG
     // =========================
-    public function updateUserInfo($userId, $data)
+    public function updateUserInfo($userId, $data): bool
     {
         $sql = "UPDATE users 
                 SET first_name = :first_name,
@@ -69,70 +94,36 @@ class UserModel extends BaseModel
         ]);
     }
 
-
-    // =========================
-    // QUẢN LÝ ĐỊA CHỈ (BẢNG addresses)
-    // =========================
-    public function getAddresses($userId): array
+    // QUẢN LÝ ĐỊA CHỈ
+    public function getAddress($userId): ?string
     {
         if (empty($userId) || !is_numeric($userId)) {
-            return [];
+            return null;
         }
-        $sql = "SELECT * FROM addresses WHERE user_id = ? ORDER BY is_default DESC, id DESC";
+
+        $sql = "SELECT address FROM users WHERE id = ?";
         $stmt = $this->prepare($sql);
         $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchColumn() ?: null;
     }
 
-    public function addAddress($userId, $address): bool
+    public function updateAddress($userId, $address): bool
     {
         if (empty($userId) || empty($address)) {
             return false;
         }
-        $sql = "INSERT INTO addresses (user_id, line1, is_default) VALUES (?, ?, 0)";
+
+        $sql = "UPDATE users SET address = ? WHERE id = ?";
         $stmt = $this->prepare($sql);
-        return $stmt->execute([$userId, $address]);
+        return $stmt->execute([$address, $userId]);
     }
 
-    public function updateAddress($id, $userId, $address): bool
+    // =========================
+    // QUẢN LÝ THẺ THANH TOÁN
+    // =========================
+    public function addUserCard($userId, $cardHolder, $cardNumber, $expiry, $brand, $fullCardNumber): bool
     {
-        if (empty($id) || empty($userId) || empty($address)) {
-            return false;
-        }
-        $sql = "UPDATE addresses SET line1 = ? WHERE id = ? AND user_id = ?";
-        $stmt = $this->prepare($sql);
-        return $stmt->execute([$address, $id, $userId]);
-    }
-
-    public function deleteAddress($id, $userId): bool
-    {
-        if (empty($id) || empty($userId)) {
-            return false;
-        }
-        $sql = "DELETE FROM addresses WHERE id = ? AND user_id = ?";
-        $stmt = $this->prepare($sql);
-        return $stmt->execute([$id, $userId]);
-    }
-
-    public function changePassword($userId, $newPassword): bool
-    {
-        if (empty($userId) || empty($newPassword)) {
-            return false;
-        }
-        $sql = "UPDATE users SET password = ? WHERE id = ?";
-        $stmt = $this->prepare($sql);
-        return $stmt->execute([$newPassword, $userId]);
-    }
-
-
-
-    // Add Card
-      public function addUserCard($userId, $cardHolder, $cardNumber, $expiry, $brand, $fullCardNumber): bool
-    {
-        // Chỉ lấy 4 số cuối để lưu
         $last4 = substr($cardNumber, -4);
-        $fullCardNumber = $cardNumber;
-
         $sql = "INSERT INTO user_cards (user_id, card_holder, card_number_last4, expiry_date, card_brand, full_card_number)
                 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->prepare($sql);
@@ -146,7 +137,7 @@ class UserModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function deleteUserCard($cardId, $userId)
+    public function deleteUserCard($cardId, $userId): bool
     {
         $sql = "DELETE FROM user_cards WHERE id = :id AND user_id = :user_id";
         $stmt = $this->conn->prepare($sql);
@@ -156,32 +147,8 @@ class UserModel extends BaseModel
         ]);
     }
 
-
-
-    // Order History
-    public function getUserOrders($userId): array
-    {
-        if (empty($userId) || !is_numeric($userId)) {
-            return [];
-        }
-
-        $sql = "SELECT 
-                    id,
-                    CONCAT('OD', LPAD(id, 5, '0')) AS code,
-                    DATE_FORMAT(created_at, '%d/%m/%Y') AS created_date,
-                    status,
-                    grand_total,
-                    payment_method
-                FROM orders
-                WHERE user_id = ?
-                ORDER BY created_at DESC";
-        $stmt = $this->prepare($sql);
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     // =========================
-    // LẤY ĐƠN HÀNG THEO USER (PHÂN TRANG)
+    // LỊCH SỬ ĐƠN HÀNG
     // =========================
     public function getUserOrdersPaginated($userId, $limit = 10, $offset = 0): array
     {
@@ -201,13 +168,10 @@ class UserModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    // Đếm tổng đơn hàng để tính số trang
     public function countUserOrders($userId): int
     {
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM orders WHERE user_id = ?");
         $stmt->execute([$userId]);
         return (int)$stmt->fetchColumn();
     }
-
 }

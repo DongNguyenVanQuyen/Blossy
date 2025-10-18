@@ -66,7 +66,7 @@
 .promotion-toggle {
   cursor: pointer;
   font-size: 18px;
-  margin: 0 3px;
+  margin: 10px 3px;
 }
 
 /* =========================
@@ -189,4 +189,7 @@
 }
 .btn-cancel:hover {
   background: #aaa;
+}
+.table td:last-child {
+  white-space: nowrap;
 }

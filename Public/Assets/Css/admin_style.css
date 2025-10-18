@@ -169,6 +169,7 @@ form label input[type="checkbox"] {
   border: 1px solid var(--primary);
   padding: 5px 10px;
   border-radius: 9px;
+  margin: 10px 0;
 }
 
 .btn-edit:hover {
@@ -194,6 +195,7 @@ form label input[type="checkbox"] {
   background-color: #e8f5e9;
   color: #2e7d32;
   border: 1px solid #a5d6a7;
+  white-space: nowrap !important;
 }
 
 /* 🔸 Đã khóa */
@@ -201,4 +203,9 @@ form label input[type="checkbox"] {
   background-color: #fdecea;
   color: #c62828;
   border: 1px solid #ef9a9a;
+  white-space: nowrap !important;
+}
+
+.table td:last-child {
+  white-space: nowrap;
 }

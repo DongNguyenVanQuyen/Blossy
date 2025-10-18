@@ -67,7 +67,7 @@ class ProductsController extends BaseController
         ]);
     }
 
-    // Trả về CHỈ danh sách thẻ sản phẩm (không bọc .product-grid)
+    // Trả về CHỈ danh sách thẻ sản phẩm
     public function filter()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -158,7 +158,9 @@ include_once __DIR__ . '/../../Includes/head.php';
               <del><?= number_format($rel['compare_at_price'], 0, ',', '.') ?>đ</del>
             <?php endif; ?>
           </p>
-          <div class="rating">⭐ 4.8</div>
+          <div class="rating">
+            ⭐ <?= htmlspecialchars($rel['rating'] ?? '5.0') ?>
+          </div>
         </a>
       <?php endforeach; ?>
     </div>

@@ -703,3 +703,176 @@
     font-size: 14px;
   }
 }
+
+/* ==================== 🌸 RESPONSIVE SHOP PAGE (THEO 3 MỐC) ==================== */
+
+/* === TABLET (641px → 1023px) === */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .shop-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+    gap: 24px;
+  }
+
+  .shop-container .filters {
+    width: 90%;
+    max-width: 700px;
+    order: 1;
+    padding: 20px;
+  }
+
+  .shop-right {
+    width: 100%;
+    order: 2;
+  }
+
+  .active-filters-bar {
+    margin: 20px 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .shop-products .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+  }
+
+  .product-card img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .product-card h4 {
+    font-size: 14px;
+  }
+
+  .product-card p {
+    font-size: 14px;
+  }
+
+  .filters h2 {
+    font-size: 24px;
+  }
+
+  .filters .filter-group h4 {
+    font-size: 16px;
+  }
+
+  .filter-actions .filter-btn {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+
+/* === MOBILE (<= 640px) === */
+@media (max-width: 640px) {
+  .shop-header {
+    margin-top: 100px;
+    padding: 12px;
+  }
+
+  .shop-header h1 {
+    font-size: 24px;
+  }
+
+  .shop-header p {
+    font-size: 14px;
+  }
+
+  .shop-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 10px;
+    gap: 16px;
+  }
+
+  .shop-container .filters {
+    width: 100%;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .filters h2 {
+    font-size: 20px;
+  }
+
+  .filters .filter-group h4 {
+    font-size: 15px;
+  }
+
+  .filters .filter-group label {
+    font-size: 13px;
+  }
+
+  .filter-actions .filter-btn {
+    padding: 8px 0;
+    font-size: 14px;
+  }
+
+  /* Active Filter Bar */
+  .active-filters-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .active-filters-bar .tags-list {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .active-filters-bar .tags-list .tag {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  /* Product Grid */
+  .shop-products .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .product-card {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .product-card img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .product-card h4 {
+    font-size: 13px;
+  }
+
+  .product-card p {
+    font-size: 13px;
+  }
+
+  .product-card del {
+    font-size: 11px;
+  }
+
+  .product-card .tag-off {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  /* No products text */
+  .no-products {
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  /* Chi tiết */
+  .product-gallery {
+    width: 100%;
+    align-items: center;
+  }
+}
+
+/* === DESKTOP (>=1024px) giữ nguyên layout gốc === */

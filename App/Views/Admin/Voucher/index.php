@@ -1,4 +1,6 @@
+
 <link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Admin/Voucher.css?v=<?= time() ?>">
+<body>
 <div id="voucher_admin">
 <?php include_once __DIR__ . '/../Layouts/Sidebar.php'; ?>
 <div class="admin-main">
@@ -145,4 +147,6 @@
     </script>
     <?php unset($_SESSION['toast']); ?>
   <?php endif; ?>
+</body>
+</html>
 <script src="<?= BASE_URL ?>Public/Assets/Js/Admin/Voucher.js?v=<?= time() ?>"></script>

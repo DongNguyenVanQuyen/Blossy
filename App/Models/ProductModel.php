@@ -62,25 +62,34 @@ class ProductModel extends BaseModel
     /** Lấy sản phẩm liên quan cùng category */
     public function getRelatedProducts($productId, $categoryId)
     {
-        $sql = "SELECT p.*, pi.url, c.name AS category_name, i.stock,
-               COALESCE(ROUND(AVG(r.rating),1), 5) AS rating
-        FROM products p
-        LEFT JOIN product_images pi 
-            ON p.id = pi.product_id AND pi.is_primary = 1
-        LEFT JOIN inventory i ON p.id = i.product_id
-        LEFT JOIN categories c ON p.category_id = c.id
-        LEFT JOIN reviews r ON r.product_id = p.id AND r.is_approved = 1
-        WHERE p.category_id = ? 
-          AND p.id != ? 
-          AND p.is_active = 1
-        GROUP BY p.id
-        ORDER BY p.created_at DESC
-        LIMIT 4";
+        $sql = "
+            SELECT 
+                p.id, p.name, p.price, p.compare_at_price, p.slug, 
+                p.color, p.season, p.description, 
+                pi.url,
+                c.name AS category_name,
+                i.stock,
+                COALESCE((
+                    SELECT ROUND(AVG(r.rating), 1)
+                    FROM reviews r
+                    WHERE r.product_id = p.id AND r.is_approved = 1
+                ), 5) AS rating
+            FROM products p
+            LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+            LEFT JOIN inventory i ON p.id = i.product_id
+            LEFT JOIN categories c ON p.category_id = c.id
+            WHERE p.category_id = ? 
+            AND p.id != ? 
+            AND p.is_active = 1
+            ORDER BY p.created_at DESC
+            LIMIT 4
+        ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$categoryId, $productId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     /** Đếm tổng số sản phẩm */
     public function countAll()

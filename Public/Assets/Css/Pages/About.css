@@ -120,3 +120,110 @@
   z-index: -1;
   opacity: 0.8;
 }
+
+/* 🌸 RESPONSIVE ABOUT PAGE - MOBILE (<= 640px) */
+@media (max-width: 640px) {
+  .about-section {
+    margin-top: 110px;
+    padding: 20px 12px;
+  }
+
+  /* Header Giới thiệu */
+  .shop-header {
+    margin-bottom: 25px;
+  }
+
+  .shop-header h1 {
+    font-size: 24px;
+  }
+
+  .shop-header p {
+    font-size: 14px;
+  }
+
+  /* Wrapper tổng */
+  .about-wrapper {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  /* Hình tròn */
+  .about-image img {
+    width: 200px;
+    height: 200px;
+    border: 4px solid var(--primary);
+  }
+
+  /* Nội dung */
+  .about-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .about-content h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .about-content p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* Thống kê */
+  .about-stats {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .about-stats .stat-box {
+    width: 100%;
+    max-width: 220px;
+    padding: 10px 15px;
+  }
+
+  .stat-box h3 {
+    font-size: 18px;
+  }
+
+  .stat-box p {
+    font-size: 13px;
+  }
+
+  /* Sứ mệnh */
+  .mission-box {
+    margin-top: 40px;
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .mission-box h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .mission-box p {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .btn-mission {
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
+
+  /* Hình nền hoa */
+  .about-section .flower-bg {
+    position: relative;
+    max-width: 180px;
+    margin: 30px auto 0;
+    opacity: 0.7;
+  }
+}

@@ -11,7 +11,7 @@
   <div class="contact-wrapper">
     <!-- Ảnh liên hệ -->
     <div class="contact-image">
-      <img src="<?= BASE_URL ?>Public/Assets/Image/contact-girl.jpg" alt="Liên hệ">
+      <img src="<?= BASE_URL ?>Public/Assets/Image/Pages/contact.png" alt="Liên hệ">
     </div>
 
     <!-- Form liên hệ -->
@@ -56,17 +56,17 @@
     <div class="info-box">
       <img src="<?= BASE_URL ?>Public/Assets/Icon/email.png" alt="email icon">
       <h4>Email</h4>
-      <p>Support@flowry.com</p>
+      <p>Support@blossy.com</p>
     </div>
     <div class="info-box">
       <img src="<?= BASE_URL ?>Public/Assets/Icon/phone.png" alt="phone icon">
       <h4>Điện thoại</h4>
-      <p>+01 0387 29475</p>
+      <p>+84 586 964 157</p>
     </div>
     <div class="info-box">
       <img src="<?= BASE_URL ?>Public/Assets/Icon/location.png" alt="location icon">
       <h4>Địa chỉ</h4>
-      <p>123 Bloom Street, Dokki, NY</p>
+      <p>613 Âu cơ, Tân Phú, HCM</p>
     </div>
   </div>
 </section>

@@ -273,3 +273,167 @@ textarea {
   background: var(--primary);
   color: white;
 }
+
+/* 🌸 RESPONSIVE MOBILE MY ACCOUNT PAGE (<= 640px) */
+@media (max-width: 640px) {
+  /* Bố cục tổng thể */
+  .my-account {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 12px;
+    margin-top: 100px;
+    height: auto;
+  }
+
+  .my-account-left {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* Sidebar */
+  .my-account__sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .my-account__tab {
+    flex: 1 1 45%;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  /* Nội dung chính */
+  .my-account__content {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  .my-account__title {
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .my-account__breadcrumb {
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  /* Nút cấp độ người dùng */
+  .user-level {
+    position: static;
+    display: block;
+    margin: 10px auto 20px;
+    text-align: center;
+    padding: 8px 20px;
+    font-size: 13px;
+  }
+
+  /* Form thông tin */
+  .my-account__form {
+    gap: 15px;
+  }
+
+  .my-account__form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .my-account__form-row label {
+    font-size: 13px;
+  }
+
+  .my-account__form-row input,
+  .my-account__form-row select,
+  textarea {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .my-account__submit {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  /* Bảng đơn hàng */
+  .my-account__table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  .my-account__table th,
+  .my-account__table td {
+    padding: 10px;
+  }
+
+  .my-account__view-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  /* Danh sách địa chỉ */
+  .my-account__address-item {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  /* Danh sách thẻ */
+  .my-account__card-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .my-account__card-info {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .my-account__remove-btn {
+    align-self: flex-end;
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  /* Mật khẩu */
+  #password input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  /* Nút quản lý mật khẩu */
+  #password .my-account__submit {
+    margin-top: 15px;
+  }
+
+  /* Pagination */
+  .pagination {
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  .pagination a {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  /* Đảm bảo mọi thứ không bị tràn */
+  * {
+    box-sizing: border-box;
+  }
+}

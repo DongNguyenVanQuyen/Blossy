@@ -1,3 +1,5 @@
+
+
 <link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Admin/Promotion.css?v=<?= time() ?>">
 
 <div id="admin-promotion">

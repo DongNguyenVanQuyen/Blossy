@@ -24,19 +24,17 @@ include_once __DIR__ . '/../Layouts/Header.php';
           </div>
         </div>
         <?php
-        $defaultAddress = $user_address[0] ?? null; // lấy địa chỉ đầu tiên (đã ORDER BY is_default DESC)
+        $defaultAddress = $user_address[0] ?? null; 
         ?>
         <div class="form-group">
           <label>Địa Chỉ*</label>
           <?php
-          $addressValue = $defaultAddress['line1'] ?? $user['address'] ?? '';
+          $addressValue = $user['address'] ?? '';
           ?>
           <input type="text" name="street" placeholder="Số nhà, tên đường"
                 value="<?= htmlspecialchars($addressValue) ?>" required>
 
         </div>
-
-
         <div class="form-group">
           <label>Thành Phố*</label>
           <input type="text" name="city" value="<?= htmlspecialchars($user['city'] ?? '') ?>" required>
@@ -171,3 +169,36 @@ include_once __DIR__ . '/../Layouts/Header.php';
 <?php include_once __DIR__ . '/../Layouts/Footer.php'; ?>
 <?php include_once __DIR__ . '/../../Includes/Script.php'; ?>
 <script src="<?= BASE_URL ?>Public/Assets/Js/Checkout.js?v=<?= time() ?>"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const deliveryRadios = document.querySelectorAll("input[name='delivery']");
+  const addressInput = document.querySelector("input[name='street']");
+  const defaultAddress = "<?= addslashes($user['address'] ?? '') ?>";
+
+  // Mặc định: địa chỉ khóa sẵn
+  addressInput.readOnly = true;
+  addressInput.style.cursor = "not-allowed";
+  addressInput.style.borderColor = "#ddd";
+
+  deliveryRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+      if (radio.value === "new" && radio.checked) {
+        // Địa chỉ mới
+        addressInput.value = "";
+        addressInput.readOnly = false;
+        addressInput.focus();
+        addressInput.style.cursor = "text";
+        addressInput.style.borderColor = "#b4662a"; 
+      } 
+      else if (radio.value === "default" && radio.checked) {
+        // Địa chỉ mặc định
+        addressInput.value = defaultAddress;
+        addressInput.readOnly = true;
+        addressInput.style.cursor = "not-allowed";
+        addressInput.style.borderColor = "#ddd";
+      }
+    });
+  });
+});
+
+</script>

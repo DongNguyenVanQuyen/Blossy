@@ -15,7 +15,7 @@
   <div class="about-wrapper">
     <!-- Hình tròn -->
     <div class="about-image">
-      <img src="Public/Assets/Image/about-flowers.jpg" alt="Giới thiệu">
+      <img src="Public/Assets/Image/Pages/about-flowers.png" alt="Giới thiệu">
     </div>
 
     <!-- Nội dung giới thiệu -->

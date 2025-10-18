@@ -130,7 +130,7 @@ class CheckoutController extends BaseController
 
     $userModel = new UserModel();
     $user = $userModel->getUserById($userId);
-    $user_address = $userModel->getAddresses($userId);
+    $user_address = $userModel->getAddress($userId);
 
     $cartModel = new CartModel();
 

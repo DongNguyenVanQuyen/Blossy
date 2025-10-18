@@ -28,7 +28,7 @@ if (isset($_SESSION['user'])) {
     ?>
 
     <div id="Logo">
-      <a href="<?= BASE_URL ?>Public/index.php">    
+      <a href="<?= BASE_URL ?>index.php">    
         <ul>
           <li>BL</li>
           <img class="logoImg" src="" alt="Mùa Xuân">
@@ -125,6 +125,12 @@ if (isset($_SESSION['user'])) {
         </ul>
       </div>
     </div>         
+    <a class="mobile-user" href="<?= $isLoggedIn ? BASE_URL . 'index.php?controller=auth&action=Info' : BASE_URL . 'index.php?controller=auth&action=login'; ?>">
+      <i class="fa-solid fa-user"></i>
+    </a>
+       <button id="menuToggle" class="menu-toggle" aria-label="Mở menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
   </div>
   <div id="User">
       <?php if (isset($_SESSION['user'])): ?>
@@ -139,6 +145,15 @@ if (isset($_SESSION['user'])) {
       <?php endif; ?>
   </div>
 </div>
+<i class="fa-solid fa-bars menu-toggle" id="menuToggle"></i>
+<script>
+const menuToggle = document.getElementById("menuToggle");
+const menu = document.querySelector(".menu");
+menuToggle.addEventListener("click", () => {
+  menu.classList.toggle("open");
+});
+</script>
+
 <div id="Time" class="pos-fx"></div>
 <script src="<?= BASE_URL ?>/Public/Assets/Js/Toast.js?v=<?= time()?>"></script>
   <?php if (!empty($_SESSION['toast'])): ?>

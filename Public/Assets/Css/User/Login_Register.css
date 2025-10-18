@@ -87,6 +87,7 @@
   padding: 50px 0;
   height: 100vh;
   background-color: var(--bg);
+  margin: 180px 0;
 }
 
 .register-box {
@@ -174,4 +175,22 @@ input:focus {
   text-align: center;
   margin-top: 15px;
   color: var(--text);
+}
+.auth-links {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0 20px;
+}
+
+.forgot-link {
+  font-size: 14px;
+  color: var(--primary, #b4662a);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+  color: #9a5622;
 }

@@ -2,7 +2,12 @@
 /* ===============================
    TRANG QUẢN LÝ ĐƠN HÀNG (ORDER)
 =============================== */
-
+#order_admin {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
 .order-content {
   flex: 1;
   background: var(--bg);
@@ -174,7 +179,7 @@
 }
 
 /* ====== RESPONSIVE ====== */
-@media (max-width: 900px) {
+@media (max-width: 640px) {
   .order-table th:nth-child(3),
   .order-table td:nth-child(3),
   .order-table th:nth-child(5),

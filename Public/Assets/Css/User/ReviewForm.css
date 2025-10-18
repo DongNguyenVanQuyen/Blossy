@@ -91,3 +91,9 @@
   background: var(--text);
   color: var(--bg);
 }
+
+@media (max-width: 640px) {
+  .review-form {
+    margin: 105px 10px;
+  }
+}

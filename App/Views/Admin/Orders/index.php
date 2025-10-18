@@ -1,3 +1,4 @@
+
 <link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Toast.css?v=<?= time()?>">
 <link rel="stylesheet" href="<?= BASE_URL ?>Public/Assets/Css/Admin/Order.css">
 
@@ -9,7 +10,7 @@
   <?php include_once __DIR__ . '/../Layouts/Header.php'; ?>
 
   <div class="order-content">
-    <h2 class="order-title">📦 Quản lý đơn hàng</h2>
+    <h2 class="order-title">Quản lý đơn hàng</h2>
 
     <table class="order-table">
       <thead>
@@ -83,7 +84,7 @@
       </tbody>
     </table>
 
-    <!-- ✅ PHÂN TRANG -->
+    <!-- PHÂN TRANG -->
     <div class="pagination">
       <?php for ($i = 1; $i <= $totalPages; $i++): ?>
         <a href="index.php?controller=adminorder&action=index&page=<?= $i ?>" 

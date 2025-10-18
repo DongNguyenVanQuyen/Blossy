@@ -1,11 +1,14 @@
 /* Check out */
 .checkout-container {
+}
+
+#checkout-form {
   display: grid;
   grid-template-columns: 1.1fr 1fr; /* bên trái nhỏ hơn, bên phải rộng hơn */
   gap: 35px;
   padding: 60px 8%;
   background-color: var(--bg);
-  margin-top: 126.6px;
+  margin-top: 162px;
   font-family: "Segoe UI", sans-serif;
   align-items: center;
 }
@@ -407,4 +410,11 @@
   opacity: 0.5;
   pointer-events: none;
   filter: grayscale(100%);
+}
+
+@media (max-width: 640px) {
+  #checkout-form {
+    display: flex;
+    flex-direction: column;
+  }
 }

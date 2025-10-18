@@ -44,6 +44,7 @@
   border-bottom: 1px solid var(--header-border);
   padding: 10px;
   text-align: center;
+  white-space: nowrap;
 }
 
 .voucher-table th {
@@ -164,4 +165,7 @@
 
 #closeModal {
   background: #ccc;
+}
+.table td:last-child {
+  white-space: nowrap;
 }

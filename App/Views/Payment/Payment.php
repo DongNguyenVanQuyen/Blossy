@@ -20,7 +20,7 @@
         <label class="payment-method">
           <input type="radio" name="card_brand" value="PayPal" required>
           <span class="payment-method__icon">
-            <img src="<?= BASE_URL ?>Public/Assets/Image/logo_payment/paypal.png" alt="PayPal">
+            <img src="<?= BASE_URL ?>Public/Assets/Image/Icons/Paypal.png" alt="PayPal">
           </span>
           <span class="payment-method__label">PayPal</span>
         </label>
@@ -28,7 +28,7 @@
         <label class="payment-method">
           <input type="radio" name="card_brand" value="Visa">
           <span class="payment-method__icon">
-            <img src="<?= BASE_URL ?>Public/Assets/Image/logo_payment/visa.png" alt="Visa">
+            <img src="<?= BASE_URL ?>Public/Assets/Image/Icons/Visa.png" alt="Visa">
           </span>
           <span class="payment-method__label">Visa / MasterCard</span>
         </label>
@@ -36,18 +36,12 @@
         <label class="payment-method">
           <input type="radio" name="card_brand" value="MoMo">
           <span class="payment-method__icon">
-            <img src="<?= BASE_URL ?>Public/Assets/Image/logo_payment/momo.png" alt="MoMo">
+            <img src="<?= BASE_URL ?>Public/Assets/Image/Icons/Momo.png" alt="MoMo">
           </span>
           <span class="payment-method__label">MoMo</span>
         </label>
 
-        <label class="payment-method">
-          <input type="radio" name="card_brand" value="COD">
-          <span class="payment-method__icon">
-            <img src="<?= BASE_URL ?>Public/Assets/Image/logo_payment/cod.png" alt="COD">
-          </span>
-          <span class="payment-method__label">Thanh Toán Khi Nhận Hàng (COD)</span>
-        </label>
+
       </div>
 
       <!-- 🔹 NHẬP THÔNG TIN THẺ -->

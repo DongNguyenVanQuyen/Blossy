@@ -177,7 +177,10 @@
   display: block;
   margin-top: 2px;
 }
-
+.order-completed__product-info {
+  max-width: 90px;
+  width: 90px;
+}
 .order-completed__product-info small {
   color: #999;
   font-size: 12px;
@@ -256,4 +259,150 @@
 
 .note {
   min-width: 325px;
+}
+
+/* 🌸 RESPONSIVE MOBILE ORDER COMPLETED (<= 640px) */
+@media (max-width: 640px) {
+  .order-completed {
+    padding: 20px 12px;
+    margin-top: 100px;
+    text-align: left;
+  }
+
+  .order-completed__status h2 {
+    font-size: 18px;
+    line-height: 1.4;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .order-completed__status p {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #666;
+  }
+
+  /* --- TÓM TẮT ĐƠN HÀNG --- */
+  .order-completed__summary {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--header-border);
+    background: #fffaf2;
+    margin-bottom: 20px;
+  }
+
+  .order-completed__summary div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .order-completed__summary strong {
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .order-completed__summary span {
+    font-weight: 500;
+  }
+
+  /* --- CHI TIẾT SẢN PHẨM --- */
+  .order-completed__details {
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .order-completed__details h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .order-completed__product-list {
+    gap: 16px;
+  }
+
+  .order-completed__product-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--header-border);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .order-completed__product-left {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .order-completed__product-left img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+  }
+
+  .order-completed__product-info {
+    max-width: 100%;
+    width: auto;
+  }
+
+  .order-completed__product-info p {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .order-completed__product-info span {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .order-completed__product-price {
+    margin-top: 6px;
+    font-size: 14px;
+  }
+
+  .btn-review-item {
+    align-self: flex-end;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  /* --- KHOẢNG CÁCH GIỮA CÁC KHỐI --- */
+  .order-completed__details,
+  .order-completed__summary,
+  .order-completed__actions {
+    margin-bottom: 25px;
+  }
+
+  /* --- CÁC NÚT DƯỚI CÙNG --- */
+  .order-completed__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .order-completed__actions .btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  /* --- Khoảng cách tổng thể --- */
+  .order-completed__details h3,
+  .order-completed__status h2 {
+    text-align: center;
+  }
 }

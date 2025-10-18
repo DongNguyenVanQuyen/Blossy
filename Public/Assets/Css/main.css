@@ -6,7 +6,6 @@
 /* ===== RESET & BASE ===== */
 html,
 body {
-  height: calc(100vh - 130px);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -416,6 +415,7 @@ button.disabled {
 
 /* ===== TIME FLOAT BOX ===== */
 #Time {
+  display: none;
   position: fixed;
   background: var(--header-bg);
   color: var(--text);
@@ -585,5 +585,195 @@ button.disabled {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   🌺 RESPONSIVE NAVBAR - BLOSSY HEADER
+   ============================================================ */
+
+/* ===================== TABLET (max-width: 1024px) ===================== */
+@media (max-width: 1024px) {
+  /* ===== OFFER BAR ===== */
+  #offer {
+    height: auto;
+    padding: 10px;
+    flex-direction: column;
+    text-align: center;
+  }
+  #offer h2 {
+    font-size: 14px;
+  }
+  #offer a {
+    font-size: 12px;
+  }
+
+  /* ===== HEADER ===== */
+  #Header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 20px;
+    height: auto;
+  }
+
+  /* LOGO */
+  #Logo {
+    margin-left: 0;
+  }
+  #Logo ul {
+    font-size: 26px;
+  }
+
+  /* MENU */
+  .menu {
+    gap: 18px;
+  }
+  .menu a {
+    font-size: 15px;
+  }
+
+  /* SEARCH BOX */
+  #Search-box {
+    width: 240px;
+  }
+
+  /* ICONS: FAVOURITE + CART + NOTIFY */
+  #favourite-Cart {
+    gap: 14px;
+  }
+
+  /* USER INFO */
+  #User {
+    margin-right: 0;
+    font-size: 14px;
+  }
+
+  /* TIME FLOAT BOX */
+  #Time {
+    top: 120px;
+    right: 20px;
+  }
+}
+
+/* ============================================================
+   🌸 BLOSSY RESPONSIVE HEADER (PC → MOBILE)
+   ============================================================ */
+
+/* ===== MOBILE (≤768px) ===== */
+@media (max-width: 768px) {
+  /* HEADER STRUCTURE */
+  #Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    height: 60px;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    position: fixed;
+    top: 34px; /* dưới offer */
+    width: 100%;
+    z-index: 999;
+  }
+  #Header #logo {
+    margin-left: 10px;
+  }
+
+  /* LOGO */
+  #Logo ul {
+    font-size: 22px;
+    gap: 3px;
+  }
+  .logoImg {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* ICON ZONE */
+  #favourite-Cart {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-right: 20px;
+  }
+
+  /* BADGE */
+  .badge {
+    top: -5px;
+    right: -10px;
+    font-size: 10px;
+  }
+
+  /* MENU ICON */
+  .menu-toggle {
+    display: block;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  /* HIDE SEARCH & DESKTOP USER */
+  #Search-box,
+  #User {
+    display: none;
+  }
+
+  /* SHOW MOBILE USER ICON */
+  .mobile-user {
+    display: inline-block;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+  .mobile-user:hover {
+    transform: scale(1.1);
+  }
+
+  /* NAV MENU DROPDOWN */
+  .menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: var(--header-bg);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    border-top: 1px solid var(--header-border);
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+  }
+  .menu a {
+    display: block;
+    padding: 12px 0;
+    color: var(--text);
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .menu a:hover {
+    background: var(--header-border);
+  }
+  .menu.open {
+    display: flex;
+  }
+
+  /* OFFER BAR */
+  #offer {
+    background: var(--header-border);
+    height: 34px;
+    font-size: 13px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+  #offer a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
+/* ===== DESKTOP (≥769px) ===== */
+@media (min-width: 769px) {
+  .mobile-user {
+    display: none; /* ẩn icon user khi desktop */
   }
 }
